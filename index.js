@@ -12,11 +12,7 @@ function usage() {
 
 function main(cb) {
   var argv = require('minimist')(process.argv.slice(2));
-  if (!argv.command) {
-    usage();
-  }
 
-  console.log("ARGV", argv);
   var command = argv._[0];
   switch (command) {
     case 'setup':
