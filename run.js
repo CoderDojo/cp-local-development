@@ -3,6 +3,7 @@ var async = require('async');
 var command = require('./command.js');
 var _ = require('lodash');
 var chokidar = require('chokidar-child');
+var util = require('util');
 
 module.exports = function(argv, systems, cb) {
   debug(system);
@@ -15,15 +16,9 @@ module.exports = function(argv, systems, cb) {
   if (!system) return cb('System not found: ' + sysName);
 
   var workspace = 'workspace-' + sysName;
-  console.log('Initialising system:', sysName, system.stringify(), 'workspace: ' + workspace);
+  console.log('Initialising system:', sysName, util.inspect(system.stringify(), true, null), 'workspace: ' + workspace);
 
   var procs = [];
-
-  // run the env setup function for the system and each service
-  system.setSystemEnv();
-  _.each(system.services, function(service) {
-    if (service.setEnv) service.setEnv();
-  });
 
   // run the services!
   async.series([
@@ -39,7 +34,7 @@ module.exports = function(argv, systems, cb) {
     var dir = workspace + '/' + service.name;
     var cmd = service.start;
     debug('runService', dir, cmd);
-    var proc = command(cmd, dir, function(err) {
+    var proc = command(cmd, dir, service.env, function(err) {
       if (err) return cb(err);
       console.log('Service terminated: ' + service.name);
     });

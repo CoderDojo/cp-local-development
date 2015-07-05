@@ -4,27 +4,26 @@ var _ = require('lodash');
 var defaultBranch = 'master';
 
 // set any variables common to all systems here..
-function setGlobalEnv() {
-  process.env.POSTGRES_USERNAME='platform';
-  process.env.POSTGRES_PASSWORD='QdYx3D5y'
-  process.env.SALESFORCE_ENABLED='false';
+// TODO - for local dev there will be some cases
+// where we want to source some form of private env
+// that can override any of these variables, e.g.
+// if (privateEnvFile()) setPrivateEnv();
 
-  process.env.MAIL_HOST='mailtrap.io';
-  process.env.MAIL_PORT='2525';
-  process.env.MAIL_USER='3549359982ed10489';
-  process.env.MAIL_PASS='979ef86b786a46';
+var globalEnv = {
+  POSTGRES_USERNAME: 'platform',
+  POSTGRES_PASSWORD: 'QdYx3D5y',
+  SALESFORCE_ENABLED: 'false',
 
-  // TODO - for local dev there will be some cases
-  // where we want to source some form of private env
-  // that can override any of these variables, e.g.
-  // if (privateEnvFile()) setPrivateEnv();
-}
+  MAIL_HOST: 'mailtrap.io',
+  MAIL_PORT: '2525',
+  MAIL_USER: '3549359982ed10489',
+  MAIL_PASS: '979ef86b786a46'
+};
 
 module.exports = {
   'phase1': {
     systemBranch: 'phase1-branch',
-    setSystemEnv: function() {
-      setGlobalEnv();
+    systemEnv: {
       // put any system specific env vars here
     },
     get services () {
@@ -33,10 +32,12 @@ module.exports = {
         name: 'cp-salesforce-service',
       },{
         name: 'cp-dojos-service',
-        setEnv: function() {
-          // service specific env vars
-          process.env.POSTGRES_NAME='cp-dojos-development';
-          process.env.ES_INDEX='cp-dojos-development';
+        database: 'cp-dojos-development',
+        get serviceEnv () {
+          return {
+          POSTGRES_NAME: this.database,
+          ES_INDEX: 'cp-dojos-development'
+          }
         }
       }];
 
@@ -60,6 +61,15 @@ module.exports = {
             return './start.sh empty service.js'
           });
         }
+
+        // env function returns the amalgamated environement variables
+        service.__defineGetter__('env', function() {
+          var evars = _.clone(self.env);
+          _.each(service.serviceEnv, function(v,k) {
+            evars[k] = v;
+          });
+          return evars;
+        });
       });
       return services;
     },
@@ -72,6 +82,14 @@ module.exports = {
       };
     },
 
+    // system env getter, amalgamated with the global env
+    get env () {
+      var evars = _.clone(globalEnv);
+      _.each(this.systemEnv, function(v,k) {
+        evars[k] = v;
+      });
+      return evars;
+    }
   },
   master: {
 

@@ -17,18 +17,13 @@ module.exports = function(argv, systems, cb) {
   var workspace = 'workspace-' + sysName;
   console.log('Initialising system:', sysName, system.stringify(), 'workspace: ' + workspace);
 
-  // run the env setup function for the system and each service
-  system.setSystemEnv();
-  _.each(system.services, function(service) {
-    if (service.setEnv) service.setEnv();
-  });
-
   // do all the setup
   async.series([
     createWorkspace,
     initRepos,
     checkoutBranches,
-    npmInstalls
+    npmInstalls,
+    createDatabases
   ], cb);
 
   function createWorkspace(cb){
@@ -45,7 +40,7 @@ module.exports = function(argv, systems, cb) {
       //var cmd = 'cd ' + workspace + ' && git clone ' + service.repo + ' ' + service.name;
       var cmd = 'git clone ' + service.repo + ' ' + service.name;
       debug('initRepo', workspace, cmd);
-      command(cmd, workspace, cb);
+      command(cmd, workspace, service.env, cb);
     });
   }
 
@@ -58,7 +53,7 @@ module.exports = function(argv, systems, cb) {
     var cmd = 'git checkout ' + service.branch;
     var dir = workspace + '/' + service.name;
     debug('checkoutBranch', dir, cmd);
-    command(cmd, dir, cb);
+    command(cmd, dir, service.env, cb);
   }
 
   function npmInstalls(cb) {
@@ -70,7 +65,15 @@ module.exports = function(argv, systems, cb) {
     var dir = workspace + '/' + service.name;
     var cmd = 'npm install .';
     debug('npmInstall', dir, cmd);
-    command(cmd, dir, cb);
+    command(cmd, dir, service.env, cb);
+  }
+
+  function createDatabases(cb) {
+    async.map(system.services, createDatabase, cb);
+  }
+
+  function createDatabase(service, cb) {
+    return cb();
   }
 
 };
