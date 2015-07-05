@@ -14,6 +14,7 @@ module.exports = function(argv, systems, cb) {
 
   var system = systems[sysName];
   var workspace = 'workspace-' + sysName;
+  console.log('Initialising system:', sysName, system.stringify(), 'workspace: ' + workspace);
 
   // do all the setup
   async.series([

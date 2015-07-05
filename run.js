@@ -10,10 +10,12 @@ module.exports = function(argv, systems, cb) {
   var usage = 'Usage: run <system-name>\n e.g. run phase1';
   var sysName = argv._[1];
   if (!sysName) return cb(usage);
-  if (!systems[sysName]) return cb('System not found: ' + sysName);
-
   var system = systems[sysName];
+  if (!system) return cb('System not found: ' + sysName);
+
   var workspace = 'workspace-' + sysName;
+  console.log('Initialising system:', sysName, system.stringify(), 'workspace: ' + workspace);
+
   var procs = [];
 
   // do all the setup

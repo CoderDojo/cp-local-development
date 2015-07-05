@@ -8,7 +8,9 @@ module.exports = {
     get services () {
       var self = this;
       var services = [{
-        name: 'cp-salesforce-service',
+        name: 'cp-salesforce-service'
+      },{
+        name: 'cp-dojos-service'
       }];
 
       // add default getter props to all services if not already overridden
@@ -19,10 +21,9 @@ module.exports = {
           });
         }
         var serviceBranch = service.branch;
-        var systemBranch = self.branch;
         if (!service.branch) {
           service.__defineGetter__('branch', function() {
-            return serviceBranch || systemBranch || defaultBranch;
+            return serviceBranch || self.systemBranch || defaultBranch;
           });
         }
 
@@ -35,7 +36,16 @@ module.exports = {
       });
       return services;
     },
-    branch: 'phase1-branch',
+    systemBranch: 'phase1-branch',
+
+    // for easy debugging (the getters defined above to no console.log well!)
+    stringify: function() {
+      return {
+        systemBranch: this.systemBranch,
+        services: _.map(this.services, _.toPlainObject)
+      };
+    },
+
   },
   master: {
 
