@@ -18,6 +18,9 @@ function main(cb) {
     case 'setup':
       require('./setup.js')(argv, system, cb);
       break;
+    case 'start':
+      require('./start.js')(argv, system, cb);
+      break;
     default:
       return cb('unknown command: ' + command);
   }

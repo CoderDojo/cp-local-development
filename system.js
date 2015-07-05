@@ -25,6 +25,13 @@ module.exports = {
             return serviceBranch || systemBranch || defaultBranch;
           });
         }
+
+        // most services have the same start command
+        if (!service.start) {
+          service.__defineGetter__('start', function() {
+            return './start.sh development service.js'
+          });
+        }
       });
       return services;
     },

@@ -34,9 +34,10 @@ module.exports = function(argv, systems, cb) {
   function initRepo(service, cb) {
     fs.exists(workspace + '/' + service.name, function(exists) {
       if (exists === true) return cb();
-      var cmd = 'cd ' + workspace + ' && git clone ' + service.repo + ' ' + service.name;
-      debug('initRepo', cmd);
-      command(cmd, cb);
+      //var cmd = 'cd ' + workspace + ' && git clone ' + service.repo + ' ' + service.name;
+      var cmd = 'git clone ' + service.repo + ' ' + service.name;
+      debug('initRepo', workspace, cmd);
+      command(cmd, workspace, cb);
     });
   }
 
@@ -45,9 +46,11 @@ module.exports = function(argv, systems, cb) {
   }
 
   function checkoutBranch(service, cb) {
-    debug('checkoutBranch', cmd);
-    var cmd = 'cd ' + workspace + '/' + service.name + ' && git checkout ' + service.branch;
-    command(cmd, cb);
+    //var cmd = 'cd ' + workspace + '/' + service.name + ' && git checkout ' + service.branch;
+    var cmd = 'git checkout ' + service.branch;
+    var dir = workspace + '/' + service.name;
+    debug('checkoutBranch', dir, cmd);
+    command(cmd, dir, cb);
   }
 
   function npmInstalls(cb) {
@@ -55,9 +58,11 @@ module.exports = function(argv, systems, cb) {
   }
 
   function npmInstall(service, cb) {
-    var cmd = 'cd ' + workspace + '/' + service.name + ' && npm install .';
-    debug('npmInstall', cmd);
-    command(cmd, cb);
+    //var cmd = 'cd ' + workspace + '/' + service.name + ' && npm install .';
+    var dir = workspace + '/' + service.name;
+    var cmd = 'npm install .';
+    debug('npmInstall', dir, cmd);
+    command(cmd, dir, cb);
   }
 
 };
