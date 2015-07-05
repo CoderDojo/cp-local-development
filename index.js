@@ -6,7 +6,8 @@ var debug = require('debug')('ld:main');
 function usage() {
   console.log('./localdev.js <command>');
   console.log('where command is one of: ');
-  console.log('"setup <system>": does a fresh setup of your local dev environment');
+  console.log('"init <system>": does a fresh setup of your local dev environment');
+  console.log('"run <system>": runs all the services in your system');
   process.exit;
 }
 
@@ -15,11 +16,11 @@ function main(cb) {
 
   var command = argv._[0];
   switch (command) {
-    case 'setup':
-      require('./setup.js')(argv, system, cb);
+    case 'init':
+      require('./init.js')(argv, system, cb);
       break;
-    case 'start':
-      require('./start.js')(argv, system, cb);
+    case 'run':
+      require('./run.js')(argv, system, cb);
       break;
     default:
       return cb('unknown command: ' + command);

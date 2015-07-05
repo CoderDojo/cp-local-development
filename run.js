@@ -7,7 +7,7 @@ var chokidar = require('chokidar-child');
 module.exports = function(argv, systems, cb) {
   debug(system);
 
-  var usage = 'Usage: start <system-name>\n e.g. start phase1';
+  var usage = 'Usage: run <system-name>\n e.g. run phase1';
   var sysName = argv._[1];
   if (!sysName) return cb(usage);
   if (!systems[sysName]) return cb('System not found: ' + sysName);
@@ -29,7 +29,7 @@ module.exports = function(argv, systems, cb) {
   function runService(service, cb) {
     var dir = workspace + '/' + service.name;
     var cmd = service.start;
-    debug('startService', dir, cmd);
+    debug('runService', dir, cmd);
     var proc = command(cmd, dir, function(err) {
       if (err) return cb(err);
       console.log('Service terminated: ' + service.name);
@@ -53,7 +53,7 @@ module.exports = function(argv, systems, cb) {
     watcher.on('change', function(file) {
       debug('Watcher file changed: ', file, 'restarting service:', service);
       restartService(service, function (err) {
-        console.error('Warning: could not restart service: ' + service.name + ' - ' + err);
+        if (err) console.error('Warning: could not restart service: ' + service.name + ' - ' + err);
       });
     });
     return cb();

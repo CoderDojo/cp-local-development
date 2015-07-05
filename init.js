@@ -1,4 +1,4 @@
-var debug = require('debug')('ld:setup');
+var debug = require('debug')('ld:init');
 var async = require('async');
 var mkdirp = require('mkdirp');
 var command = require('./command.js');
@@ -7,7 +7,7 @@ var fs = require('fs');
 module.exports = function(argv, systems, cb) {
   debug(system);
 
-  var usage = 'Usage: setup <system-name>\n e.g. setup phase1';
+  var usage = 'Usage: init <system-name>\n e.g. init phase1';
   var sysName = argv._[1];
   if (!sysName) return cb(usage);
   if (!systems[sysName]) return cb('System not found: ' + sysName);
