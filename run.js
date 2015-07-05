@@ -10,6 +10,7 @@ module.exports = function(argv, systems, cb) {
   var usage = 'Usage: run <system-name>\n e.g. run phase1';
   var sysName = argv._[1];
   if (!sysName) return cb(usage);
+
   var system = systems[sysName];
   if (!system) return cb('System not found: ' + sysName);
 
@@ -18,7 +19,12 @@ module.exports = function(argv, systems, cb) {
 
   var procs = [];
 
-  // do all the setup
+  // run the env setup function for each service
+  _.each(system.services, function(service) {
+    if (service.setEnv) service.setEnv();
+  });
+
+  // run the services!
   async.series([
     runServices,
     watchServices

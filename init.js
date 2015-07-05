@@ -3,6 +3,7 @@ var async = require('async');
 var mkdirp = require('mkdirp');
 var command = require('./command.js');
 var fs = require('fs');
+var _ = require('lodash');
 
 module.exports = function(argv, systems, cb) {
   debug(system);
@@ -15,6 +16,11 @@ module.exports = function(argv, systems, cb) {
   var system = systems[sysName];
   var workspace = 'workspace-' + sysName;
   console.log('Initialising system:', sysName, system.stringify(), 'workspace: ' + workspace);
+
+  // run the env setup function for each service
+  _.each(system.services, function(service) {
+    if (service.setEnv) service.setEnv();
+  });
 
   // do all the setup
   async.series([

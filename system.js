@@ -3,14 +3,40 @@ var _ = require('lodash');
 
 var defaultBranch = 'master';
 
+// set any variables common to all systems here..
+function setGlocalEnv() {
+  process.env.POSTGRES_USERNAME='platform';
+  process.env.POSTGRES_PASSWORD='QdYx3D5y'
+  process.env.SALESFORCE_ENABLED='false';
+
+  process.env.MAIL_HOST='mailtrap.io';
+  process.env.MAIL_PORT='2525';
+  process.env.MAIL_USER='3549359982ed10489';
+  process.env.MAIL_PASS='979ef86b786a46';
+
+  // TODO - for local dev there will be some cases
+  // where we want to source some form of private env
+  // that can override any of these variables, e.g.
+  // if (privateEnvFile()) setPrivateEnv();
+}
+
 module.exports = {
   'phase1': {
+    systemBranch: 'phase1-branch',
+    setSystemEnv: function() {
+      setGlobalEnv();
+    },
     get services () {
       var self = this;
       var services = [{
-        name: 'cp-salesforce-service'
+        name: 'cp-salesforce-service',
       },{
-        name: 'cp-dojos-service'
+        name: 'cp-dojos-service',
+        setEnv: function() {
+          self.setSystemEnv();
+          process.env.POSTGRES_NAME='cp-dojos-development';
+          process.env.ES_INDEX='cp-dojos-development';
+        }
       }];
 
       // add default getter props to all services if not already overridden
@@ -30,13 +56,12 @@ module.exports = {
         // most services have the same start command
         if (!service.start) {
           service.__defineGetter__('start', function() {
-            return './start.sh development service.js'
+            return './start.sh empty service.js'
           });
         }
       });
       return services;
     },
-    systemBranch: 'phase1-branch',
 
     // for easy debugging (the getters defined above to no console.log well!)
     stringify: function() {
