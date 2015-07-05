@@ -4,7 +4,7 @@ var _ = require('lodash');
 var defaultBranch = 'master';
 
 // set any variables common to all systems here..
-function setGlocalEnv() {
+function setGlobalEnv() {
   process.env.POSTGRES_USERNAME='platform';
   process.env.POSTGRES_PASSWORD='QdYx3D5y'
   process.env.SALESFORCE_ENABLED='false';
@@ -25,6 +25,7 @@ module.exports = {
     systemBranch: 'phase1-branch',
     setSystemEnv: function() {
       setGlobalEnv();
+      // put any system specific env vars here
     },
     get services () {
       var self = this;
@@ -33,7 +34,7 @@ module.exports = {
       },{
         name: 'cp-dojos-service',
         setEnv: function() {
-          self.setSystemEnv();
+          // service specific env vars
           process.env.POSTGRES_NAME='cp-dojos-development';
           process.env.ES_INDEX='cp-dojos-development';
         }

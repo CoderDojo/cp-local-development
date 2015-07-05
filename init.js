@@ -17,7 +17,8 @@ module.exports = function(argv, systems, cb) {
   var workspace = 'workspace-' + sysName;
   console.log('Initialising system:', sysName, system.stringify(), 'workspace: ' + workspace);
 
-  // run the env setup function for each service
+  // run the env setup function for the system and each service
+  system.setSystemEnv();
   _.each(system.services, function(service) {
     if (service.setEnv) service.setEnv();
   });
