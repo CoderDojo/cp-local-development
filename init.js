@@ -16,14 +16,12 @@ module.exports = function(argv, systems, cb) {
 
   var system = systems[sysName];
   var workspace = 'workspace-' + sysName;
-  console.log('Initialising system:', sysName, system.stringify(), 'workspace: ' + workspace);
+  console.log('Initialising system:', sysName, util.inspect(system.stringify(), true, null), 'workspace: ' + workspace);
 
   // do all the setup
   async.series([
     createWorkspace,
     initRepos,
-    checkoutBranches,
-    npmInstalls,
     createDatabases
   ], cb);
 
@@ -38,15 +36,19 @@ module.exports = function(argv, systems, cb) {
   function initRepo(service, cb) {
     fs.exists(workspace + '/' + service.name, function(exists) {
       if (exists === true) return cb();
-      //var cmd = 'cd ' + workspace + ' && git clone ' + service.repo + ' ' + service.name;
-      var cmd = 'git clone ' + service.repo + ' ' + service.name;
-      debug('initRepo', workspace, cmd);
-      command(cmd, workspace, service.env, cb);
+      async.series([
+        function(cb) { cloneRepo(service, cb); },
+        function(cb) { checkoutBranch(service, cb); },
+        function(cb) { npmInstall(service, cb); }
+      ], cb);
     });
   }
 
-  function checkoutBranches(cb) {
-    async.map(system.services, checkoutBranch, cb);
+  function cloneRepo(service, cb) {
+    //var cmd = 'cd ' + workspace + ' && git clone ' + service.repo + ' ' + service.name;
+    var cmd = 'git clone ' + service.repo + ' ' + service.name;
+    debug('cloneRepo', workspace, cmd);
+    command(cmd, workspace, service.env, cb);
   }
 
   function checkoutBranch(service, cb) {
@@ -55,10 +57,6 @@ module.exports = function(argv, systems, cb) {
     var dir = workspace + '/' + service.name;
     debug('checkoutBranch', dir, cmd);
     command(cmd, dir, service.env, cb);
-  }
-
-  function npmInstalls(cb) {
-    async.map(system.services, npmInstall, cb);
   }
 
   function npmInstall(service, cb) {
@@ -72,9 +70,9 @@ module.exports = function(argv, systems, cb) {
   function createDatabases(cb) {
     var pg = require('pg');
     var conString = util.format('postgres://%s:%s@%s/postgres',
-                                service.env.POSTGRES_USERNAME,
-                                service.env.POSTGRES_PASSWORD,
-                                service.env.POSTGRES_HOST);
+                                system.env.POSTGRES_USERNAME,
+                                system.env.POSTGRES_PASSWORD,
+                                system.env.POSTGRES_HOST);
 
     var client = new pg.Client(conString);
     client.connect(function(err) {
