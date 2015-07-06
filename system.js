@@ -61,7 +61,8 @@ module.exports = {
           return {
             // put any service specific env vars here
             POSTGRES_NAME: this.database,
-            ES_INDEX: this.database
+            ES_INDEX: this.database,
+            RECAPTCHA_SECRET_KEY:'6LfVKQgTAAAAAI3dhMSRsrTbFbx7cnGr4Fy2sn5_'
           }
         }
       },{
