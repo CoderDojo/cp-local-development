@@ -4,16 +4,11 @@ var _ = require('lodash');
 var defaultBranch = 'master';
 
 // set any variables common to all systems here..
-// TODO - for local dev there will be some cases
-// where we want to source some form of private env
-// that can override any of these variables, e.g.
-// if (privateEnvFile()) setPrivateEnv();
-
 var globalEnv = {
   POSTGRES_USERNAME: 'platform',
   POSTGRES_PASSWORD: 'QdYx3D5y',
-  POSTGRES_HOST: '192.168.59.103', // TODO - using docker postgres for now
-  SALESFORCE_ENABLED: 'false',  
+  POSTGRES_HOST: 'localhost',
+  SALESFORCE_ENABLED: 'false',
   MAIL_HOST: 'mailtrap.io',
   MAIL_PORT: '2525',
   MAIL_USER: '3549359982ed10489',
@@ -102,6 +97,16 @@ module.exports = {
           _.each(service.serviceEnv, function(v,k) {
             evars[k] = v;
           });
+
+          // see if user has anything to override
+          try {
+            var localenv = require('./local-env.js');
+            _.each(localenv, function(v,k) {
+              evars[k] = v;
+            });
+          }catch(x) {
+            // purposely ignored
+          }
           return evars;
         });
       });
