@@ -1,3 +1,4 @@
+var util = require('util');
 var debug = require('debug')('ld:init');
 var async = require('async');
 var mkdirp = require('mkdirp');
@@ -69,11 +70,37 @@ module.exports = function(argv, systems, cb) {
   }
 
   function createDatabases(cb) {
-    async.map(system.services, createDatabase, cb);
-  }
+    var pg = require('pg');
+    var conString = util.format('postgres://%s:%s@%s/postgres',
+                                service.env.POSTGRES_USERNAME,
+                                service.env.POSTGRES_PASSWORD,
+                                service.env.POSTGRES_HOST);
 
-  function createDatabase(service, cb) {
-    return cb();
+    var client = new pg.Client(conString);
+    client.connect(function(err) {
+      if(err) return cb('Postgres connection error: ' + err);
+
+      async.map(system.services, createDatabase, function(err) {
+        client.end();
+        cb(err);
+      });
+
+      function createDatabase(service, cb) {
+        if (!service.database) return cb();
+
+        var q = 'CREATE DATABASE "' + service.database + '"';
+        client.query(q, function(err, result) {
+          if (err) {
+            // TODO - cheap and cheerful - do this instead:
+            // SELECT datname FROM pg_catalog.pg_database WHERE lower(datname) = lower('dbname');
+            if (err.toString().indexOf('already exists') === -1) {
+              return cb('Error creating database: ' + err);
+            }
+          }
+          return cb();
+        });
+      }
+    });
   }
 
 };

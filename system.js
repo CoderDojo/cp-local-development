@@ -12,6 +12,7 @@ var defaultBranch = 'master';
 var globalEnv = {
   POSTGRES_USERNAME: 'platform',
   POSTGRES_PASSWORD: 'QdYx3D5y',
+  POSTGRES_HOST: '192.168.59.103', // TODO - using docker postgres for now
   SALESFORCE_ENABLED: 'false',
 
   MAIL_HOST: 'mailtrap.io',
@@ -32,7 +33,7 @@ module.exports = {
         name: 'cp-salesforce-service',
       },{
         name: 'cp-dojos-service',
-        database: 'cp-dojos-development',
+        database: 'phase1-cp-dojos-development',
         get serviceEnv () {
           return {
           POSTGRES_NAME: this.database,
