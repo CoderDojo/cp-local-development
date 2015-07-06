@@ -44,8 +44,8 @@ module.exports = function(argv, systems, cb) {
     var cmd = service.start;
     debug('runService', dir, cmd);
     var proc = command(cmd, dir, service.env, function(err) {
-      if (err) return cb(err);
-      console.log('Service terminated: ' + service.name);
+      if (err) console.error('Error running service: ' + err);
+      else console.log('Service terminated: ' + service.name);
     });
 
     proc.serviceName = service.name;

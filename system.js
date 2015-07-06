@@ -13,8 +13,7 @@ var globalEnv = {
   POSTGRES_USERNAME: 'platform',
   POSTGRES_PASSWORD: 'QdYx3D5y',
   POSTGRES_HOST: '192.168.59.103', // TODO - using docker postgres for now
-  SALESFORCE_ENABLED: 'false',
-
+  SALESFORCE_ENABLED: 'false',  
   MAIL_HOST: 'mailtrap.io',
   MAIL_PORT: '2525',
   MAIL_USER: '3549359982ed10489',
@@ -31,6 +30,11 @@ module.exports = {
       var self = this;
       var services = [{
         name: 'cp-salesforce-service',
+        serviceEnv: {
+          SALESFORCE_URL: 'https://test.salesforce.com',
+          SALESFORCE_USERNAME: 'damian.beresford@nearform.com',
+          SALESFORCE_PASSWORD: 'Password123BDQSt3Yk3Uf18L6nRAwRsM4gH',
+        }
       },{
         name: 'cp-dojos-service',
         database: 'phase1-cp-dojos-development',

@@ -3,7 +3,7 @@ var exec = require('child_process').exec;
 
 
 function command(cmd, cwd, env, cb) {
-  var proc = exec(cmd, {maxBuffer: 600*1024, cwd: cwd, env: _.extend(process.env, env)}, function (err, stdout, stderr) {
+  var proc = exec(cmd, {maxBuffer: Number.POSITIVE_INFINITY, cwd: cwd, env: _.extend(process.env, env)}, function (err, stdout, stderr) {
     if (err)  return cb('Error running command: ' + cmd + ' - ' + err + ' - ' + err.stack + ' - ' + stderr);
     cb();
   });
