@@ -13,7 +13,11 @@ To develop the Community Platform you need the following tools installed:
 
 * [Node.js](http://nodejs.org) version 0.10.38 - ideally installed with [nvm](https://github.com/creationix/nvm) as described in this [article](http://www.nearform.com/nodecrunch/nodejs-sudo-free/).
 
-* [PostgreSQL](http://www.postgresql.org/) version 9.4 - see [here](https://wiki.postgresql.org/wiki/Detailed_installation_guides) for installation instructions for your platform. TODO - default postgres user & pgadmin
+* [PostgreSQL](http://www.postgresql.org/) version 9.4 - see [here](https://wiki.postgresql.org/wiki/Detailed_installation_guides) for installation instructions for your platform. You also may want to install the [pgAdmin](http://www.pgadmin.org/). When PostgreSQL is installed, you need to create a new user (you can do this from pgAdmin 'Login Roles' in the tree):
+  * username: platform
+  * password: QdYx3D5y
+
+Give the new `platform` user all the admin privileges, i.e. make them a super user. 
 
 * [ElasticSearch](https://www.elastic.co/) version 1.6 - `brew install elasticsearch` if your on OSX. 
 
