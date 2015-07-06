@@ -34,6 +34,7 @@ module.exports = {
       },{
         name: 'cp-dojos-service',
         database: 'phase1-cp-dojos-development',
+        testdata: './scripts/load_test_data.sh empty',
         get serviceEnv () {
           return {
           POSTGRES_NAME: this.database,

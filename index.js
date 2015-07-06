@@ -8,6 +8,7 @@ function usage() {
   console.log('where command is one of: ');
   console.log('"init <system>": does a fresh setup of your local dev environment');
   console.log('"run <system>": runs all the services in your system');
+  console.log('"testdata <system>": loads test data for each service');
   process.exit;
 }
 
@@ -21,6 +22,9 @@ function main(cb) {
       break;
     case 'run':
       require('./run.js')(argv, system, cb);
+      break;
+    case 'testdata':
+      require('./testdata.js')(argv, system, cb);
       break;
     default:
       return cb('unknown command: ' + command);
