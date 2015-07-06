@@ -2,13 +2,14 @@ var debug = require('debug')('ld:setup');
 var async = require('async');
 var command = require('./command.js');
 var _ = require('lodash');
-var chokidar = require('chokidar-child');
+var chokidar = require('chokidar');
 var util = require('util');
+var path = require('path');
 
 module.exports = function(argv, systems, cb) {
   debug(system);
 
-  var usage = 'Usage: run <system-name>\n e.g. run phase1';
+  var usage = 'Usage: run <system-name>\n e.g. run phase1\n e.g. run phase1 cp-zen-platform';
   var sysName = argv._[1];
   if (!sysName) return cb(usage);
 
@@ -20,6 +21,14 @@ module.exports = function(argv, systems, cb) {
 
   var procs = [];
 
+  var serviceName = argv._[2];
+  var services = system.services;
+  if (serviceName) {
+    var service = _.findWhere(system.services, {name: serviceName});
+    if (!service) return cb('Service not found: ' + serviceName);
+    services = [service];
+  }
+
   // run the services!
   async.series([
     runServices,
@@ -27,7 +36,7 @@ module.exports = function(argv, systems, cb) {
   ], cb);
 
   function runServices(cb) {
-    async.map(system.services, runService, cb);
+    async.map(services, runService, cb);
   }
 
   function runService(service, cb) {
@@ -45,14 +54,21 @@ module.exports = function(argv, systems, cb) {
   }
 
   function watchServices(cb) {
-    async.map(system.services, watchService, cb);
+    async.map(services, watchService, cb);
   }
 
   function watchService(service, cb) {
     debug('watching service: ', service);
     var dir = workspace + '/' + service.name;
     var ignored = [/[\/\\]\./, /node_modules/].concat(service.ignored ? service.ignored : []);
-    var watcher = chokidar.watch('.', {ignored: ignored, cwd:dir});
+
+    var opts = {
+      persistent: true,
+      ignoreInitial: true,
+      ignored: ignored,
+      cwd:dir
+    };
+    var watcher = chokidar.watch('.', opts);
 
     watcher.on('change', function(file) {
       debug('Watcher file changed: ', file, 'restarting service:', service);

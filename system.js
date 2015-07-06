@@ -53,6 +53,21 @@ module.exports = {
             ES_INDEX: this.database
           }
         }
+      },{
+        name: 'cp-users-service',
+        database: 'phase1-cp-users-development',
+        testdata: './scripts/load_test_data.sh empty',
+        get serviceEnv () {
+          return {
+            // put any service specific env vars here
+            POSTGRES_NAME: this.database,
+            ES_INDEX: this.database
+          }
+        }
+      },{
+        name: 'cp-zen-platform',
+        ignored: ['web/.build'],
+        start: './start.sh empty web/index.js'
       }];
 
       // add default getter props to all services if not already overridden
