@@ -37,8 +37,20 @@ module.exports = {
         testdata: './scripts/load_test_data.sh empty',
         get serviceEnv () {
           return {
+            // put any service specific env vars here
           POSTGRES_NAME: this.database,
-          ES_INDEX: 'cp-dojos-development'
+          ES_INDEX: this.database
+          }
+        }
+      },{
+        name: 'cp-countries-service',
+        database: 'phase1-cp-countries-development',
+        testdata: './scripts/load_test_data.sh empty',
+        get serviceEnv () {
+          return {
+            // put any service specific env vars here
+            POSTGRES_NAME: this.database,
+            ES_INDEX: this.database
           }
         }
       }];
