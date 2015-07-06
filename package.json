@@ -2,7 +2,7 @@
   "name": "cp-ld",
   "version": "1.0.0",
   "description": "Local dev for CoderDojo",
-  "main": "index.js",
+  "main": "localdev.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

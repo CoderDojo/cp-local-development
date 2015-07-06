@@ -1,4 +1,4 @@
-var debug = require('debug')('ld:testdata');
+var debug = require('debug')('localdev:testdata');
 var async = require('async');
 var command = require('./command.js');
 var _ = require('lodash');
@@ -15,7 +15,7 @@ module.exports = function(argv, systems, cb) {
   if (!system) return cb('System not found: ' + sysName);
 
   var workspace = 'workspace-' + sysName;
-  console.log('Loading test data for system:', sysName, util.inspect(system.stringify(), true, null), 'workspace: ' + workspace);
+  console.log('System:', sysName, util.inspect(system.stringify(), true, null), 'workspace: ' + workspace);
 
   // load the test data
   async.series([

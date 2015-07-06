@@ -1,5 +1,5 @@
 var util = require('util');
-var debug = require('debug')('ld:init');
+var debug = require('debug')('localdev:init');
 var async = require('async');
 var mkdirp = require('mkdirp');
 var command = require('./command.js');
@@ -16,7 +16,7 @@ module.exports = function(argv, systems, cb) {
 
   var system = systems[sysName];
   var workspace = 'workspace-' + sysName;
-  console.log('Initialising system:', sysName, util.inspect(system.stringify(), true, null), 'workspace: ' + workspace);
+  console.log('System:', sysName, util.inspect(system.stringify(), true, null), 'workspace: ' + workspace);
 
   // do all the setup
   async.series([
