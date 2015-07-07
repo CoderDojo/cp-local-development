@@ -23,7 +23,7 @@ module.exports = function(argv, systems, cb) {
   ], cb);
 
   function loadAllTestData(cb) {
-    async.map(system.services, loadTestData, cb);
+    async.mapSeries(system.services, loadTestData, cb);
   }
 
   function loadTestData(service, cb) {
