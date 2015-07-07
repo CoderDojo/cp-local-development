@@ -29,6 +29,16 @@ module.exports = function(argv, systems, cb) {
     services = [service];
   }
 
+  // restart queue - ensures only one service restarted at a time
+  var restartQ = async.queue(function (task, cb) {
+    var service = task.service;
+    debug('restarting service', service);
+    killService(service, function(err) {
+      if (err) return cb(err);
+      runService(service, cb);
+    });
+  }, 1);
+
   // run the services!
   async.series([
     runServices,
@@ -95,18 +105,13 @@ module.exports = function(argv, systems, cb) {
           return s.name === service.name;
         });
         return cb();
-      }, 2000);  // TODO - hackity hack..
+      }, 1000);
     } else {
       return cb();
     }
   }
 
   function restartService(service, cb) {
-    debug('restarting service', service);
-    killService(service, function(err) {
-      if (err) return cb(err);
-      runService(service, cb);
-    });
+    restartQ.push({service:service}, cb);
   }
-
 };
