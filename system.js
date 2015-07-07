@@ -8,6 +8,7 @@ var globalEnv = {
   POSTGRES_USERNAME: 'platform',
   POSTGRES_PASSWORD: 'QdYx3D5y',
   POSTGRES_HOST: 'localhost',
+  ES_HOST: 'localhost',
   SALESFORCE_ENABLED: 'false',
   MAIL_HOST: 'mailtrap.io',
   MAIL_PORT: '2525',
