@@ -13,7 +13,8 @@ var globalEnv = {
   MAIL_HOST: 'mailtrap.io',
   MAIL_PORT: '2525',
   MAIL_USER: '3549359982ed10489',
-  MAIL_PASS: '979ef86b786a46'
+  MAIL_PASS: '979ef86b786a46',
+  GOOGLE_API_ENABLED: 'false'
 };
 
 module.exports = {

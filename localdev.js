@@ -2,6 +2,7 @@
 
 var system = require('./system.js');
 var debug = require('debug')('localdev:main');
+var _ = require('lodash');
 
 function usage() {
   console.log('Usage "./localdev.js <command>" where command is one of: ');
@@ -33,6 +34,10 @@ function main(cb) {
 }
 
 main(function (err, output) {
-  if (err) console.error(err);
-  else console.log(output);
+  if (err) return console.error(err);
+  if (output && typeof output === 'string') return console.log(output);
+  var out =  _.filter(_.flatten(output), function (o) {
+    if (o) return o;
+  });
+  console.log(out.join('\n'));
 });
