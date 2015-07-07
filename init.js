@@ -30,7 +30,7 @@ module.exports = function(argv, systems, cb) {
   }
 
   function initRepos(cb) {
-    async.map(system.services, initRepo, cb);
+    async.mapSeries(system.services, initRepo, cb);
   }
 
   function initRepo(service, cb) {
