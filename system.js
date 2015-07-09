@@ -19,7 +19,7 @@ var globalEnv = {
 
 module.exports = {
   'phase1': {
-    systemBranch: 'phase1-branch',
+    systemBranch: 'master',
     systemEnv: {
       // put any system specific env vars here
     },
@@ -69,6 +69,7 @@ module.exports = {
       },{
         name: 'cp-zen-platform',
         ignored: ['web/.build'],
+        branch: 'phase1-branch',
         start: './start.sh empty web/index.js'
       }];
 
@@ -83,8 +84,8 @@ module.exports = {
     },
 
     // system env getter, amalgamated with the global env
-    get env () { 
-      return env(this); 
+    get env () {
+      return env(this);
     }
   },
   phase3: {
@@ -160,7 +161,7 @@ module.exports = {
         ignored: ['web/.build'],
         start: './start.sh empty web/index.js'
       }];
-      
+
       // add default getter props to all services if not already overridden
       addGetters(services, self);
       return services;
@@ -171,10 +172,10 @@ module.exports = {
     },
 
     // system env getter, amalgamated with the global env
-    get env () { 
-      return env(this); 
+    get env () {
+      return env(this);
     }
-  
+
   }
 
 }
