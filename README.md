@@ -17,9 +17,9 @@ To develop the Community Platform you need the following tools installed:
   * username: platform
   * password: QdYx3D5y
 
-Give the new `platform` user all the admin privileges, i.e. make them a super user. 
+Give the new `platform` user all the admin privileges, i.e. make them a super user.
 
-* [ElasticSearch](https://www.elastic.co/) version 1.6 - `brew install elasticsearch` if your on OSX. 
+* [ElasticSearch](https://www.elastic.co/) version 1.6 - `brew install elasticsearch` if your on OSX.
 
 You also need to have [Git](https://git-scm.com/) installed in order to get the Community Platform code from [GitHub](https://github.com/coderdojo).
 
@@ -94,7 +94,7 @@ While they each system is totally independent from each other, it's only possibl
 
 ## Making code changes and working locally
 
-When you initialise a system, it create a `workspace-<systemName>` folder for each system, e.g. `workspace-phase1`. If you open this directory in your code editor you will see all the code repositories that make up this system, e.g. cp-zen-platform, cp-dojos-service, cp-users-service, cp-countries-service, etc. When you first set it up, the `init` command will checkout the default branch for that system, e.g. `phase1-branch` for each service. From then on, it's up to you to manage the contents of this directory, e.g. creating branches, changing branches, etc. The `run` command will simply run whatever is in those directories, it doesn't care about what branch they're on, etc.
+When you initialise a system, it creates a `workspace-<systemName>` folder for each system, e.g. `workspace-phase1`. If you open this directory in your code editor you will see all the code repositories that make up this system, e.g. cp-zen-platform, cp-dojos-service, cp-users-service, cp-countries-service, etc. When you first set it up, the `init` command will checkout the default branch for that system, e.g. `phase1-branch` for each service. From then on, it's up to you to manage the contents of this directory, e.g. creating branches, changing branches, etc. The `run` command will simply run whatever is in those directories, it doesn't care about what branch they're on, etc.
 
 So a typical development workflow would be:
 
@@ -111,7 +111,7 @@ $ git checkout phase1-branch # or whatever from there
 
 This tool is designed to make it as easy as possible to on-board new developers to the Community Platform. It is also designed to be cross platform, so developers can contribute to the community on their OS of choice, e.g. Windows, Mac & Linux.
 
-The [system.js](system.js) file is a mixture of code and data, and it's where the 'systems' are defined ('phase1' & 'phase3' for now). At its core, each System contains a set of Services, and each service has its own code repository on github. When each command starts, it prints out the full information of the system it's using, e.g. 
+The [system.js](system.js) file is a mixture of code and data, and it's where the 'systems' are defined ('phase1' & 'phase3' for now). At its core, each System contains a set of Services, and each service has its own code repository on github. When each command starts, it prints out the full information of the system it's using, e.g.
 
 ```
 phase1: {
