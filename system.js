@@ -12,8 +12,8 @@ var globalEnv = {
   SALESFORCE_ENABLED: 'false',
   MAIL_HOST: 'mailtrap.io',
   MAIL_PORT: '2525',
-  MAIL_USER: '3549359982ed10489',
-  MAIL_PASS: '979ef86b786a46',
+  MAIL_USER: '397746d4abc52902b',
+  MAIL_PASS: '0383c445ef22d4',
   GOOGLE_API_ENABLED: 'false'
 };
 
@@ -34,6 +34,7 @@ module.exports = {
         }
       },{
         name: 'cp-dojos-service',
+        branch: 'master',
         database: 'phase1-cp-dojos-development',
         testdata: './scripts/load_test_data.sh empty',
         get serviceEnv () {
@@ -45,6 +46,7 @@ module.exports = {
         }
       },{
         name: 'cp-countries-service',
+        branch: 'master',
         database: 'phase1-cp-countries-development',
         testdata: './scripts/load_test_data.sh empty',
         get serviceEnv () {
@@ -56,6 +58,7 @@ module.exports = {
         }
       },{
         name: 'cp-users-service',
+        branch: 'master',
         database: 'phase1-cp-users-development',
         testdata: './scripts/load_test_data.sh empty',
         get serviceEnv () {
