@@ -12,67 +12,10 @@ var globalEnv = {
   SALESFORCE_ENABLED: 'false',
   MAIL_HOST: 'mailtrap.io',
   MAIL_PORT: '2525',
-  MAIL_USER: '3549359982ed10489',
-  MAIL_PASS: '979ef86b786a46',
+  MAIL_USER: '397746d4abc52902b',
+  MAIL_PASS: '0383c445ef22d4',
   GOOGLE_API_ENABLED: 'false'
 };
-
-var stringify = function (system) {
-  return {
-    systemBranch: system.systemBranch,
-    services: _.map(system.services, _.toPlainObject)
-  };
-}
-
-var env = function (system) {
-  var evars = _.clone(globalEnv);
-  _.each(system.systemEnv, function(v,k) {
-    evars[k] = v;
-  });
-  return evars;
-}
-
-var addGetters = function (services, self) {
-  _.each(services, function (service) {
-    if (!service.repo) {
-      service.__defineGetter__('repo', function() {
-        return baseRepo + service.name;
-      });
-    }
-    var serviceBranch = service.branch;
-    if (!service.branch) {
-      service.__defineGetter__('branch', function() {
-        return serviceBranch || self.systemBranch || defaultBranch;
-      });
-    }
-
-    // most services have the same start command
-    if (!service.start) {
-      service.__defineGetter__('start', function() {
-        return './start.sh empty service.js'
-      });
-    }
-
-    // env function returns the amalgamated environement variables
-    service.__defineGetter__('env', function() {
-      var evars = _.clone(self.env);
-      _.each(service.serviceEnv, function(v,k) {
-        evars[k] = v;
-      });
-
-      // see if user has anything to override
-      try {
-        var localenv = require('./local-env.js');
-        _.each(localenv, function(v,k) {
-          evars[k] = v;
-        });
-      }catch(x) {
-        // purposely ignored
-      }
-      return evars;
-    });
-  });
-}
 
 module.exports = {
   'phase1': {
@@ -91,6 +34,7 @@ module.exports = {
         }
       },{
         name: 'cp-dojos-service',
+        branch: 'master',
         database: 'phase1-cp-dojos-development',
         testdata: './scripts/load_test_data.sh empty',
         get serviceEnv () {
@@ -102,6 +46,7 @@ module.exports = {
         }
       },{
         name: 'cp-countries-service',
+        branch: 'master',
         database: 'phase1-cp-countries-development',
         testdata: './scripts/load_test_data.sh empty',
         get serviceEnv () {
@@ -113,6 +58,7 @@ module.exports = {
         }
       },{
         name: 'cp-users-service',
+        branch: 'master',
         database: 'phase1-cp-users-development',
         testdata: './scripts/load_test_data.sh empty',
         get serviceEnv () {
