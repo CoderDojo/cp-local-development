@@ -7,7 +7,7 @@ var util = require('util');
 module.exports = function(argv, systems, cb) {
   debug(system);
 
-  var usage = 'Usage: testdata <system-name> [service-name]\n e.g. testdata phase1';
+  var usage = 'Usage: testdata <system-name> [service-name]\n e.g. testdata phase3';
   var sysName = argv._[1];
   if (!sysName) return cb(usage);
 

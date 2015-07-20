@@ -9,7 +9,7 @@ var _ = require('lodash');
 module.exports = function(argv, systems, cb) {
   debug(system);
 
-  var usage = 'Usage: init <system-name>\n e.g. init phase1';
+  var usage = 'Usage: init <system-name>\n e.g. init phase3';
   var sysName = argv._[1];
   if (!sysName) return cb(usage);
   if (!systems[sysName]) return cb('System not found: ' + sysName);
