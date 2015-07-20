@@ -9,7 +9,7 @@ var path = require('path');
 module.exports = function(argv, systems, cb) {
   debug(system);
 
-  var usage = 'Usage: run <system-name>\n e.g. run phase1\n e.g. run phase1 cp-zen-platform';
+  var usage = 'Usage: run <system-name>\n e.g. run phase1\n e.g. run phase3 cp-zen-platform';
   var sysName = argv._[1];
   if (!sysName) return cb(usage);
 
