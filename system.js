@@ -35,17 +35,6 @@ module.exports = {
           SALESFORCE_PASSWORD: 'Password123BDQSt3Yk3Uf18L6nRAwRsM4gH',
         }
       },{
-        name: 'cp-dojos-service',
-        database: 'phase3-cp-dojos-development',
-        testdata: './scripts/load_test_data.sh empty',
-        get serviceEnv () {
-          return {
-            // put any service specific env vars here
-          POSTGRES_NAME: this.database,
-          ES_INDEX: this.database
-          }
-        }
-      },{
         name: 'cp-countries-service',
         database: 'phase3-cp-countries-development',
         testdata: './scripts/load_test_data.sh empty',
@@ -54,6 +43,17 @@ module.exports = {
             // put any service specific env vars here
             POSTGRES_NAME: this.database,
             ES_INDEX: this.database
+          }
+        }
+      },{
+        name: 'cp-dojos-service',
+        database: 'phase3-cp-dojos-development',
+        testdata: './scripts/load_test_data.sh empty',
+        get serviceEnv () {
+          return {
+            // put any service specific env vars here
+          POSTGRES_NAME: this.database,
+          ES_INDEX: this.database
           }
         }
       },{
