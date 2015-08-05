@@ -2,7 +2,7 @@
 
 Instructions for setting up local development for the CoderDojo Community Platform on Windows, Mac and Linux. There are four main parts to setting up your local development environment:
 
-* Install the tools (node.js, PostgreSQL, ElasticSearch, etc)
+* Install the tools (node.js, PostgreSQL, etc)
 * Setting up the Community Platform code
 * Loading test data into your fresh setup
 * Making code changes
@@ -18,8 +18,6 @@ To develop the Community Platform you need the following tools installed:
   * password: QdYx3D5y
 
 Give the new `platform` user all the admin privileges, i.e. make them a super user.
-
-* [ElasticSearch](https://www.elastic.co/) version 1.6 - `brew install elasticsearch` if your on OSX.
 
 You also need to have [Git](https://git-scm.com/) installed in order to get the Community Platform code from [GitHub](https://github.com/coderdojo).
 
