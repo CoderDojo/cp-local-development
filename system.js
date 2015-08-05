@@ -30,14 +30,7 @@ module.exports = {
       var services = [{
         name: 'cp-salesforce-service'
       }, {
-        name: 'cp-countries-service',
-        database: 'phase3-cp-countries-development',
-        testdata: './scripts/load_test_data.sh empty',
-        get serviceEnv () {
-          return {
-            POSTGRES_NAME: this.database
-          };
-        }
+        name: 'cp-countries-service'
       }, {
         name: 'cp-dojos-service',
         database: 'phase3-cp-dojos-development',
