@@ -15,7 +15,8 @@ var globalEnv = {
   MAIL_PORT: '2525',
   MAIL_USER: '397746d4abc52902b',
   MAIL_PASS: '0383c445ef22d4',
-  GOOGLE_API_ENABLED: 'false'
+  GOOGLE_API_ENABLED: 'false',
+  GOOGLE_MAPS_KEY: 'AIzaSyD7i1_IMvI1ulfsvX7sntwlGULTL_iQ69U'
 };
 
 module.exports = {
@@ -34,17 +35,6 @@ module.exports = {
           SALESFORCE_PASSWORD: 'Password123BDQSt3Yk3Uf18L6nRAwRsM4gH',
         }
       },{
-        name: 'cp-dojos-service',
-        database: 'phase3-cp-dojos-development',
-        testdata: './scripts/load_test_data.sh empty',
-        get serviceEnv () {
-          return {
-            // put any service specific env vars here
-          POSTGRES_NAME: this.database,
-          ES_INDEX: this.database
-          }
-        }
-      },{
         name: 'cp-countries-service',
         database: 'phase3-cp-countries-development',
         testdata: './scripts/load_test_data.sh empty',
@@ -56,6 +46,17 @@ module.exports = {
           }
         }
       },{
+        name: 'cp-dojos-service',
+        database: 'phase3-cp-dojos-development',
+        testdata: './scripts/load_test_data.sh empty',
+        get serviceEnv () {
+          return {
+            // put any service specific env vars here
+          POSTGRES_NAME: this.database,
+          ES_INDEX: this.database
+          }
+        }
+      },{
         name: 'cp-users-service',
         database: 'phase3-cp-users-development',
         testdata: './scripts/load_test_data.sh empty',
@@ -63,7 +64,6 @@ module.exports = {
           return {
             // put any service specific env vars here
             POSTGRES_NAME: this.database,
-            ES_INDEX: this.database,
             RECAPTCHA_SECRET_KEY:'6LfVKQgTAAAAAI3dhMSRsrTbFbx7cnGr4Fy2sn5_'
           }
         }
