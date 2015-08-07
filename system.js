@@ -61,14 +61,7 @@ module.exports = {
         }
       }, {
         name: 'cp-badges-service',
-        database: 'phase3-cp-badges-development',
         start: './start.sh empty index.js',
-        get serviceEnv () {
-          return {
-            // put any service specific env vars here
-            POSTGRES_NAME: this.database
-          };
-        }
       }, {
         name: 'cp-zen-platform',
         ignored: ['web/.build'],
