@@ -61,11 +61,10 @@ module.exports = {
         }
       }, {
         name: 'cp-badges-service',
-        start: './start.sh empty index.js',
       }, {
         name: 'cp-zen-platform',
         ignored: ['web/.build'],
-        start: './start.sh empty web/index.js'
+        start: 'node web/index.js'
       }];
 
       // add default getter props to all services if not already overridden
@@ -116,7 +115,7 @@ var addGetters = function (services, self) {
     // most services have the same start command
     if (!service.start) {
       service.__defineGetter__('start', function () {
-        return './start.sh empty service.js';
+        return 'node ./service.js';
       });
     }
 
