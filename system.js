@@ -63,8 +63,7 @@ module.exports = {
         name: 'cp-badges-service',
       }, {
         name: 'cp-zen-platform',
-        ignored: ['web/.build'],
-        start: 'node web/index.js'
+        ignored: ['web/.build']
       }];
 
       // add default getter props to all services if not already overridden
