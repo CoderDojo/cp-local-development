@@ -30,8 +30,6 @@ module.exports = {
       var services = [{
         name: 'cp-salesforce-service'
       }, {
-        name: 'cp-countries-service'
-      }, {
         name: 'cp-dojos-service',
         database: 'phase3-cp-dojos-development',
         testdata: './scripts/load_test_data.sh empty',
