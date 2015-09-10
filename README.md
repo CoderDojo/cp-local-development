@@ -39,9 +39,7 @@ Usage "./localdev.js <command>" where command is one of:
   "testdata <system>": loads test data for each service
 ```
 
-The `localdev` tool has one systems configured:
-
-* `phase3` - local development system for phase3 of CoderDojo
+The `localdev` tool has one system configured, called `zen` (this can be extended to use multiple systems, but for now, 'zen' is the only one).
 
 Note that this will change as the system evolves, e.g. phase3 will probably be known as 'master' or something in the long run.
 
