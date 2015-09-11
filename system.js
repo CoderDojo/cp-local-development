@@ -20,7 +20,7 @@ var globalEnv = {
 };
 
 module.exports = {
-  phase3: {
+  zen: {
     systemBranch: 'master',
     systemEnv: {
       // put any system specific env vars here
@@ -31,7 +31,7 @@ module.exports = {
         name: 'cp-salesforce-service'
       }, {
         name: 'cp-dojos-service',
-        database: 'phase3-cp-dojos-development',
+        database: 'cp-dojos-development',
         testdata: './scripts/load_test_data.sh empty',
         get serviceEnv () {
           return {
@@ -40,7 +40,7 @@ module.exports = {
         }
       }, {
         name: 'cp-users-service',
-        database: 'phase3-cp-users-development',
+        database: 'cp-users-development',
         testdata: './scripts/load_test_data.sh empty',
         get serviceEnv () {
           return {
@@ -50,7 +50,7 @@ module.exports = {
         }
       }, {
         name: 'cp-events-service',
-        database: 'phase3-cp-events-development',
+        database: 'cp-events-development',
         get serviceEnv () {
           return {
             // put any service specific env vars here
