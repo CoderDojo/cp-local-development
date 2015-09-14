@@ -19,7 +19,7 @@ To develop the Community Platform you need the following tools installed:
 
 Give the new `platform` user all the admin privileges, i.e. make them a super user.
 
-You also need to have [Git](https://git-scm.com/) installed in order to get the Community Platform code from [GitHub](https://github.com/coderdojo).
+You also need to have [Git](https://git-scm.com/) installed in order to get the Community Platform code from [GitHub](https://github.com/coderdojo). You will also need to have [Grunt](http://gruntjs.com/) installed globally: `npm install -g grunt`.
 
 ## Code Setup
 
