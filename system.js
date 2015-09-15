@@ -58,7 +58,7 @@ module.exports = {
           };
         }
       }, {
-        name: 'cp-badges-service',
+        name: 'cp-badges-service'
       }, {
         name: 'cp-zen-platform',
         ignored: ['web/.build']
@@ -129,7 +129,7 @@ var addGetters = function (services, self) {
         _.each(localenv, function (v, k) {
           evars[k] = v;
         });
-      }catch(x) {
+      }catch (x) {
         // purposely ignored
       }
       return evars;

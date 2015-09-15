@@ -4,7 +4,8 @@
   "description": "Local dev for CoderDojo",
   "main": "localdev.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "./node_modules/.bin/semistandard *.js"
   },
   "author": "",
   "license": "MIT",
@@ -16,5 +17,8 @@
     "minimist": "1.1.1",
     "mkdirp": "0.5.1",
     "pg": "4.4.0"
+  },
+  "devDependencies": {
+    "semistandard": "7.0.2"
   }
 }

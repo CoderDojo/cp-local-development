@@ -4,7 +4,7 @@ var command = require('./command.js');
 var _ = require('lodash');
 var util = require('util');
 
-module.exports = function(argv, systems, cb) {
+module.exports = function (argv, systems, cb) {
   debug(system);
 
   var usage = 'Usage: testdata <system-name> [service-name]\n e.g. testdata phase3';
@@ -27,14 +27,14 @@ module.exports = function(argv, systems, cb) {
 
   // load the test data
   async.series([
-    loadAllTestData,
+    loadAllTestData
   ], cb);
 
-  function loadAllTestData(cb) {
+  function loadAllTestData (cb) {
     async.mapSeries(services, loadTestData, cb);
   }
 
-  function loadTestData(service, cb) {
+  function loadTestData (service, cb) {
     if (!service.testdata) return cb();
     var dir = workspace + '/' + service.name;
     var cmd = service.testdata;
