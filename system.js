@@ -41,7 +41,7 @@ module.exports = {
       }, {
         name: 'cp-users-service',
         database: 'cp-users-development',
-        testdata: './scripts/load_test_data.sh empty',
+        testdata: './scripts/load_test_data.sh',
         get serviceEnv () {
           return {
             POSTGRES_NAME: this.database,

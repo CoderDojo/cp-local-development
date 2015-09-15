@@ -67,11 +67,18 @@ Note that you can also run services individually if you wish, e.g. `./localdev.j
 
 Once `run` looks to be running all the services ok (you'll see a lot of stack traces in the output if they are not running ok!) you should be able to hit `http://localhost:8000` in your browser. If this is your first time running, you should see the world map but with no dojo markers, these will appear when we install some test data.
 
+Note that the Forums and Badges will not be operable in local development mode, to run these, you need to install both [NodeBB](www.nodebb.org) and [BadgeKit](http://badgekit.openbadges.org/) locally.
+
 ## Test Data
 
 Next, in another shell (the system has to be running before you load the test data), run `./localdev.js testdata zen`. Behind the scenes, each service has a mechanism for loading test data into its database, and this command simply tells each service to load its test data.
 
 Note that this command will fail if run more than once.
+
+When all the test data is loaded, you should see Dojos appearing when you refresh your home page. You should also be able to login as an Admin user with the following credentials:
+
+* user: manager@example.com
+* password: test
 
 ## Making code changes and working locally
 
