@@ -4,9 +4,8 @@ var command = require('./command.js');
 var _ = require('lodash');
 var chokidar = require('chokidar');
 var util = require('util');
-var path = require('path');
 
-module.exports = function(argv, systems, cb) {
+module.exports = function (argv, systems, cb) {
   debug(system);
 
   var usage = 'Usage: run <system-name>\n e.g. run phase1\n e.g. run phase3 cp-zen-platform';
@@ -33,7 +32,7 @@ module.exports = function(argv, systems, cb) {
   var restartQ = async.queue(function (task, cb) {
     var service = task.service;
     debug('restarting service', service);
-    killService(service, function(err) {
+    killService(service, function (err) {
       if (err) return cb(err);
       runService(service, cb);
     });
@@ -45,15 +44,15 @@ module.exports = function(argv, systems, cb) {
     watchServices
   ], cb);
 
-  function runServices(cb) {
+  function runServices (cb) {
     async.map(services, runService, cb);
   }
 
-  function runService(service, cb) {
+  function runService (service, cb) {
     var dir = workspace + '/' + service.name;
     var cmd = service.start;
     debug('runService', dir, cmd);
-    var proc = command(cmd, dir, service.env, function(err) {
+    var proc = command(cmd, dir, service.env, function (err) {
       if (err) console.error('Error running service: ' + err);
       else console.log('Service terminated: ' + service.name);
     });
@@ -63,11 +62,11 @@ module.exports = function(argv, systems, cb) {
     return cb();
   }
 
-  function watchServices(cb) {
+  function watchServices (cb) {
     async.map(services, watchService, cb);
   }
 
-  function watchService(service, cb) {
+  function watchService (service, cb) {
     debug('watching service: ', service);
     var dir = workspace + '/' + service.name;
     var ignored = [/[\/\\]\./, /node_modules/].concat(service.ignored ? service.ignored : []);
@@ -76,11 +75,11 @@ module.exports = function(argv, systems, cb) {
       persistent: true,
       ignoreInitial: true,
       ignored: ignored,
-      cwd:dir
+      cwd: dir
     };
     var watcher = chokidar.watch('.', opts);
 
-    watcher.on('change', function(file) {
+    watcher.on('change', function (file) {
       debug('Watcher file changed: ', file, 'restarting service:', service);
       restartService(service, function (err) {
         if (err) console.error('Warning: could not restart service: ' + service.name + ' - ' + err);
@@ -89,19 +88,19 @@ module.exports = function(argv, systems, cb) {
     return cb();
   }
 
-  function getProc(service) {
-    return _.find(procs, function(p) {
+  function getProc (service) {
+    return _.find(procs, function (p) {
       return p.serviceName === service.name;
     });
   }
 
-  function killService(service, cb) {
+  function killService (service, cb) {
     debug('killing service: ', service);
     var proc = getProc(service);
     if (proc) {
       proc.kill('SIGTERM');
-      setTimeout(function() {
-        procs = _.remove(procs, function(s) {
+      setTimeout(function () {
+        procs = _.remove(procs, function (s) {
           return s.name === service.name;
         });
         return cb();
@@ -111,7 +110,7 @@ module.exports = function(argv, systems, cb) {
     }
   }
 
-  function restartService(service, cb) {
-    restartQ.push({service:service}, cb);
+  function restartService (service, cb) {
+    restartQ.push({service: service}, cb);
   }
 };

@@ -1,10 +1,8 @@
 #!/usr/bin/env node
-
 var system = require('./system.js');
-var debug = require('debug')('localdev:main');
 var _ = require('lodash');
 
-function usage() {
+function usage () {
   console.log('Usage "./localdev.js <command>" where command is one of: ');
   console.log('  "init <system>": does a fresh setup of your local dev environment');
   console.log('  "run <system>": runs all the services in your system');
@@ -12,7 +10,7 @@ function usage() {
   process.exit;
 }
 
-function main(cb) {
+function main (cb) {
   var argv = require('minimist')(process.argv.slice(2));
 
   var command = argv._[0];
@@ -36,7 +34,7 @@ function main(cb) {
 main(function (err, output) {
   if (err) return console.error(err);
   if (output && typeof output === 'string') return console.log(output);
-  var out =  _.filter(_.flatten(output), function (o) {
+  var out = _.filter(_.flatten(output), function (o) {
     if (o) return o;
   });
   console.log(out.join('\n'));

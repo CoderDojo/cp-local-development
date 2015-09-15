@@ -4,8 +4,12 @@
   "description": "Local dev for CoderDojo",
   "main": "localdev.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "./node_modules/.bin/semistandard *.js"
   },
+  "precommit": [
+    "npm run lint"
+  ],
   "author": "",
   "license": "MIT",
   "dependencies": {
@@ -15,6 +19,11 @@
     "lodash": "3.10.0",
     "minimist": "1.1.1",
     "mkdirp": "0.5.1",
-    "pg": "4.4.0"
+    "pg": "4.4.0",
+    "precommit": "1.1.5"
+  },
+  "devDependencies": {
+    "es6-promise": "3.0.2",
+    "semistandard": "7.0.2"
   }
 }

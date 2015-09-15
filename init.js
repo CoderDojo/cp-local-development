@@ -4,9 +4,8 @@ var async = require('async');
 var mkdirp = require('mkdirp');
 var command = require('./command.js');
 var fs = require('fs');
-var _ = require('lodash');
 
-module.exports = function(argv, systems, cb) {
+module.exports = function (argv, systems, cb) {
   debug(system);
 
   var usage = 'Usage: init <system-name>\n e.g. init phase3';
@@ -25,49 +24,46 @@ module.exports = function(argv, systems, cb) {
     createDatabases
   ], cb);
 
-  function createWorkspace(cb){
+  function createWorkspace (cb) {
     mkdirp(workspace, cb);
   }
 
-  function initRepos(cb) {
+  function initRepos (cb) {
     async.mapSeries(system.services, initRepo, cb);
   }
 
-  function initRepo(service, cb) {
-    fs.exists(workspace + '/' + service.name, function(exists) {
+  function initRepo (service, cb) {
+    fs.exists(workspace + '/' + service.name, function (exists) {
       if (exists === true) return cb();
       async.series([
-        function(cb) { cloneRepo(service, cb); },
-        function(cb) { checkoutBranch(service, cb); },
-        function(cb) { npmInstall(service, cb); }
+        function (cb) { cloneRepo(service, cb); },
+        function (cb) { checkoutBranch(service, cb); },
+        function (cb) { npmInstall(service, cb); }
       ], cb);
     });
   }
 
-  function cloneRepo(service, cb) {
-    //var cmd = 'cd ' + workspace + ' && git clone ' + service.repo + ' ' + service.name;
+  function cloneRepo (service, cb) {
     var cmd = 'git clone ' + service.repo + ' ' + service.name;
     debug('cloneRepo', workspace, cmd);
     command(cmd, workspace, service.env, cb);
   }
 
-  function checkoutBranch(service, cb) {
-    //var cmd = 'cd ' + workspace + '/' + service.name + ' && git checkout ' + service.branch;
+  function checkoutBranch (service, cb) {
     var cmd = 'git checkout ' + service.branch;
     var dir = workspace + '/' + service.name;
     debug('checkoutBranch', dir, cmd);
     command(cmd, dir, service.env, cb);
   }
 
-  function npmInstall(service, cb) {
-    //var cmd = 'cd ' + workspace + '/' + service.name + ' && npm install .';
+  function npmInstall (service, cb) {
     var dir = workspace + '/' + service.name;
     var cmd = 'npm install .';
     debug('npmInstall', dir, cmd);
     command(cmd, dir, service.env, cb);
   }
 
-  function createDatabases(cb) {
+  function createDatabases (cb) {
     var pg = require('pg');
     var conString = util.format('postgres://%s:%s@%s/postgres',
                                 system.env.POSTGRES_USERNAME,
@@ -75,19 +71,19 @@ module.exports = function(argv, systems, cb) {
                                 system.env.POSTGRES_HOST);
 
     var client = new pg.Client(conString);
-    client.connect(function(err) {
-      if(err) return cb('Postgres connection error: ' + err);
+    client.connect(function (err) {
+      if (err) return cb('Postgres connection error: ' + err);
 
-      async.map(system.services, createDatabase, function(err) {
+      async.map(system.services, createDatabase, function (err) {
         client.end();
         cb(err);
       });
 
-      function createDatabase(service, cb) {
+      function createDatabase (service, cb) {
         if (!service.database) return cb();
 
         var q = 'CREATE DATABASE "' + service.database + '"';
-        client.query(q, function(err, result) {
+        client.query(q, function (err, result) {
           if (err) {
             // TODO - cheap and cheerful - do this instead:
             // SELECT datname FROM pg_catalog.pg_database WHERE lower(datname) = lower('dbname');
@@ -100,5 +96,4 @@ module.exports = function(argv, systems, cb) {
       }
     });
   }
-
 };
