@@ -94,12 +94,12 @@ $ git push -u origin my-new-branch
 $ # to pull request, code review, merge, etc on github
 ```
 
-To update your forked repo:
+To update your forked repository:
 
 ```
-$ cd ./forked-repo
+$ cd ./forked-repository
 $ # add another remote named 'upstream'
-$ git remote add upstream git://github.com/CoderDojo/original-repo
+$ git remote add upstream git://github.com/CoderDojo/original-repository
 $ git fetch upstream
 
 $ # then: (like "git pull" which is fetch + merge)
