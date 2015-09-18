@@ -94,6 +94,22 @@ $ git push -u origin my-new-branch
 $ # to pull request, code review, merge, etc on github
 ```
 
+To update your forked repo:
+
+```
+$ cd ./forked-repo
+$ # add another remote named 'upstream'
+$ git remote add upstream git://github.com/CoderDojo/original-repo
+$ git fetch upstream
+
+$ # then: (like "git pull" which is fetch + merge)
+$ git merge upstream/master master
+
+$ # or, better, replay your local work on top of the fetched branch
+$ # like a "git pull --rebase"
+$ git rebase upstream/master
+```
+
 ## The `localdev` tool
 
 This tool is designed to make it as easy as possible to on-board new developers to the Community Platform. It is also designed to be cross platform, so developers can contribute to the community on their OS of choice, e.g. Windows, Mac & Linux.
