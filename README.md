@@ -26,7 +26,7 @@ You also need to have [Git](https://git-scm.com/) installed in order to get the 
 Next step is to get the Community Platform code cloned and up and running. To do that you clone this repo and use the `localdev` command to both setup and run the code:
 
 ```
-$ git clone git@github.com:CoderDojo/cp-local-development.git && cd cp-local-development
+$ git clone https://github.com/CoderDojo/cp-local-development.git && cd cp-local-development
 $ npm install
 ```
 
