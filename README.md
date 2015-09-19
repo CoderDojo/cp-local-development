@@ -161,3 +161,14 @@ module.exports = {
 ```
 DEBUG=localdev:* ./localdev.js run zen
 ```
+
+### Windows
+
+Support for developing the platform on Windows is currently work in progress, and we would welcome contributions here.
+
+In addition to the tools mentioned above, (Git, Node, PostgreSql, etc), on Windows, you need to install additional tools:
+
+* [Microsoft Visual Studio 2015](https://www.visualstudio.com/en-us/downloads/download-visual-studio-vs.aspx)
+* [Python 2.7](https://www.python.org/downloads)
+
+Both of these are needed in order to compile native node.js modules (which are built in c++).
