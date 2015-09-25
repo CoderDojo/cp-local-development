@@ -21,6 +21,7 @@ module.exports = function (argv, systems, cb) {
   async.series([
     createWorkspace,
     initRepos,
+    npmInstalls,
     createDatabases
   ], cb);
 
@@ -32,13 +33,16 @@ module.exports = function (argv, systems, cb) {
     async.mapSeries(system.services, initRepo, cb);
   }
 
+  function npmInstalls (cb) {
+    async.mapSeries(system.services, npmInstall, cb);
+  }
+
   function initRepo (service, cb) {
     fs.exists(workspace + '/' + service.name, function (exists) {
       if (exists === true) return cb();
       async.series([
         function (cb) { cloneRepo(service, cb); },
-        function (cb) { checkoutBranch(service, cb); },
-        function (cb) { npmInstall(service, cb); }
+        function (cb) { checkoutBranch(service, cb); }
       ], cb);
     });
   }
