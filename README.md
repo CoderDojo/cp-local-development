@@ -14,8 +14,13 @@ To develop the Community Platform you need the following tools installed:
 * [Node.js](http://nodejs.org) version 0.10.38 - ideally installed with [nvm](https://github.com/creationix/nvm) as described in this [article](https://www.digitalocean.com/community/tutorials/how-to-install-node-js-with-nvm-node-version-manager-on-a-vps). Note that **only** node 0.10.x is supported currently.
 
 * [PostgreSQL](http://www.postgresql.org/) version 9.4 - see [here](https://wiki.postgresql.org/wiki/Detailed_installation_guides) for installation instructions for your platform. You also may want to install the [pgAdmin](http://www.pgadmin.org/).
-
-* "Cube" PostgreSQL extension may be installed together with PostgreSQL, if not, you have to install it by yourself (e.g. in Debian/Ubuntu You may need to follow [these steps](http://askubuntu.com/a/354709)).
+  * "Cube", "uuid-ossp", or other PostgreSQL extensions may be installed together with PostgreSQL, if not, [you have to install it yourself](http://askubuntu.com/a/354709).
+```
+# On Ubuntu/Debian/Mint
+$ sudo apt-get install postgresql-contrib
+# On Fedora/CentOs
+$ sudo yum install postgresql-contrib
+```
 
 * When PostgreSQL is installed, you need to create a new user (you can do this from pgAdmin 'Login Roles' in the tree):
   * username: platform
