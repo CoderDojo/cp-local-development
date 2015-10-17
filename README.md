@@ -36,6 +36,8 @@ postgres=# create user platform with superuser password 'QdYx3D5y';
 
 You also need to have [Git](https://git-scm.com/) installed in order to get the Community Platform code from [GitHub](https://github.com/coderdojo). You will also need to have [Grunt](http://gruntjs.com/) installed globally: `npm install -g grunt`.
 
+If you are running a Mac you will need to have xcode installed. You can install this via the app store on OSX.
+
 ## Code Setup
 
 Next step is to get the Community Platform code cloned and up and running. To do that you clone this repo and use the `localdev` command to both setup and run the code:
