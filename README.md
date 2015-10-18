@@ -82,7 +82,7 @@ The output from each service is displayed in the `run` shell. Note that this is 
 
 Note that you can also run services individually if you wish, e.g. `./localdev.js run zen cp-zen-platform`.
 
-Once `run` looks to be running all the services ok (you'll see a lot of stack traces in the output if they are not running ok!) you should be able to hit `http://localhost:8000` in your browser. If this is your first time running, you should see the world map but with no dojo markers, these will appear when we install some test data.
+Once `run` looks to be running all the services ok (you'll see a lot of stack traces in the output if they are not running ok!) you should be able to hit [`localhost:8000`](http://localhost:8000) in your browser. If this is your first time running, you should see the world map but with no dojo markers, these will appear when we install some test data.
 
 Note that the Forums and Badges will not be operable in local development mode, to run these, you need to install both [NodeBB](www.nodebb.org) and [BadgeKit](http://badgekit.openbadges.org/) locally.
 
