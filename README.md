@@ -65,7 +65,7 @@ Next, run `./localdev.js init zen`. Behind the scenes this does the following:
 * creates a `workspace-zen` directory
 * install each service defined in the system, see [system.js](system.js)
 * each service is cloned from github
-* the `master` branch is checked out 
+* the `master` branch is checked out
 * an npm install is done in each repo
 * connects to your local PostgreSQL and creates any databases necessary
 
