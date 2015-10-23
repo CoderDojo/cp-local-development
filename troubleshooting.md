@@ -1,0 +1,37 @@
+# Troubleshooting local development
+
+## General
+
+### Something seems to have failed mid install, what do I do?
+
+This can often be due to a connection issue with Github - please try reinstalling:
+
+* In the cp-local-development directory, delete the workspace-zen directory and try running init again, as follows:
+ * `cp-local-development$ rm -rf workspace-zen`
+ * `./localdev.js init zen`
+
+### I'm getting an error related to a bower component/module in cp-zen-platform
+* Make sure you have Grunt installed globally `npm install -g grunt`.
+* Try reinstalling the bower components, as follows:
+ * `cp-local-development/workspace-zen/cp-zen-platform/web/public$ rm -rf components`
+ * Then up one directory: `cp-local-development/workspace-zen/cp-zen-platform/web$ bower install`
+* If you get an error about a particular module you can install it manually, e.g. `cp-local-development/workspace-zen/cp-zen-platform/web$ bower install angular-bootstrap#0.13.2`
+
+## Linux 
+
+* "Cube", "uuid-ossp", or other PostgreSQL extensions may be installed together with PostgreSQL, if not, [you have to install it yourself](http://askubuntu.com/a/354709).
+```
+ # On Ubuntu/Debian/Mint
+ $ sudo apt-get install postgresql-contrib
+ # On Fedora/CentOs
+ $ sudo yum install postgresql-contrib
+```
+
+## Mac
+* If you are running a Mac you will need to have xcode installed. You can install this via the app store on OSX.
+
+- - - -
+
+Please get in touch with the Foundation at info@coderdojo.org if you are having issues that this document cannot assist with.
+
+If you come across an issue that has not been included in this doc, we'd love to see a pull request from you to keep the documentation as informed as possible!

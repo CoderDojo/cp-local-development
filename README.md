@@ -9,18 +9,11 @@ Instructions for setting up local development for the CoderDojo Community on Mac
 
 ## Install Tools
 
-To develop the Community Platform you need the following tools installed:
+To develop for Zen you need the following tools installed:
 
 * [Node.js](http://nodejs.org) version 0.10.38 - ideally installed with [nvm](https://github.com/creationix/nvm) as described in this [article](http://www.nearform.com/nodecrunch/nodejs-sudo-free/). Note that **only** node 0.10.x is supported currently.
 
 * [PostgreSQL](http://www.postgresql.org/) version 9.4 - see [here](https://wiki.postgresql.org/wiki/Detailed_installation_guides) for installation instructions for your platform. You also may want to install the [pgAdmin](http://www.pgadmin.org/).
-  * "Cube", "uuid-ossp", or other PostgreSQL extensions may be installed together with PostgreSQL, if not, [you have to install it yourself](http://askubuntu.com/a/354709).
-```
-# On Ubuntu/Debian/Mint
-$ sudo apt-get install postgresql-contrib
-# On Fedora/CentOs
-$ sudo yum install postgresql-contrib
-```
 
 * When PostgreSQL is installed, you need to create a new user (you can do this from pgAdmin 'Login Roles' in the tree):
   * username: platform
@@ -34,9 +27,8 @@ You can reate the `platform` user from the postgresql shell using:
 postgres=# create user platform with superuser password 'QdYx3D5y';
 ```
 
-You also need to have [Git](https://git-scm.com/) installed in order to get the Community Platform code from [GitHub](https://github.com/coderdojo). You will also need to have [Grunt](http://gruntjs.com/) installed globally: `npm install -g grunt`.
-
-If you are running a Mac you will need to have xcode installed. You can install this via the app store on OSX.
+* You also need to have [Git](https://git-scm.com/) installed in order to get the Community Platform code from [GitHub](https://github.com/coderdojo).
+* You will also need to have [Grunt](http://gruntjs.com/) installed globally: `npm install -g grunt`.
 
 ## Code Setup
 
@@ -84,7 +76,7 @@ Note that you can also run services individually if you wish, e.g. `./localdev.j
 
 Once `run` looks to be running all the services ok (you'll see a lot of stack traces in the output if they are not running ok!) you should be able to hit [`localhost:8000`](http://localhost:8000) in your browser. If this is your first time running, you should see the world map but with no dojo markers, these will appear when we install some test data.
 
-Note that the Forums and Badges will not be operable in local development mode, to run these, you need to install both [NodeBB](https://nodebb.org) and [BadgeKit](http://badgekit.openbadges.org/) locally.
+Note that the Forums and [Badges](installing-badgekit.md) will not be operable in local development mode, to run these, you need to install both [NodeBB](https://nodebb.org) and [BadgeKit](installing-badgekit.md) locally.
 
 ## Test Data
 
