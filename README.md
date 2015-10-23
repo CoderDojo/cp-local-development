@@ -181,3 +181,7 @@ In addition to the tools mentioned above, (Git, Node, PostgreSql, etc), on Windo
 * [Python 2.7](https://www.python.org/downloads)
 
 Both of these are needed in order to compile native node.js modules (which are built in c++).
+
+# Troubleshooting
+
+Still having issues? Check out our [troubleshooting](troubleshooting.md) doc. 
