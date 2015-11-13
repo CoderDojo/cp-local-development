@@ -29,6 +29,7 @@ There are two ways to get a badge on your profile:
  * If you recently updated your environment config, make sure you run `source env_local` again before restarting badgekit
  * Make sure you are running `foreman start` in both the `bagekit-api` and `openbadges-badgekit` directories
  * Make sure your API url is set to `localhost:8080`. The badges service expects you to have badgekit set up on this port. In the API environment file, this is the "PORT" variable, and in the badgekit environment file, this is the "OPENBADGER_URL" variable. 
+ * If you get `Error: connect ECONNREFUSED` this usually means badgekit is having an issue connecting to your MySQL database. Make sure MySQL is turned on on your machine.
 
 ### Further debugging
 
