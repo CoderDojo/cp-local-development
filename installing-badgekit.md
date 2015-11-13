@@ -21,11 +21,11 @@ There are two ways to get a badge on your profile:
 * Via the code claim box on the badges tab. The code claim code must be added to the "tags" field. The claim code must be prepended by "code-" e.g. if the code was "coderdojo", then the tag would be "code-coderdojo".
 
 ## Troubleshooting
-* I am this error: `TypeError: secret must be a string or buffer`
+* I am getting this error: `TypeError: secret must be a string or buffer`
   * Make sure the access list environment variable is set correctly, e.g.
   `export ACCESS_LIST=[\"\^test@example.com\$\"]`
 
-* I'm getting a connection error
+* I am getting a connection error
  * If you recently updated your environment config, make sure you run `source env_local` again before restarting badgekit
  * Make sure you are running `foreman start` in both the `bagekit-api` and `openbadges-badgekit` directories
  * Make sure your API url is set to `localhost:8080`. The badges service expects you to have badgekit set up on this port. In the API environment file, this is the "PORT" variable, and in the badgekit environment file, this is the "OPENBADGER_URL" variable. 
