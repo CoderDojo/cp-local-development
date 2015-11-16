@@ -127,7 +127,7 @@ $ git rebase upstream/master
  * [cp-events-service](https://github.com/CoderDojo/cp-events-service) - backend repo - service for events 
  * [cp-users-service](https://github.com/CoderDojo/cp-users-service) - backend repo - service for users
  * [cp-salesforce-service](https://github.com/CoderDojo/cp-salesforce-service) - backend repo - service for Salesforce integration
-* Update the `baseRepo` variable [in system.js here](https://github.com/CoderDojo/cp-local-development/blob/master/system.js#L1) to point at your forked repo instead of /CoderDojo
+* Update the `baseRepo` variable [in system.js here](https://github.com/CoderDojo/cp-local-development/blob/master/system.js#L1) to point at your Github username instead of /CoderDojo
 
 You can read more about the repositories and system architecture [in this document](https://github.com/CoderDojo/community-platform/blob/master/architecture.md).
 
