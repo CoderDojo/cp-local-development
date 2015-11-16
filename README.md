@@ -119,6 +119,18 @@ $ # like a "git pull --rebase"
 $ git rebase upstream/master
 ```
 
+### Creating your own forks
+* Please note that you will need to fork each of the repositories manually so that you can put in a pull request. I.e. you will need to have your own version of each repo e.g. tangentfairy/cp-zen-platform so that you can put a pull request into the parent repository at CoderDojo/cp-zen-platform. [Read more about forks here](https://help.github.com/articles/fork-a-repo/).
+* You will need to fork:
+ * [cp-zen-platform](https://github.com/CoderDojo/cp-zen-platform) - frontend repo
+ * [cp-dojos-service](https://github.com/CoderDojo/cp-dojos-service) - backend repo - service for Dojos
+ * [cp-events-service](https://github.com/CoderDojo/cp-events-service) - backend repo - service for events 
+ * [cp-users-service](https://github.com/CoderDojo/cp-users-service) - backend repo - service for users
+ * [cp-salesforce-service](https://github.com/CoderDojo/cp-salesforce-service) - backend repo - service for Salesforce integration
+* Update the `baseRepo` variable [in system.js here](https://github.com/CoderDojo/cp-local-development/blob/master/system.js#L1) to point at your forked repo instead of /CoderDojo
+
+You can read more about the repositories and system architecture [in this document](https://github.com/CoderDojo/community-platform/blob/master/architecture.md).
+
 ## The `localdev` tool
 
 This tool is designed to make it as easy as possible to on-board new developers to the Community Platform. It is also designed to be cross platform, so developers can contribute to the community on their OS of choice, e.g. Windows, Mac & Linux.
