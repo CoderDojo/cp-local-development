@@ -49,6 +49,7 @@ module.exports = function (argv, systems, cb) {
   }
 
   function runService (service, cb) {
+    if (!service.start) return cb();
     var dir = workspace + '/' + service.name;
     var cmd = service.start;
     debug('runService', dir, cmd);

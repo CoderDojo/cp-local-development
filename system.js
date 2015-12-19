@@ -63,6 +63,9 @@ module.exports = {
       }, {
         name: 'cp-zen-platform',
         ignored: ['web/.build']
+      }, {
+        name: 'cp-e2e-tests',
+        start: null
       }];
 
       // add default getter props to all services if not already overridden
@@ -98,20 +101,20 @@ var env = function (system) {
 
 var addGetters = function (services, self) {
   _.each(services, function (service) {
-    if (!service.repo) {
+    if (service.repo === undefined) {
       service.__defineGetter__('repo', function () {
         return baseRepo + service.name;
       });
     }
     var serviceBranch = service.branch;
-    if (!service.branch) {
+    if (service.branch === undefined) {
       service.__defineGetter__('branch', function () {
         return serviceBranch || self.systemBranch || defaultBranch;
       });
     }
 
     // most services have the same start command
-    if (!service.start) {
+    if (service.start === undefined) {
       service.__defineGetter__('start', function () {
         return 'node ./service.js';
       });
