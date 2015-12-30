@@ -7,6 +7,8 @@ Instructions for setting up local development for the CoderDojo Community on Mac
 * Loading test data into your fresh setup
 * Making code changes
 
+Parts of this setup have been automated and can be found in the repository [cp-docker-development](https://github.com/niccokunzmann/cp-docker-development).
+
 ## Install Tools
 
 To develop for Zen you need the following tools installed:
