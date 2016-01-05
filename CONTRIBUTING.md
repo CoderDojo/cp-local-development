@@ -1,0 +1,1 @@
+Please visit [the contributing document in our documentation repository](https://github.com/CoderDojo/community-platform/blob/master/CONTRIBUTING.md). We log [issues in the documentation repository here](https://github.com/CoderDojo/community-platform/issues).
