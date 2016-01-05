@@ -7,6 +7,10 @@ Instructions for setting up local development for the CoderDojo Community on Mac
 * Loading test data into your fresh setup
 * Making code changes
 
+###Not what you were looking for?
+Please visit [the our documentation repository](https://github.com/CoderDojo/community-platform/blob/master/README.md) for more information about the project. We log [issues in the documentation repository here](https://github.com/CoderDojo/community-platform/issues).
+
+
 ## Install Tools
 
 To develop for Zen you need the following tools installed:
