@@ -57,7 +57,7 @@ The `localdev` tool has one system configured, called `zen` (this can be extende
 ### localdev init
 
 
-***Note:** By default `init` will clone the repositories directly from the CoderDojo Foundation account. If you prefer to clone your own repos, please have a look at how to work with [your own forks](### Creating your own forks).*
+*Note: By default `init` will clone the repositories directly from the CoderDojo Foundation account. If you prefer to clone your own repos, please have a look at how to work with [your own forks](#creating-your-own-forks).*
 
 Next, run `./localdev.js init zen`. Behind the scenes this does the following:
 
