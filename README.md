@@ -25,7 +25,7 @@ To develop for Zen you need the following tools installed:
 
 Give the new `platform` user all the admin privileges, i.e. make them a super user.
 
-You can reate the `platform` user from the postgresql shell using:
+You can create the `platform` user from the postgresql shell using:
 
 ```
 postgres=# create user platform with superuser password 'QdYx3D5y';
