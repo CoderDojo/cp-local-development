@@ -32,7 +32,7 @@ postgres=# create user platform with superuser password 'QdYx3D5y';
 ```
 
 * You also need to have [Git](https://git-scm.com/) installed in order to get the Community Platform code from [GitHub](https://github.com/coderdojo).
-* You will also need to have [Grunt](http://gruntjs.com/) installed globally: `npm install -g grunt`.
+* You will also need to have the [Grunt](http://gruntjs.com/) client installed globally: `npm install -g grunt-cli`.
 
 ## Code Setup
 
@@ -56,6 +56,9 @@ The `localdev` tool has one system configured, called `zen` (this can be extende
 
 ### localdev init
 
+
+*Note: By default `init` will clone the repositories directly from the CoderDojo Foundation account. If you prefer to clone your own repos, please have a look at how to work with [your own forks](#creating-your-own-forks).*
+
 Next, run `./localdev.js init zen`. Behind the scenes this does the following:
 
 * creates a `workspace-zen` directory
@@ -65,7 +68,7 @@ Next, run `./localdev.js init zen`. Behind the scenes this does the following:
 * an npm install is done in each repo
 * connects to your local PostgreSQL and creates any databases necessary
 
-Note that the `init` command is idempotent, you can run it multiple times with no adverse side effects.
+Note that the `init` command is idempotent, you can run it multiple times with no adverse side effects. Depending on your machine, the first initialisation can take in the order of 10 to 20 minutes to complete.
 
 ### localdev run
 
@@ -131,6 +134,7 @@ $ git rebase upstream/master
  * [cp-events-service](https://github.com/CoderDojo/cp-events-service) - backend repo - service for events 
  * [cp-users-service](https://github.com/CoderDojo/cp-users-service) - backend repo - service for users
  * [cp-salesforce-service](https://github.com/CoderDojo/cp-salesforce-service) - backend repo - service for Salesforce integration
+ * [cp-badges-service](https://github.com/CoderDojo/cp-badges-service) - backend repo - service for Mozilla Open Badges integration
 * Update the `baseRepo` variable [in system.js here](https://github.com/CoderDojo/cp-local-development/blob/master/system.js#L1) to point at your Github username instead of /CoderDojo
 
 You can read more about the repositories and system architecture [in this document](https://github.com/CoderDojo/community-platform/blob/master/architecture.md).
