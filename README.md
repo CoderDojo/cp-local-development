@@ -115,7 +115,7 @@ To update your forked repository:
 ```
 $ cd ./forked-repository
 $ # add another remote named 'upstream'
-$ git remote add upstream git://github.com/CoderDojo/original-repository
+$ git remote add upstream https://github.com/CoderDojo/original-repository
 $ git fetch upstream
 
 $ # then: (like "git pull" which is fetch + merge)
@@ -131,7 +131,7 @@ $ git rebase upstream/master
 * You will need to fork:
  * [cp-zen-platform](https://github.com/CoderDojo/cp-zen-platform) - frontend repo
  * [cp-dojos-service](https://github.com/CoderDojo/cp-dojos-service) - backend repo - service for Dojos
- * [cp-events-service](https://github.com/CoderDojo/cp-events-service) - backend repo - service for events 
+ * [cp-events-service](https://github.com/CoderDojo/cp-events-service) - backend repo - service for events
  * [cp-users-service](https://github.com/CoderDojo/cp-users-service) - backend repo - service for users
  * [cp-salesforce-service](https://github.com/CoderDojo/cp-salesforce-service) - backend repo - service for Salesforce integration
  * [cp-badges-service](https://github.com/CoderDojo/cp-badges-service) - backend repo - service for Mozilla Open Badges integration
@@ -204,4 +204,4 @@ Both of these are needed in order to compile native node.js modules (which are b
 
 # Troubleshooting
 
-Still having issues? Check out our [troubleshooting](troubleshooting.md) doc. 
+Still having issues? Check out our [troubleshooting](troubleshooting.md) doc.
