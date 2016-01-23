@@ -136,6 +136,7 @@ $ git rebase upstream/master
  * [cp-salesforce-service](https://github.com/CoderDojo/cp-salesforce-service) - backend repo - service for Salesforce integration
  * [cp-badges-service](https://github.com/CoderDojo/cp-badges-service) - backend repo - service for Mozilla Open Badges integration
 * Update the `baseRepo` variable [in system.js here](https://github.com/CoderDojo/cp-local-development/blob/master/system.js#L1) to point at your Github username instead of /CoderDojo
+ * Note: you should edit this file on your local machine and not via GitHub to avoid committing the change
 
 You can read more about the repositories and system architecture [in this document](https://github.com/CoderDojo/community-platform/blob/master/architecture.md).
 
