@@ -100,32 +100,6 @@ When all the test data is loaded, you should see Dojos appearing when you refres
 
 When you initialise a system, it creates a `workspace-<systemName>` folder for each system, e.g. `workspace-zen`. If you open this directory in your code editor you will see all the code repositories that make up this system, e.g. cp-zen-platform, cp-dojos-service, cp-users-service, cp-countries-service, etc. When you first set it up, the `init` command will checkout the default branch for that system, e.g. `my-zen-branch` for each service. From then on, it's up to you to manage the contents of this directory, e.g. creating branches, changing branches, etc. The `run` command will simply run whatever is in those directories, it doesn't care about what branch they're on, etc.
 
-So a typical development workflow would be:
-
-```
-$ cd ./workspace-zen/cp-zen-platform
-$ git checkout -b my-new-branch
-$ # make changes to code in your editor of choice. Any time code changes in a service the `run` command will automatically reload the service
-$ git push -u origin my-new-branch
-$ # to pull request, code review, merge, etc on github
-```
-
-To update your forked repository:
-
-```
-$ cd ./forked-repository
-$ # add another remote named 'upstream'
-$ git remote add upstream https://github.com/CoderDojo/original-repository
-$ git fetch upstream
-
-$ # then: (like "git pull" which is fetch + merge)
-$ git merge upstream/master master
-
-$ # or, better, replay your local work on top of the fetched branch
-$ # like a "git pull --rebase"
-$ git rebase upstream/master
-```
-
 ### Creating your own forks
 * Please note that you will need to fork each of the repositories manually so that you can put in a pull request. I.e. you will need to have your own version of each repo e.g. tangentfairy/cp-zen-platform so that you can put a pull request into the parent repository at CoderDojo/cp-zen-platform. [Read more about forks here](https://help.github.com/articles/fork-a-repo/).
 * You will need to fork:
@@ -134,11 +108,45 @@ $ git rebase upstream/master
  * [cp-events-service](https://github.com/CoderDojo/cp-events-service) - backend repo - service for events
  * [cp-users-service](https://github.com/CoderDojo/cp-users-service) - backend repo - service for users
  * [cp-salesforce-service](https://github.com/CoderDojo/cp-salesforce-service) - backend repo - service for Salesforce integration
- * [cp-badges-service](https://github.com/CoderDojo/cp-badges-service) - backend repo - service for Mozilla Open Badges integration
 * Update the `baseRepo` variable [in system.js here](https://github.com/CoderDojo/cp-local-development/blob/master/system.js#L1) to point at your Github username instead of /CoderDojo
- * Note: you should edit this file on your local machine and not via GitHub to avoid committing the change
 
 You can read more about the repositories and system architecture [in this document](https://github.com/CoderDojo/community-platform/blob/master/architecture.md).
+
+Once forked, link your newly forked repository to the original one:
+```
+$ # add the forked repository as local
+$ # git remote add local https://github.com/<your-username>/<repository-name>
+
+$ # As an example, if you have forked cp-zen-platform and your github username is JaneDoe
+$ git remote add local https://github.com/JaneDoe/cp-zen-platform
+
+```
+
+### Development workflow
+
+Then, a typical development workflow would be:
+
+```
+$ cd ./workspace-zen/cp-zen-platform
+$ git checkout -b my-new-branch
+$ # make changes to code in your editor of choice. Any time code changes in a service the `run` command will automatically reload the service
+$ git push -u local my-new-branch
+$ # to pull request, code review, merge, etc on github
+```
+
+To update your forked repository:
+
+```
+$ # grab latest code changes from the common repository
+$ git fetch origin
+
+$ # then integrate them with your local codebase (like "git pull" which is fetch + merge)
+$ git merge origin/master master
+
+$ # or, better, replay your local work on top of the fetched branch
+$ # like a "git pull --rebase"
+$ git rebase origin/master
+```
 
 ## The `localdev` tool
 
