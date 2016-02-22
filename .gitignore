@@ -3,3 +3,4 @@
 node_modules
 workspace*
 local-env.js
+npm-debug.log
