@@ -46,7 +46,7 @@ $ git clone https://github.com/CoderDojo/cp-local-development.git && cd cp-local
 $ npm install
 ```
 
-Then run `./localdev.js` to make sure the `localdev` tool can run ok. You should see output similar to the following:
+Then run `node ./localdev.js` to make sure the `localdev` tool can run ok. You should see output similar to the following:
 
 ```
 Usage "./localdev.js <command>" where command is one of:
