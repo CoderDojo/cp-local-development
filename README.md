@@ -35,8 +35,10 @@ postgres=# create user platform with superuser password 'QdYx3D5y';
 * You also need to have [Git](https://git-scm.com/) installed in order to get the Community Platform code from [GitHub](https://github.com/coderdojo).
 * You will also need to have the [Grunt](http://gruntjs.com/) client installed globally: `npm install -g grunt-cli`.
 
-### Troubleshooting
-* If you have issues setting up, [we do have a Docker setup here that might be more useful](https://hub.docker.com/r/josmas/coderdojo-local-zen/).
+### Docker
+If you have issues setting up, we do have a Docker setup [here](https://hub.docker.com/r/josmas/coderdojo-local-zen/) and [here](https://hub.docker.com/r/butlerx/coderdojo-local-zen/) that might be more useful
+- [josmas](https://hub.docker.com/r/josmas/coderdojo-local-zen/) container is designed for local development
+- [butlerx](https://hub.docker.com/r/butlerx/coderdojo-local-zen/) contaier is designed for testing and auto starts the services and runs e2e tests
 
 ## Code Setup
 
