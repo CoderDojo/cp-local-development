@@ -16,7 +16,7 @@ var globalEnv = {
   MAIL_USER: '397746d4abc52902b',
   MAIL_PASS: '0383c445ef22d4',
   GOOGLE_API_ENABLED: 'false',
-  GOOGLE_MAPS_KEY: 'AIzaSyDSItbbuNOuRljJbY9nJiO1WFJh7BUgt_Q',
+  GOOGLE_MAPS_KEY: 'AIzaSyC3xF9XV91bS2R14Gjmx3UQaKbGgAfHbE4',
   CDF_ADMINS: 'manager@example.com,admin@example.com'
 };
 
