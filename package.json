@@ -10,7 +10,14 @@
   "precommit": [
     "npm run lint"
   ],
-  "author": "",
+  "author": "CoderDojo Foundation",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/CoderDojo/cp-local-development.git"
+  },
+  "bugs": {
+    "url": "https://github.com/CoderDojo/community-platform/issues"
+  },
   "license": "MIT",
   "dependencies": {
     "async": "1.3.0",
