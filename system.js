@@ -62,7 +62,12 @@ module.exports = {
         name: 'cp-badges-service'
       }, {
         name: 'cp-zen-platform',
-        ignored: ['web/.build']
+        ignored: ['web/.build'],
+        get serviceEnv () {
+          return {
+            UIDEBUG: process.env.UIDEBUG === undefined || process.env.UIDEBUG === 'true'
+          };
+        }
       }, {
         name: 'cp-e2e-tests',
         start: null
