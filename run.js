@@ -8,6 +8,8 @@ var util = require('util');
 module.exports = function (argv, systems, cb) {
   debug(system);
 
+  process.env.UIDEBUG = argv.uidebug || 'true'; // added as env var for use in services
+
   var usage = 'Usage: run <system-name>\n e.g. run phase1\n e.g. run phase3 cp-zen-platform';
   var sysName = argv._[1];
   if (!sysName) return cb(usage);
@@ -63,7 +65,7 @@ module.exports = function (argv, systems, cb) {
     var dir = workspace + '/' + service.name;
     var cmd = service.start;
     debug('runService', dir, cmd);
-    if (process.env.UIDEBUG === undefined || process.env.UIDEBUG === 'true') {
+    if (process.env.UIDEBUG === 'true') {
       return start();
     } else {
       try {
