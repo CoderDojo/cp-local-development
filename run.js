@@ -8,6 +8,8 @@ var util = require('util');
 module.exports = function (argv, systems, cb) {
   debug(system);
 
+  process.env.UIDEBUG = argv.uidebug || 'true'; // added as env var for use in services
+
   var usage = 'Usage: run <system-name>\n e.g. run phase1\n e.g. run phase3 cp-zen-platform';
   var sysName = argv._[1];
   if (!sysName) return cb(usage);
@@ -49,18 +51,31 @@ module.exports = function (argv, systems, cb) {
   }
 
   function runService (service, cb) {
+    function start() {
+      var proc = command(cmd, dir, service.env, function (err) {
+        if (err) console.error('Error running service: ' + err);
+        else console.log('Service terminated: ' + service.name);
+      });
+
+      proc.serviceName = service.name;
+      procs.push(proc);
+      return cb();
+    }
     if (!service.start) return cb();
     var dir = workspace + '/' + service.name;
     var cmd = service.start;
     debug('runService', dir, cmd);
-    var proc = command(cmd, dir, service.env, function (err) {
-      if (err) console.error('Error running service: ' + err);
-      else console.log('Service terminated: ' + service.name);
-    });
-
-    proc.serviceName = service.name;
-    procs.push(proc);
-    return cb();
+    if (process.env.UIDEBUG === 'true') {
+      return start();
+    } else {
+      try {
+        require('./' + workspace + '/' + service.name + '/build')(function () {
+          start();
+        });
+      } catch (e) {
+        return start();
+      }
+    }
   }
 
   function watchServices (cb) {
@@ -70,7 +85,7 @@ module.exports = function (argv, systems, cb) {
   function watchService (service, cb) {
     debug('watching service: ', service);
     var dir = workspace + '/' + service.name;
-    var ignored = [/[\/\\]\./, /node_modules/].concat(service.ignored ? service.ignored : []);
+    var ignored = [/[\/\\]\./, /node_modules/, /\/dist\//].concat(service.ignored ? service.ignored : []);
 
     var opts = {
       persistent: true,

@@ -31,6 +31,7 @@
   },
   "devDependencies": {
     "es6-promise": "3.0.2",
-    "semistandard": "7.0.2"
+    "semistandard": "7.0.2",
+    "gulp": "3.9.1"
   }
 }

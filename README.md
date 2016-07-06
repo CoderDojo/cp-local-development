@@ -89,6 +89,8 @@ Note that you can also run services individually if you wish, e.g. `./localdev.j
 
 Once `run` looks to be running all the services ok (you'll see a lot of stack traces in the output if they are not running ok!) you should be able to hit [`localhost:8000`](http://localhost:8000) in your browser. If this is your first time running, you should see the world map but with no dojo markers, these will appear when we install some test data.
 
+By default, `./localdev.js run zen` will have UI debugging enabled. This means when you load [`localhost:8000`](http://localhost:8000) in your browser, it will use the source files to run Zen. To build and run with the built code, you need to turn off UI debugging, by running `./localdev.js run zen --uidebug=false`.
+
 Note that the Forums and [Badges](installing-badgekit.md) will not be operable in local development mode, to run these, you need to install both [NodeBB](https://nodebb.org) and [BadgeKit](installing-badgekit.md) locally.
 
 ## Test Data
