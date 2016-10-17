@@ -4,6 +4,8 @@ var command = require('./command.js');
 var _ = require('lodash');
 var chokidar = require('chokidar');
 var util = require('util');
+var child_process = require('child_process');
+var fs = require('fs');
 
 module.exports = function (argv, systems, cb) {
   debug(system);
@@ -66,6 +68,21 @@ module.exports = function (argv, systems, cb) {
     var cmd = service.start;
     debug('runService', dir, cmd);
     if (process.env.UIDEBUG === 'true') {
+      try {
+        var gulpFile = './' + workspace + '/' + service.name + '/gulpfile.js';
+        if (fs.existsSync(gulpFile)) {
+          var watcher = child_process.spawn('gulp', ['dev', '--gulpfile', gulpFile]);
+          watcher.stdout.on('data', function (data) {
+            console.log(service.name + ' watcher: ', data.toString());
+          });
+          watcher.stderr.on('data', function (data) {
+            console.error(service.name + ' watcher: ', data.toString());
+          });
+          watcher.on('close', function (code) {
+            console.log(service.name + 'watcher process exited with code ' + code);
+          });
+        }
+      } catch (e) {}
       return start();
     } else {
       try {
@@ -85,7 +102,12 @@ module.exports = function (argv, systems, cb) {
   function watchService (service, cb) {
     debug('watching service: ', service);
     var dir = workspace + '/' + service.name;
-    var ignored = [/[\/\\]\./, /node_modules/, /\/dist\//].concat(service.ignored ? service.ignored : []);
+    var ignored = [/[\/\\]\./, /node_modules/, /\/dist\//]
+    if (process.env.UIDEBUG === 'true') {
+      ignored.push(/.*\.less$/);
+      ignored.push(/\/public\/js\/.*\.js$/);
+    }
+    ignored = ignored.concat(service.ignored ? service.ignored : []);
 
     var opts = {
       persistent: true,
