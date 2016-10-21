@@ -71,7 +71,7 @@ module.exports = function (argv, systems, cb) {
       try {
         var gulpFile = './' + workspace + '/' + service.name + '/gulpfile.js';
         if (fs.existsSync(gulpFile)) {
-          var watcher = child_process.spawn('gulp', ['dev', '--gulpfile', gulpFile]);
+          var watcher = child_process.spawn('npm', ['run', 'gulp', 'dev', '--gulpFile', gulpFile]);
           watcher.stdout.on('data', function (data) {
             console.log(service.name + ' watcher: ', data.toString());
           });
