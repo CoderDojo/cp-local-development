@@ -33,7 +33,9 @@ postgres=# create user platform with superuser password 'QdYx3D5y';
 ```
 
 * You also need to have [Git](https://git-scm.com/) installed in order to get the Community Platform code from [GitHub](https://github.com/coderdojo).
-* You will also need to have the [Grunt](http://gruntjs.com/) client installed globally: `npm install -g grunt-cli`.
+
+### Mac Users
+To compile native modules you'll need to install xcode from the Mac App Store.
 
 ### Docker
 If you have issues setting up, we do have a Docker setup [here](https://hub.docker.com/r/josmas/coderdojo-local-zen/) and [here](https://hub.docker.com/r/butlerx/coderdojo-local-zen/) that might be more useful
@@ -46,6 +48,7 @@ Next step is to get the Community Platform code cloned and up and running. To do
 
 ```
 $ git clone https://github.com/CoderDojo/cp-local-development.git && cd cp-local-development
+$ nvm use
 $ npm install
 ```
 
