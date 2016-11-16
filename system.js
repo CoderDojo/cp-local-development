@@ -46,7 +46,7 @@ module.exports = {
         get serviceEnv () {
           return {
             POSTGRES_NAME: this.database,
-            RECAPTCHA_SECRET_KEY: '6LfVKQgTAAAAAI3dhMSRsrTbFbx7cnGr4Fy2sn5_'
+            RECAPTCHA_SECRET_KEY: '6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe'
           };
         }
       }, {
