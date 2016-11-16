@@ -7,6 +7,7 @@ function usage () {
   console.log('  "init <system>": does a fresh setup of your local dev environment');
   console.log('  "run <system>": runs all the services in your system');
   console.log('  "testdata <system>": loads test data for each service');
+  console.log('  "test <system>": reset test data and run test');
   process.exit;
 }
 
@@ -25,6 +26,10 @@ function main (cb) {
       break;
     case 'testdata':
       require('./testdata.js')(argv, system, cb);
+      break;
+    case 'test':
+      process.env.ZENTEST = true; // defined to switch databases
+      require('./test.js')(argv, system, cb);
       break;
     default:
       return cb('unknown command: ' + command);

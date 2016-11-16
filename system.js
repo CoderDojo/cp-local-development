@@ -31,18 +31,38 @@ module.exports = {
       var services = [{
         name: 'cp-salesforce-service'
       }, {
-        name: 'cp-dojos-service',
-        database: 'cp-dojos-development',
-        testdata: './scripts/load_test_data.sh empty',
+        base: 'cp-dojos',
+        get name () {
+          return name(this.base);
+        },
+        get database () {
+          return database(this.base);
+        },
+        broadcast: true,
+        test: {
+          start: 'node test/lib/service.js',
+          name: 'test-dojo-data',
+          port: 11301
+        },
         get serviceEnv () {
           return {
             POSTGRES_NAME: this.database
           };
         }
       }, {
-        name: 'cp-users-service',
-        database: 'cp-users-development',
-        testdata: './scripts/load_test_data.sh empty',
+        base: 'cp-users',
+        get name () {
+          return name(this.base);
+        },
+        get database () {
+          return database(this.base);
+        },
+        broadcast: true,
+        test: {
+          start: 'node test/lib/service.js',
+          name: 'test-user-data',
+          port: 11303
+        },
         get serviceEnv () {
           return {
             POSTGRES_NAME: this.database,
@@ -50,8 +70,19 @@ module.exports = {
           };
         }
       }, {
-        name: 'cp-events-service',
-        database: 'cp-events-development',
+        base: 'cp-events',
+        get name () {
+          return name(this.base);
+        },
+        get database () {
+          return database(this.base);
+        },
+        broadcast: true,
+        test: {
+          start: 'node test/lib/service.js',
+          name: 'test-event-data',
+          port: 11306
+        },
         get serviceEnv () {
           return {
             // put any service specific env vars here
@@ -82,6 +113,15 @@ module.exports = {
       return env(this);
     }
   }
+};
+
+var name = function (prefix) {
+  return prefix + '-service';
+};
+
+var database = function (prefix) {
+  var db = process.env.ZENTEST ? '-test' : '-development';
+  return prefix + db;
 };
 
 var stringify = function (system) {

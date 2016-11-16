@@ -102,7 +102,7 @@ module.exports = function (argv, systems, cb) {
   function watchService (service, cb) {
     debug('watching service: ', service);
     var dir = workspace + '/' + service.name;
-    var ignored = [/[\/\\]\./, /node_modules/, /\/dist\//]
+    var ignored = [/[\/\\]\./, /node_modules/, /\/dist\//, /email-templates/];
     if (process.env.UIDEBUG === 'true') {
       ignored.push(/.*\.less$/);
       ignored.push(/\/public\/js\/.*\.js$/);
