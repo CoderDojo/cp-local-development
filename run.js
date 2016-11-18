@@ -115,14 +115,14 @@ module.exports = function (argv, systems, cb) {
       ignored: ignored,
       cwd: dir
     };
-    // var watcher = chokidar.watch('.', opts);
-    //
-    // watcher.on('change', function (file) {
-    //   debug('Watcher file changed: ', file, 'restarting service:', service);
-    //   restartService(service, function (err) {
-    //     if (err) console.error('Warning: could not restart service: ' + service.name + ' - ' + err);
-    //   });
-    // });
+    var watcher = chokidar.watch('.', opts);
+    
+    watcher.on('change', function (file) {
+      debug('Watcher file changed: ', file, 'restarting service:', service);
+      restartService(service, function (err) {
+        if (err) console.error('Warning: could not restart service: ' + service.name + ' - ' + err);
+      });
+    });
     return cb();
   }
 
