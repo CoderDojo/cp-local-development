@@ -13,7 +13,7 @@ function usage () {
 
 function main (cb) {
   var argv = require('minimist')(process.argv.slice(2));
-
+  process.env.ZENTEST = argv.zentest || 'false'; // added as env var for use in services
   var command = argv._[0];
   if (!command) return usage();
 
@@ -28,7 +28,8 @@ function main (cb) {
       require('./testdata.js')(argv, system, cb);
       break;
     case 'test':
-      process.env.ZENTEST = true; // defined to switch databases
+      // Assume zentest true by default
+      process.env.ZENTEST = argv.zentest || 'true'; // added as env var for use in services
       require('./test.js')(argv, system, cb);
       break;
     default:

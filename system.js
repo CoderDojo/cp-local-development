@@ -120,7 +120,7 @@ var name = function (prefix) {
 };
 
 var database = function (prefix) {
-  var db = process.env.ZENTEST ? '-test' : '-development';
+  var db = process.env.ZENTEST === 'true' ? '-test' : '-development';
   return prefix + db;
 };
 

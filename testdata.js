@@ -28,13 +28,7 @@ module.exports = function (argv, systems, cb) {
   var workspace = 'workspace-' + sysName;
   console.log('System:', sysName, util.inspect(system.stringify(), true, null), 'workspace: ' + workspace);
 
-  var serviceName = argv._[2];
   var services = system.services;
-  if (serviceName) {
-    var service = _.findWhere(system.services, {name: serviceName});
-    if (!service) return cb('Service not found: ' + serviceName);
-    services = [service];
-  }
 
   // load the test data
   async.series([
