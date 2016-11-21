@@ -79,8 +79,8 @@ module.exports = function (argv, systems, cb) {
     async.series([
       createUsers,
       createAgreements,
-      createDojos,
       createDojoLeads,
+      createDojos,
       // createPolls,
       createEvents,
       linkDojoUsers,
