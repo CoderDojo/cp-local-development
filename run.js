@@ -102,7 +102,7 @@ module.exports = function (argv, systems, cb) {
   function watchService (service, cb) {
     debug('watching service: ', service);
     var dir = workspace + '/' + service.name;
-    var ignored = [/[\/\\]\./, /node_modules/, /\/dist\//]
+    var ignored = [/[\/\\]\./, /node_modules/, /\/dist\//, /email-templates/];
     if (process.env.UIDEBUG === 'true') {
       ignored.push(/.*\.less$/);
       ignored.push(/\/public\/js\/.*\.js$/);
@@ -116,7 +116,7 @@ module.exports = function (argv, systems, cb) {
       cwd: dir
     };
     var watcher = chokidar.watch('.', opts);
-
+    
     watcher.on('change', function (file) {
       debug('Watcher file changed: ', file, 'restarting service:', service);
       restartService(service, function (err) {
