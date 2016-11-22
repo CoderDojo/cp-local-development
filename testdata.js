@@ -18,7 +18,7 @@ var seneca = require('seneca')({
 
 module.exports = function (argv, systems, cb) {
   debug(system);
-  var usage = 'Usage: testdata <system-name> [service-name]\n e.g. testdata phase3';
+  var usage = 'Usage: testdata <system-name> [service-name]\n e.g. testdata zen';
   var sysName = argv._[1];
   if (!sysName) return cb(usage);
 
@@ -41,7 +41,6 @@ module.exports = function (argv, systems, cb) {
     cb();
     process.exit(err? 1 : 0);
   });
-
 
   function runSeneca (cb) {
     seneca.listen({timeout: 10000});

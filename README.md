@@ -94,6 +94,8 @@ By default, `./localdev.js run zen` will have UI debugging enabled. This means w
 By default, `./localdev.js run zen` will run upon cp-{entity}-development databases, entity being "dojos", "users" and "events".
 By running `./localdev.js run zen --zentest=true`, you will start the stack on cp-{entity}-test databases created for e2e tests, which allows you to navigate through what the e2e tests use.
 
+Since migrations for each µs is ran when starting them, you can reset the databases by using the `--reset=true` parameter.
+
 Note that the Forums and [Badges](installing-badgekit.md) will not be operable in local development mode, to run these, you need to install both [NodeBB](https://nodebb.org) and [BadgeKit](installing-badgekit.md) locally.
 
 ## Test Data
