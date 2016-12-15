@@ -29,7 +29,8 @@
     "minimist": "1.1.1",
     "mkdirp": "0.5.1",
     "pg": "4.4.0",
-    "precommit": "1.1.5"
+    "precommit": "1.1.5",
+    "seneca": "^1.4.0"
   },
   "devDependencies": {
     "es6-promise": "3.0.2",

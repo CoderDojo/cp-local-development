@@ -15,7 +15,7 @@ Please visit [the our documentation repository](https://github.com/CoderDojo/com
 
 To develop for Zen you need the following tools installed:
 
-* [Node.js](http://nodejs.org) version 0.10.38 or 5.7.0 - ideally installed with [nvm](https://github.com/creationix/nvm) as described in this [article](http://www.nearform.com/nodecrunch/nodejs-sudo-free/). Note that **only** node 0.10.x or 5.x is supported currently.
+* [Node.js](http://nodejs.org) version 0.10.38 or 5.7.0 - ideally installed with [nvm](https://github.com/creationix/nvm) as described in this [article](http://www.nearform.com/nodecrunch/nodejs-sudo-free/). Note that **only** node 0.10.x or 5.x is supported currently. In order to run the e2e test and until we can drop support of node 0.10, define your node v4+ to the alias "cp-e2e" by running `nvm alias cp-e2e v5.7.0`.
 
 * [PostgreSQL](http://www.postgresql.org/) version 9.4 - see [here](https://wiki.postgresql.org/wiki/Detailed_installation_guides) for installation instructions for your platform. You also may want to install the [pgAdmin](http://www.pgadmin.org/).
   * _N.B._ When you install PostGres make sure that you set a password for the "postgres" user and keep a note of it, or you may run into issues.
@@ -40,7 +40,7 @@ To compile native modules you'll need to install xcode from the Mac App Store.
 ### Docker
 If you have issues setting up, we do have a Docker setup [here](https://hub.docker.com/r/josmas/coderdojo-local-zen/) and [here](https://hub.docker.com/r/butlerx/coderdojo-local-zen/) that might be more useful
 - [josmas](https://hub.docker.com/r/josmas/coderdojo-local-zen/) container is designed for local development
-- [butlerx](https://hub.docker.com/r/butlerx/coderdojo-local-zen/) contaier is designed for testing and auto starts the services and runs e2e tests
+- [butlerx](https://hub.docker.com/r/butlerx/coderdojo-local-zen/) container is designed for testing and auto starts the services and runs e2e tests
 
 ## Code Setup
 
@@ -56,15 +56,15 @@ Then run `node ./localdev.js` to make sure the `localdev` tool can run ok. You s
 
 ```
 Usage "./localdev.js <command>" where command is one of:
-  "init <system>": does a fresh setup of your local dev environment
-  "run <system>": runs all the services in your system
-  "testdata <system>": loads test data for each service
+  "init zen": does a fresh setup of your local dev environment
+  "run zen": runs all the services in your system
+  "testdata zen": loads test data for each service
+  "test zen": run the e2e tests
 ```
 
 The `localdev` tool has one system configured, called `zen` (this can be extended to use multiple systems, but for now, 'zen' is the only one).
 
 ### localdev init
-
 
 *Note: By default `init` will clone the repositories directly from the CoderDojo Foundation account. If you prefer to clone your own repos, please have a look at how to work with [your own forks](#creating-your-own-forks).*
 
@@ -94,6 +94,11 @@ Once `run` looks to be running all the services ok (you'll see a lot of stack tr
 
 By default, `./localdev.js run zen` will have UI debugging enabled. This means when you load [`localhost:8000`](http://localhost:8000) in your browser, it will use the source files to run Zen. To build and run with the built code, you need to turn off UI debugging, by running `./localdev.js run zen --uidebug=false`.
 
+By default, `./localdev.js run zen` will run upon cp-{entity}-development databases, entity being "dojos", "users" and "events".
+By running `./localdev.js run zen --zentest=true`, you will start the stack on cp-{entity}-test databases created for e2e tests, which allows you to navigate through what the e2e tests use.
+
+Since migrations for each µs is ran when starting them, you can reset the databases by using the `--reset=true` parameter. This can also be used on first run to create the databases.
+
 Note that the Forums and [Badges](installing-badgekit.md) will not be operable in local development mode, to run these, you need to install both [NodeBB](https://nodebb.org) and [BadgeKit](installing-badgekit.md) locally.
 
 ## Test Data
@@ -102,10 +107,15 @@ Next, in another shell (the system has to be running before you load the test da
 
 Note that this command will fail if run more than once.
 
-When all the test data is loaded, you should see Dojos appearing when you refresh your home page. You should also be able to login as an Admin user with the following credentials:
+When all the test data is loaded, you should see Dojos appearing when you refresh your home page. The different users you can login with are listed in [this file](https://github.com/CoderDojo/cp-users-development/blob/master/test/fixtures/e2e/README.md)
 
-* user: manager@example.com
-* password: test
+By default, `./localdev.js testdata zen` will run upon cp-{entity}-development databases. By running `./localdev.js testdata zen --zentest=true`, you will load e2e tests data into cp-{entity}-tests, which is useful to test your data loading process.
+
+## End to End Tests
+You can run the e2e tests by running `./localdev.js test zen`.
+Under the hood, it simply spin up `./localdev.js run zen --zentest=true` and `./localdev testdata zen --zentest=true` as well as `npm test from cp-e2e`.
+It means, it'll wipe your test database and start the e2e tests.
+As well as the others command, you can specify `--zentest=false` if you want to run the tests upon the default databases, cp-{entity}-development.
 
 ## Making code changes and working locally
 
@@ -118,7 +128,6 @@ When you initialise a system, it creates a `workspace-<systemName>` folder for e
  * [cp-dojos-service](https://github.com/CoderDojo/cp-dojos-service) - backend repo - service for Dojos
  * [cp-events-service](https://github.com/CoderDojo/cp-events-service) - backend repo - service for events
  * [cp-users-service](https://github.com/CoderDojo/cp-users-service) - backend repo - service for users
- * [cp-salesforce-service](https://github.com/CoderDojo/cp-salesforce-service) - backend repo - service for Salesforce integration
 * Update the `baseRepo` variable [in system.js here](https://github.com/CoderDojo/cp-local-development/blob/master/system.js#L1) to point at your Github username instead of /CoderDojo
 
 You can read more about the repositories and system architecture [in this document](https://github.com/CoderDojo/community-platform/blob/master/architecture.md).

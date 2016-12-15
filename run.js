@@ -18,6 +18,7 @@ module.exports = function (argv, systems, cb) {
 
   var system = systems[sysName];
   if (!system) return cb('System not found: ' + sysName);
+  var reset = argv.reset || 'false';
 
   var workspace = 'workspace-' + sysName;
   console.log('System:', sysName, util.inspect(system.stringify(), true, null), 'workspace: ' + workspace);
@@ -44,9 +45,52 @@ module.exports = function (argv, systems, cb) {
 
   // run the services!
   async.series([
+    resetDatabase,
     runServices,
     watchServices
   ], cb);
+
+  function resetDatabase (sCb) {
+    if (reset === 'true') {
+      var pg = require('pg');
+      var conString = util.format('postgres://%s:%s@%s/postgres',
+                                  system.env.POSTGRES_USERNAME,
+                                  system.env.POSTGRES_PASSWORD,
+                                  system.env.POSTGRES_HOST);
+
+      var client = new pg.Client(conString);
+      client.connect(function (err) {
+        if (err) return cb('Postgres connection error: ' + err);
+        async.map(system.services, createDatabase, function (err) {
+          client.end();
+          sCb(err);
+        });
+
+        function createDatabase (service, mCb) {
+          if (!service.database) return mCb();
+          var q = 'DROP DATABASE IF EXISTS "' + service.database + '"';
+          client.query(q, function (err, result){
+            if (err) {
+              return cb('Error dropping database: ' + err);
+            }
+            var q = 'CREATE DATABASE "' + service.database + '"';
+            client.query(q, function (err, result) {
+              if (err) {
+                // TODO - cheap and cheerful - do this instead:
+                // SELECT datname FROM pg_catalog.pg_database WHERE lower(datname) = lower('dbname');
+                if (err.toString().indexOf('already exists') === -1) {
+                  return cb('Error creating database: ' + err);
+                }
+              }
+              return mCb();
+            });
+          });
+        }
+      });
+    } else {
+      sCb();
+    }
+  }
 
   function runServices (cb) {
     async.map(services, runService, cb);
@@ -102,7 +146,7 @@ module.exports = function (argv, systems, cb) {
   function watchService (service, cb) {
     debug('watching service: ', service);
     var dir = workspace + '/' + service.name;
-    var ignored = [/[\/\\]\./, /node_modules/, /\/dist\//]
+    var ignored = [/[\/\\]\./, /node_modules/, /\/dist\//, /email-templates/];
     if (process.env.UIDEBUG === 'true') {
       ignored.push(/.*\.less$/);
       ignored.push(/\/public\/js\/.*\.js$/);

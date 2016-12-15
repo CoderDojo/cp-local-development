@@ -7,12 +7,13 @@ function usage () {
   console.log('  "init <system>": does a fresh setup of your local dev environment');
   console.log('  "run <system>": runs all the services in your system');
   console.log('  "testdata <system>": loads test data for each service');
+  console.log('  "test <system>": reset test data and run test');
   process.exit;
 }
 
 function main (cb) {
   var argv = require('minimist')(process.argv.slice(2));
-
+  process.env.ZENTEST = argv.zentest || 'false'; // added as env var for use in services
   var command = argv._[0];
   if (!command) return usage();
 
@@ -25,6 +26,11 @@ function main (cb) {
       break;
     case 'testdata':
       require('./testdata.js')(argv, system, cb);
+      break;
+    case 'test':
+      // Assume zentest true by default
+      process.env.ZENTEST = argv.zentest || 'true'; // added as env var for use in services
+      require('./test.js')(argv, system, cb);
       break;
     default:
       return cb('unknown command: ' + command);
