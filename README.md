@@ -107,7 +107,7 @@ Next, in another shell (the system has to be running before you load the test da
 
 Note that this command will fail if run more than once.
 
-When all the test data is loaded, you should see Dojos appearing when you refresh your home page. The different users you can login with are listed in [this file](https://github.com/CoderDojo/cp-users-development/blob/master/test/fixtures/e2e/README.md)
+When all the test data is loaded, you should see Dojos appearing when you refresh your home page. The different users you can login with are listed in [this file](https://github.com/CoderDojo/cp-users-service/blob/master/test/fixtures/e2e/README.md)
 
 By default, `./localdev.js testdata zen` will run upon cp-{entity}-development databases. By running `./localdev.js testdata zen --zentest=true`, you will load e2e tests data into cp-{entity}-tests, which is useful to test your data loading process.
 
