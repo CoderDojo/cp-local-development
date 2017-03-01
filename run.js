@@ -116,12 +116,12 @@ module.exports = function (argv, systems, cb) {
       try {
         var gulpFile = './' + workspace + '/' + service.name + '/gulpfile.js';
         if (fs.existsSync(gulpFile)) {
-          var watcher = child_process.spawn('npm', ['run', 'gulp', 'dev', '--gulpFile', gulpFile]);
+          var watcher = child_process.spawn('npm', ['run', 'gulp', 'dev', '--', '--gulpfile', gulpFile]);
           watcher.stdout.on('data', function (data) {
             console.log(service.name + ' watcher: ', data.toString());
           });
           watcher.stderr.on('data', function (data) {
-            console.error(service.name + ' watcher: ', data.toString());
+            console.error(service.name + ' watcher error output: ', data.toString());
           });
           watcher.on('close', function (code) {
             console.log(service.name + 'watcher process exited with code ' + code);
