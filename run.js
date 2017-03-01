@@ -11,6 +11,7 @@ module.exports = function (argv, systems, cb) {
   debug(system);
 
   process.env.UIDEBUG = argv.uidebug || 'true'; // added as env var for use in services
+  process.env.DEBUG = argv.debug === 'true'; // added as env var for use in services
 
   var usage = 'Usage: run <system-name>\n e.g. run phase1\n e.g. run phase3 cp-zen-platform';
   var sysName = argv._[1];
@@ -69,7 +70,7 @@ module.exports = function (argv, systems, cb) {
         function createDatabase (service, mCb) {
           if (!service.database) return mCb();
           var q = 'DROP DATABASE IF EXISTS "' + service.database + '"';
-          client.query(q, function (err, result){
+          client.query(q, function (err, result) {
             if (err) {
               return cb('Error dropping database: ' + err);
             }
@@ -97,7 +98,7 @@ module.exports = function (argv, systems, cb) {
   }
 
   function runService (service, cb) {
-    function start() {
+    function start () {
       var proc = command(cmd, dir, service.env, function (err) {
         if (err) console.error('Error running service: ' + err);
         else console.log('Service terminated: ' + service.name);
@@ -146,7 +147,9 @@ module.exports = function (argv, systems, cb) {
   function watchService (service, cb) {
     debug('watching service: ', service);
     var dir = workspace + '/' + service.name;
-    var ignored = [/[\/\\]\./, /node_modules/, /\/dist\//, /email-templates/];
+    // TODO : respect gitignore per microservice
+    var ignored = [/[\/\\]\./, /\/node_modules\//, /\/dist\//, /\/email-templates\//,
+     /\/web\/public\/components\//, /\/locale\//, /\/allure-results\//, /\/errorShots\//];
     if (process.env.UIDEBUG === 'true') {
       ignored.push(/.*\.less$/);
       ignored.push(/\/public\/js\/.*\.js$/);
@@ -155,11 +158,15 @@ module.exports = function (argv, systems, cb) {
 
     var opts = {
       persistent: true,
-      ignoreInitial: true,
+      // switch to debug the list of initial file to look at
+      ignoreInitial: process.env.DEBUG !== 'true', // default to true
       ignored: ignored,
       cwd: dir
     };
     var watcher = chokidar.watch('.', opts);
+    if (process.env.DEBUG === 'true') {
+      watcher.on('add', function (path) { console.log('added', path); });
+    }
 
     watcher.on('change', function (file) {
       debug('Watcher file changed: ', file, 'restarting service:', service);
