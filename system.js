@@ -17,7 +17,7 @@ var globalEnv = {
   MAIL_PASS: '0383c445ef22d4',
   GOOGLE_API_ENABLED: 'false',
   GOOGLE_MAPS_KEY: 'AIzaSyC3xF9XV91bS2R14Gjmx3UQaKbGgAfHbE4',
-  CDF_ADMINS: 'manager@example.com,admin@example.com'
+  CDF_ADMINS: 'manager1@example.com,admin@example.com'
 };
 
 module.exports = {
