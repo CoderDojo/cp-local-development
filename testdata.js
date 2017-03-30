@@ -80,7 +80,7 @@ module.exports = function (argv, systems, cb) {
       createAgreements,
       createDojoLeads,
       createDojos,
-      // createPolls,
+      createPolls,
       createEvents,
       linkDojoUsers,
       linkEventsUsers
@@ -101,6 +101,10 @@ module.exports = function (argv, systems, cb) {
 
   function createDojoLeads (wfCb) {
     seneca.act({role: 'test-dojo-data', cmd: 'insert', entity: 'dojo_lead'}, wfCb);
+  }
+
+  function createPolls (wfCb) {
+    seneca.act({role: 'test-dojo-data', cmd: 'insert', entity: 'poll'}, wfCb);
   }
 
   function createEvents (wfCb) {
