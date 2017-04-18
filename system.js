@@ -97,6 +97,8 @@ module.exports = {
       }, {
         name: 'cp-e2e-tests',
         start: null
+      }, {
+        name: 'cp-translations'
       }];
 
       // add default getter props to all services if not already overridden
