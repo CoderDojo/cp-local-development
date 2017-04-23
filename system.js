@@ -28,7 +28,8 @@ module.exports = {
     },
     get services () {
       var self = this;
-      var services = [{
+      var services = [
+      {
         name: 'cp-salesforce-service'
       }, {
         base: 'cp-dojos',
@@ -89,9 +90,17 @@ module.exports = {
             POSTGRES_NAME: this.database
           };
         }
-      }, {
+      },
+      { base: 'cp-eventbrite',
+        start: 'node index.js',
+        get name () {
+          return name(this.base);
+        }
+      },
+       {
         name: 'cp-badges-service'
-      }, {
+      },
+      {
         name: 'cp-zen-platform',
         ignored: ['web/.build']
       }, {
