@@ -29,8 +29,6 @@ module.exports = {
     get services () {
       var self = this;
       var services = [{
-        name: 'cp-salesforce-service'
-      }, {
         base: 'cp-dojos',
         get name () {
           return name(this.base);

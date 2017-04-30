@@ -115,7 +115,7 @@ By default, `./localdev.js testdata zen` will run upon cp-{entity}-development d
 
 ## End to End Tests
 You can run the e2e tests by running `./localdev.js test zen`.
-Under the hood, it simply spin up `./localdev.js run zen --zentest=true` and `./localdev testdata zen --zentest=true` as well as `npm test from cp-e2e`.
+Under the hood, it simply spin up `./localdev.js run zen --zentest=true` and `./localdev testdata zen --zentest=true` as well as `npm test` from cp-e2e.
 It means, it'll wipe your test database and start the e2e tests.
 As well as the others command, you can specify `--zentest=false` if you want to run the tests upon the default databases, cp-{entity}-development.
 
@@ -180,8 +180,8 @@ The [system.js](system.js) file is a mixture of code and data, and it's where th
 zen: {
   systemBranch: 'master',
   services: [{
-    name: 'cp-salesforce-service',
-    repo: 'git@github.com:CoderDojo/cp-salesforce-service',
+    name: 'cp-dojos-service',
+    repo: 'git@github.com:CoderDojo/cp-dojos-service',
     branch: 'master',
     start: './start.sh empty service.js',
     env: {
