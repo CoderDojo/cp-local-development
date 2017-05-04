@@ -28,76 +28,98 @@ module.exports = {
     },
     get services () {
       var self = this;
-      var services = [{
-        name: 'cp-salesforce-service'
-      }, {
-        base: 'cp-dojos',
-        get name () {
-          return name(this.base);
+      var services = [
+        {
+          name: 'cp-salesforce-service'
+        }, {
+          base: 'cp-dojos',
+          get name () {
+            return name(this.base);
+          },
+          get database () {
+            return database(this.base);
+          },
+          broadcast: true,
+          test: {
+            start: 'node test/lib/service.js',
+            name: 'test-dojo-data',
+            port: 11301
+          },
+          get serviceEnv () {
+            return {
+              POSTGRES_NAME: this.database
+            };
+          }
         },
-        get database () {
-          return database(this.base);
+        {
+          base: 'cp-users',
+          get name () {
+            return name(this.base);
+          },
+          get database () {
+            return database(this.base);
+          },
+          broadcast: true,
+          test: {
+            start: 'node test/lib/service.js',
+            name: 'test-user-data',
+            port: 11303
+          },
+          get serviceEnv () {
+            return {
+              POSTGRES_NAME: this.database,
+              RECAPTCHA_SECRET_KEY: '6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe'
+            };
+          }
         },
-        broadcast: true,
-        test: {
-          start: 'node test/lib/service.js',
-          name: 'test-dojo-data',
-          port: 11301
+        {
+          base: 'cp-events',
+          get name () {
+            return name(this.base);
+          },
+          get database () {
+            return database(this.base);
+          },
+          broadcast: true,
+          test: {
+            start: 'node test/lib/service.js',
+            name: 'test-event-data',
+            port: 11306
+          },
+          get serviceEnv () {
+            return {
+              // put any service specific env vars here
+              POSTGRES_NAME: this.database
+            };
+          }
         },
-        get serviceEnv () {
-          return {
-            POSTGRES_NAME: this.database
-          };
+        {
+          base: 'cp-organisations',
+          get name () {
+            return name(this.base);
+          },
+          get database () {
+            return database('cp-users');
+          },
+          start: 'node index.js',
+          get serviceEnv () {
+            return {
+              // put any service specific env vars here
+              POSTGRES_NAME: this.database
+            };
+          }
+        },
+        {
+          name: 'cp-badges-service'
+        },
+        { name: 'cp-zen-platform',
+            ignored: ['web/.build']
+        },
+        {
+          name: 'cp-e2e-tests',
+          start: null
         }
-      }, {
-        base: 'cp-users',
-        get name () {
-          return name(this.base);
-        },
-        get database () {
-          return database(this.base);
-        },
-        broadcast: true,
-        test: {
-          start: 'node test/lib/service.js',
-          name: 'test-user-data',
-          port: 11303
-        },
-        get serviceEnv () {
-          return {
-            POSTGRES_NAME: this.database,
-            RECAPTCHA_SECRET_KEY: '6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe'
-          };
-        }
-      }, {
-        base: 'cp-events',
-        get name () {
-          return name(this.base);
-        },
-        get database () {
-          return database(this.base);
-        },
-        broadcast: true,
-        test: {
-          start: 'node test/lib/service.js',
-          name: 'test-event-data',
-          port: 11306
-        },
-        get serviceEnv () {
-          return {
-            // put any service specific env vars here
-            POSTGRES_NAME: this.database
-          };
-        }
-      }, {
-        name: 'cp-badges-service'
-      }, {
-        name: 'cp-zen-platform',
-        ignored: ['web/.build']
-      }, {
-        name: 'cp-e2e-tests',
-        start: null
-      }];
+      ];
 
       // add default getter props to all services if not already overridden
       addGetters(services, self);
@@ -173,7 +195,7 @@ var addGetters = function (services, self) {
         _.each(localenv, function (v, k) {
           evars[k] = v;
         });
-      }catch (x) {
+      } catch (x) {
         // purposely ignored
       }
       return evars;
