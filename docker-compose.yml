@@ -1,0 +1,117 @@
+version: '3'
+services:
+  zen:
+    build: ./workspace-zen/cp-zen-platform
+    image: 743207398678.dkr.ecr.us-west-2.amazonaws.com/zen:latest
+    ports:
+      - "8000:8000"
+    restart: always
+    depends_on:
+      - users
+      - dojos
+      - events
+      - redis
+  dojos:
+    build: ./workspace-zen/cp-dojos-service
+    image: 743207398678.dkr.ecr.us-west-2.amazonaws.com/dojo
+    environment:
+      - REDIS_HOST=redis
+      - POSTGRES_HOST=db
+      - POSTGRES_NAME=cp-dojos-development
+      - POSTGRES_USERNAME=postgres
+      - POSTGRES_PASSWORD=QdYx3D5y
+      - POSTGRES_PORT=5432
+      - ES_INDEX=cp-dojos-development
+      - SALESFORCE_ENABLED=false
+      - GOOGLE_API_ENABLED=false
+      - MAIL_HOST=mailtrap.io
+      - MAIL_PORT=2525
+      - MAIL_USER=397746d4abc52902b
+      - MAIL_PASS=0383c445ef22d4
+    restart: always
+    depends_on:
+      - db
+    links:
+      - redis
+  users:
+    build: ./workspace-zen/cp-users-service
+    image: 743207398678.dkr.ecr.us-west-2.amazonaws.com/users:latest
+    environment:
+      - REDIS_HOST=redis
+      - POSTGRES_HOST=db
+      - POSTGRES_NAME=cp-users-development
+      - POSTGRES_USERNAME=postgres
+      - POSTGRES_PASSWORD=QdYx3D5y
+      - POSTGRES_PORT=5432
+      - SALESFORCE_ENABLED=false
+      - GOOGLE_API_ENABLED=false
+    restart: always
+    depends_on:
+      - db
+    links:
+      - redis
+  events:
+    build: ./workspace-zen/cp-events-service
+    image: 743207398678.dkr.ecr.us-west-2.amazonaws.com/events:latest
+    environment:
+      - REDIS_HOST=redis
+      - POSTGRES_HOST=db
+      - POSTGRES_NAME=cp-events-development
+      - POSTGRES_USERNAME=postgres
+      - POSTGRES_PASSWORD=QdYx3D5y
+      - POSTGRES_PORT=5432
+      - SALESFORCE_ENABLED=false
+      - MAIL_HOST=mailtrap.io
+      - MAIL_PORT=2525
+      - MAIL_USER=3549359982ed10489
+      - MAIL_PASS=979ef86b786a46
+    restart: always
+    depends_on:
+      - db
+    links:
+      - redis
+  badges:
+    build: ./workspace-zen/cp-badges-service
+    container_name: badges
+    image: coderdojo/badges:latests
+    restart: always
+    environment:
+      - REDIS_HOST=redis
+    depends_on:
+      - db
+    links:
+      - redis
+  db:
+    build: ./cd-db
+    restart: always
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg-data:/data/postgres
+    environment:
+      - POSTGRES_PASSWORD=QdYx3D5y
+  redis:
+    image: 'redis:alpine'
+    ports:
+      - "6379:6379"
+    restart: always
+    volumes:
+      - ./conf/redis/redis.conf:/etc/redis.conf
+  testdata:
+    build: .
+    depends_on:
+      - redis
+      - users
+      - dojos
+      - events
+  test:
+    build: ./workspace-zen/cp-e2e-tests
+    container_name: e2e-tests
+    depends_on:
+      - users
+      - dojos
+      - events
+      - zen
+
+volumes:
+  pg-data:
