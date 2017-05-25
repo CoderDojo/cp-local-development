@@ -2,7 +2,7 @@ version: '3'
 services:
   zen:
     build: ./workspace-zen/cp-zen-platform
-    image: 743207398678.dkr.ecr.us-west-2.amazonaws.com/zen:latest
+    image: coderdojo/zen:latest
     ports:
       - "8000:8000"
     restart: always
@@ -10,11 +10,20 @@ services:
       - users
       - dojos
       - events
+      - badges
       - redis
+    environment:
+      - CD_USERS=users
+      - CD_DOJOS=dojos
+      - CD_EVENTS=events
+      - CD_BADGES=badges
   dojos:
     build: ./workspace-zen/cp-dojos-service
-    image: 743207398678.dkr.ecr.us-west-2.amazonaws.com/dojo
+    image: coderdojo/dojos:latest
     environment:
+      - CD_USERS=users
+      - CD_EVENTS=events
+      - CD_BADGES=badges
       - REDIS_HOST=redis
       - POSTGRES_HOST=db
       - POSTGRES_NAME=cp-dojos-development
@@ -35,8 +44,11 @@ services:
       - redis
   users:
     build: ./workspace-zen/cp-users-service
-    image: 743207398678.dkr.ecr.us-west-2.amazonaws.com/users:latest
+    image: coderdojo/users:latest
     environment:
+      - CD_DOJOS=dojos
+      - CD_EVENTS=events
+      - CD_BADGES=badges
       - REDIS_HOST=redis
       - POSTGRES_HOST=db
       - POSTGRES_NAME=cp-users-development
@@ -52,8 +64,11 @@ services:
       - redis
   events:
     build: ./workspace-zen/cp-events-service
-    image: 743207398678.dkr.ecr.us-west-2.amazonaws.com/events:latest
+    image: coderdojo/events:latest
     environment:
+      - CD_USERS=users
+      - CD_DOJOS=dojos
+      - CD_BADGES=badges
       - REDIS_HOST=redis
       - POSTGRES_HOST=db
       - POSTGRES_NAME=cp-events-development
@@ -72,11 +87,13 @@ services:
       - redis
   badges:
     build: ./workspace-zen/cp-badges-service
-    container_name: badges
     image: coderdojo/badges:latests
     restart: always
     environment:
       - REDIS_HOST=redis
+      - CD_USERS=users
+      - CD_DOJOS=dojos
+      - CD_EVENTS=events
     depends_on:
       - db
     links:
@@ -92,8 +109,6 @@ services:
       - POSTGRES_PASSWORD=QdYx3D5y
   redis:
     image: 'redis:alpine'
-    ports:
-      - "6379:6379"
     restart: always
     volumes:
       - ./conf/redis/redis.conf:/etc/redis.conf
