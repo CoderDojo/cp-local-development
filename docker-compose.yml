@@ -11,7 +11,6 @@ services:
       - dojos
       - events
       - badges
-      - redis
     environment:
       - CD_USERS=users
       - CD_DOJOS=dojos
@@ -24,7 +23,6 @@ services:
       - CD_USERS=users
       - CD_EVENTS=events
       - CD_BADGES=badges
-      - REDIS_HOST=redis
       - POSTGRES_HOST=db
       - POSTGRES_NAME=cp-dojos-development
       - POSTGRES_USERNAME=postgres
@@ -40,8 +38,6 @@ services:
     restart: always
     depends_on:
       - db
-    links:
-      - redis
   users:
     build: ./workspace-zen/cp-users-service
     image: coderdojo/users:latest
@@ -49,7 +45,6 @@ services:
       - CD_DOJOS=dojos
       - CD_EVENTS=events
       - CD_BADGES=badges
-      - REDIS_HOST=redis
       - POSTGRES_HOST=db
       - POSTGRES_NAME=cp-users-development
       - POSTGRES_USERNAME=postgres
@@ -60,8 +55,6 @@ services:
     restart: always
     depends_on:
       - db
-    links:
-      - redis
   events:
     build: ./workspace-zen/cp-events-service
     image: coderdojo/events:latest
@@ -69,7 +62,6 @@ services:
       - CD_USERS=users
       - CD_DOJOS=dojos
       - CD_BADGES=badges
-      - REDIS_HOST=redis
       - POSTGRES_HOST=db
       - POSTGRES_NAME=cp-events-development
       - POSTGRES_USERNAME=postgres
@@ -83,21 +75,16 @@ services:
     restart: always
     depends_on:
       - db
-    links:
-      - redis
   badges:
     build: ./workspace-zen/cp-badges-service
     image: coderdojo/badges:latests
     restart: always
     environment:
-      - REDIS_HOST=redis
       - CD_USERS=users
       - CD_DOJOS=dojos
       - CD_EVENTS=events
     depends_on:
       - db
-    links:
-      - redis
   db:
     build: ./cd-db
     restart: always
@@ -107,26 +94,16 @@ services:
       - pg-data:/data/postgres
     environment:
       - POSTGRES_PASSWORD=QdYx3D5y
-  redis:
-    image: 'redis:alpine'
-    restart: always
-    volumes:
-      - ./conf/redis/redis.conf:/etc/redis.conf
   testdata:
     build: .
-    depends_on:
-      - redis
-      - users
-      - dojos
-      - events
-  test:
-    build: ./workspace-zen/cp-e2e-tests
-    container_name: e2e-tests
+    environment:
+      - CD_USERS=users
+      - CD_DOJOS=dojos
+      - CD_EVENTS=events
     depends_on:
       - users
       - dojos
       - events
-      - zen
 
 volumes:
   pg-data:
