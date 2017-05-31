@@ -1,0 +1,109 @@
+version: '3'
+services:
+  zen:
+    build: ./workspace-zen/cp-zen-platform
+    image: coderdojo/zen:latest
+    ports:
+      - "8000:8000"
+    restart: always
+    depends_on:
+      - users
+      - dojos
+      - events
+      - badges
+    environment:
+      - CD_USERS=users
+      - CD_DOJOS=dojos
+      - CD_EVENTS=events
+      - CD_BADGES=badges
+  dojos:
+    build: ./workspace-zen/cp-dojos-service
+    image: coderdojo/dojos:latest
+    environment:
+      - CD_USERS=users
+      - CD_EVENTS=events
+      - CD_BADGES=badges
+      - POSTGRES_HOST=db
+      - POSTGRES_NAME=cp-dojos-development
+      - POSTGRES_USERNAME=postgres
+      - POSTGRES_PASSWORD=QdYx3D5y
+      - POSTGRES_PORT=5432
+      - ES_INDEX=cp-dojos-development
+      - SALESFORCE_ENABLED=false
+      - GOOGLE_API_ENABLED=false
+      - MAIL_HOST=mailtrap.io
+      - MAIL_PORT=2525
+      - MAIL_USER=397746d4abc52902b
+      - MAIL_PASS=0383c445ef22d4
+    restart: always
+    depends_on:
+      - db
+  users:
+    build: ./workspace-zen/cp-users-service
+    image: coderdojo/users:latest
+    environment:
+      - CD_DOJOS=dojos
+      - CD_EVENTS=events
+      - CD_BADGES=badges
+      - POSTGRES_HOST=db
+      - POSTGRES_NAME=cp-users-development
+      - POSTGRES_USERNAME=postgres
+      - POSTGRES_PASSWORD=QdYx3D5y
+      - POSTGRES_PORT=5432
+      - SALESFORCE_ENABLED=false
+      - GOOGLE_API_ENABLED=false
+    restart: always
+    depends_on:
+      - db
+  events:
+    build: ./workspace-zen/cp-events-service
+    image: coderdojo/events:latest
+    environment:
+      - CD_USERS=users
+      - CD_DOJOS=dojos
+      - CD_BADGES=badges
+      - POSTGRES_HOST=db
+      - POSTGRES_NAME=cp-events-development
+      - POSTGRES_USERNAME=postgres
+      - POSTGRES_PASSWORD=QdYx3D5y
+      - POSTGRES_PORT=5432
+      - SALESFORCE_ENABLED=false
+      - MAIL_HOST=mailtrap.io
+      - MAIL_PORT=2525
+      - MAIL_USER=3549359982ed10489
+      - MAIL_PASS=979ef86b786a46
+    restart: always
+    depends_on:
+      - db
+  badges:
+    build: ./workspace-zen/cp-badges-service
+    image: coderdojo/badges:latests
+    restart: always
+    environment:
+      - CD_USERS=users
+      - CD_DOJOS=dojos
+      - CD_EVENTS=events
+    depends_on:
+      - db
+  db:
+    build: ./cd-db
+    restart: always
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg-data:/data/postgres
+    environment:
+      - POSTGRES_PASSWORD=QdYx3D5y
+  testdata:
+    build: .
+    environment:
+      - CD_USERS=users
+      - CD_DOJOS=dojos
+      - CD_EVENTS=events
+    depends_on:
+      - users
+      - dojos
+      - events
+
+volumes:
+  pg-data:

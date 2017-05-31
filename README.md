@@ -40,9 +40,28 @@ postgres=# create user platform with superuser password 'QdYx3D5y';
 To compile native modules you'll need to install xcode from the Mac App Store.
 
 ### Docker
-If you have issues setting up, we do have a Docker setup [here](https://hub.docker.com/r/josmas/coderdojo-local-zen/) and [here](https://hub.docker.com/r/butlerx/coderdojo-local-zen/) that might be more useful
+If you have issues setting up, we do have a Docker setup
+[here](https://hub.docker.com/r/josmas/coderdojo-local-zen/) and
+`docker-compose.yml` for running each micro service in its own container
 - [josmas](https://hub.docker.com/r/josmas/coderdojo-local-zen/) container is designed for local development
-- [butlerx](https://hub.docker.com/r/butlerx/coderdojo-local-zen/) container is designed for testing and auto starts the services and runs e2e tests
+#### Docker-compose
+To first set up the local dev env run
+```
+docker-compose up testdata
+```
+This will build the containers and add the test data. To start zen from then on
+you just have to run
+```
+docker-compose up -d zen
+```
+To restart a container run
+```
+docker-compose restart $service
+```
+To Stop the containers just run.
+```
+docker-compose stop
+```
 
 ## Code Setup
 
