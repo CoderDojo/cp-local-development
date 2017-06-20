@@ -7,7 +7,6 @@ const command = require('./command.js');
 const fs = require('fs');
 
 module.exports = ({ _ }, systems, cb) => {
-  debug(system);
 
   const usage = 'Usage: init <system-name>\n e.g. init zen';
   const sysName = _[1];
@@ -15,6 +14,7 @@ module.exports = ({ _ }, systems, cb) => {
   if (!systems[sysName]) return cb(`System not found: ${sysName}`);
 
   const system = systems[sysName];
+  debug(system);
   const workspace = `workspace-${sysName}`;
   console.log('System:', sysName, util.inspect(system.stringify(), true, null), `workspace: ${workspace}`);
 

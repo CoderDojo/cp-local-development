@@ -6,8 +6,6 @@ const _ = require('lodash');
 
 function usage() {
   console.log('Usage "./localdev.js <command>" where command is one of: ');
-  console.log('  "init <system>": does a fresh setup of your local dev environment');
-  console.log('  "run <system>": runs all the services in your system');
   console.log('  "testdata <system>": loads test data for each service');
   console.log('  "test <system>": reset test data and run test');
   process.exit;
@@ -20,12 +18,6 @@ function main(cb) {
   if (!command) return usage();
 
   switch (command) {
-  case 'init':
-    require('./init.js')(argv, system, cb);
-    break;
-  case 'run':
-    require('./run.js')(argv, system, cb);
-    break;
   case 'testdata':
     require('./testdata.js')(argv, system, cb);
     break;

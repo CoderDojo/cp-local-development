@@ -2,10 +2,7 @@
 
 const debug = require('debug')('localdev:testdata');
 const async = require('async');
-const command = require('./command.js');
-const _ = require('lodash');
 const util = require('util');
-const dgram = require('dgram');
 const seneca = require('seneca')({
   timeout  : 200000,
   transport: {
@@ -20,12 +17,12 @@ const seneca = require('seneca')({
 });
 
 module.exports = (argv, systems, cb) => {
-  debug(system);
   const usage = 'Usage: testdata <system-name> [service-name]\n e.g. testdata zen';
   const sysName = argv._[1];
   if (!sysName) return cb(usage);
 
   const system = systems[sysName];
+  debug(system);
   if (!system) return cb(`System not found: ${sysName}`);
 
   const workspace = `workspace-${sysName}`;
@@ -34,7 +31,7 @@ module.exports = (argv, systems, cb) => {
   const services = system.services;
 
   // load the test data
-  async.series([runSeneca, runTestServices, loadAllTestData, killServices, killOrchestrator], err => {
+  async.series([runSeneca, loadAllTestData], err => {
     cb();
     process.exit(err ? 1 : 0);
   });
@@ -46,9 +43,9 @@ module.exports = (argv, systems, cb) => {
       ({ test, base }, sCb) => {
         if (test) {
           // main test service of the µs
-          seneca.client({ type: 'web', port: test.port, pin: { role: `${base}-test`, cmd: '*' } });
+          seneca.client({ type: 'web', host: test.host, port: test.port, pin: { role: `${base}-test`, cmd: '*' } });
           // data loader specific to the µs
-          seneca.client({ type: 'web', port: test.port, pin: { role: test.name, cmd: '*' } });
+          seneca.client({ type: 'web', host: test.host, port: test.port, pin: { role: test.name, cmd: '*' } });
         }
         sCb();
       },
@@ -59,24 +56,17 @@ module.exports = (argv, systems, cb) => {
     );
   }
 
-  function runTestServices(cb) {
-    const alive = {};
-    const orchest = dgram.createSocket('udp4');
-    orchest.bind(11404, '127.0.0.1');
-
-    orchest.on('message', (msg, { port }) => {
-      alive[msg] = port;
-      if (_.keys(alive).length === _.filter(services, { broadcast: true }).length) {
-        orchest.close();
-        // When all µs are running, continue
-        cb();
-      }
-    });
-    async.mapSeries(services, runService);
-  }
-
   function loadAllTestData(cb) {
-    async.series([createUsers, createAgreements, createDojoLeads, createDojos, createPolls, createEvents, linkDojoUsers, linkEventsUsers], cb);
+    async.series([
+      createUsers,
+      createAgreements,
+      createDojoLeads,
+      createDojos,
+      createPolls,
+      createEvents,
+      linkDojoUsers,
+      linkEventsUsers,
+    ], cb);
   }
 
   function createUsers(wfCb) {
@@ -109,31 +99,5 @@ module.exports = (argv, systems, cb) => {
 
   function linkEventsUsers(wfCb) {
     seneca.act({ role: 'test-event-data', cmd: 'insert', entity: 'application' }, wfCb);
-  }
-
-  function runService({ test, name, env }, cb) {
-    if (!test) return cb();
-    const dir = `${workspace}/${name}`;
-    const cmd = test.start;
-    command(cmd, dir, env, err => {
-      if (err) console.error(`Error running service: ${name}`, err);
-      else console.log('Service terminated:', name);
-    });
-    // This function is async as it runs a µs and wait for data loading callback
-    // and doesn't wait for it to die (callback of command fn)
-    cb();
-  }
-
-  function killServices(cb) {
-    const testServices = _.filter(services, 'test');
-    async.mapSeries(testServices, killService, cb);
-    function killService({ base }, mCb) {
-      seneca.act({ role: `${base}-test`, cmd: 'suicide' }, mCb);
-    }
-  }
-  function killOrchestrator(cb) {
-    seneca.close(() => {
-      cb();
-    });
   }
 };
