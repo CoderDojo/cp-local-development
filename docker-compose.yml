@@ -25,7 +25,7 @@ services:
       - CD_BADGES=badges
       - POSTGRES_HOST=db
       - POSTGRES_NAME=cp-dojos-development
-      - POSTGRES_USERNAME=postgres
+      - POSTGRES_USERNAME=platform
       - POSTGRES_PASSWORD=QdYx3D5y
       - POSTGRES_PORT=5432
       - ES_INDEX=cp-dojos-development
@@ -64,7 +64,7 @@ services:
       - CD_BADGES=badges
       - POSTGRES_HOST=db
       - POSTGRES_NAME=cp-events-development
-      - POSTGRES_USERNAME=postgres
+      - POSTGRES_USERNAME=platform
       - POSTGRES_PASSWORD=QdYx3D5y
       - POSTGRES_PORT=5432
       - SALESFORCE_ENABLED=false
