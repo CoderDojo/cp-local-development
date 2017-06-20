@@ -110,6 +110,7 @@ module.exports = (argv, systems, cb) => {
   }
   function killOrchestrator(cb) {
     seneca.close(() => {
+      console.log('Now run `docker-compose up zen` to start zen');
       cb();
     });
   }

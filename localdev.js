@@ -22,7 +22,7 @@ function main(cb) {
     require('./testdata.js')(argv, system, cb);
     break;
   case 'test':
-      // Assume zentest true by default
+    // Assume zentest true by default
     process.env.ZENTEST = argv.zentest || 'true'; // added as env var for use in services
     require('./test.js')(argv, system, cb);
     break;

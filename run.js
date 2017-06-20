@@ -143,7 +143,7 @@ module.exports = (argv, systems, cb) => {
     debug('watching service: ', service);
     const dir = `${workspace}/${service.name}`;
     // TODO : respect gitignore per microservice
-    let ignored = [/[\/\\]\./, /\/node_modules\//, /\/dist\//, /\/email-templates\//, /\/web\/public\/components\//, /\/locale\//, /\/allure-results\//, /\/errorShots\//];
+    let ignored = [/[/\\]\./, /\/node_modules\//, /\/dist\//, /\/email-templates\//, /\/web\/public\/components\//, /\/locale\//, /\/allure-results\//, /\/errorShots\//];
     if (process.env.UIDEBUG === 'true') {
       ignored.push(/.*\.less$/);
       ignored.push(/\/public\/js\/.*\.js$/);
