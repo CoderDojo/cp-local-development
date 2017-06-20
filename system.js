@@ -46,7 +46,7 @@ module.exports = {
           test     : {
             start: 'node test/lib/service.js',
             name : 'test-dojo-data',
-            port : 10301,
+            port : 11301,
             host : process.env.CD_DOJOS || 'localhost',
           },
           get serviceEnv() {
@@ -67,7 +67,7 @@ module.exports = {
           test     : {
             start: 'node test/lib/service.js',
             name : 'test-user-data',
-            port : 10303,
+            port : 11303,
             host : process.env.CD_USERS || 'localhost',
           },
           get serviceEnv() {
@@ -89,7 +89,7 @@ module.exports = {
           test     : {
             start: 'node test/lib/service.js',
             name : 'test-event-data',
-            port : 10306,
+            port : 11306,
             host : process.env.CD_EVENTS || 'localhost',
           },
           get serviceEnv() {

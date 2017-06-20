@@ -2,6 +2,7 @@
 
 const debug = require('debug')('localdev:testdata');
 const async = require('async');
+const _ = require('lodash');
 const util = require('util');
 const seneca = require('seneca')({
   timeout  : 200000,
@@ -31,7 +32,7 @@ module.exports = (argv, systems, cb) => {
   const services = system.services;
 
   // load the test data
-  async.series([runSeneca, loadAllTestData], err => {
+  async.series([runSeneca, loadAllTestData, killServices, killOrchestrator], err => {
     cb();
     process.exit(err ? 1 : 0);
   });
@@ -50,7 +51,6 @@ module.exports = (argv, systems, cb) => {
         sCb();
       },
       () => {
-        console.log('Seneca orchestrator started');
         cb();
       }
     );
@@ -99,5 +99,18 @@ module.exports = (argv, systems, cb) => {
 
   function linkEventsUsers(wfCb) {
     seneca.act({ role: 'test-event-data', cmd: 'insert', entity: 'application' }, wfCb);
+  }
+
+  function killServices(cb) {
+    const testServices = _.filter(services, 'test');
+    async.mapSeries(testServices, killService, cb);
+    function killService({ base }, mCb) {
+      seneca.act({ role: `${base}-test`, cmd: 'suicide' }, mCb);
+    }
+  }
+  function killOrchestrator(cb) {
+    seneca.close(() => {
+      cb();
+    });
   }
 };

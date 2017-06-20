@@ -1,5 +1,16 @@
+---
 version: '3'
 services:
+  #  Development Database
+  db:
+    build: ./cd-db
+    restart: always
+    volumes:
+      - pg-data:/data/postgres
+    environment:
+      - POSTGRES_PASSWORD=QdYx3D5y
+
+  #  Development serivces
   zen:
     build: ./workspace-zen/cp-zen-platform
     image: coderdojo/zen:latest
@@ -62,25 +73,57 @@ services:
       - CD_EVENTS=events
     depends_on:
       - db
-  db:
-    build: ./cd-db
-    restart: always
-    ports:
-      - "5432:5432"
-    volumes:
-      - pg-data:/data/postgres
-    environment:
-      - POSTGRES_PASSWORD=QdYx3D5y
+
+  #  Test Data services for setup
   testdata:
     build: .
     environment:
+      - CD_USERS=test-users
+      - CD_DOJOS=test-dojos
+      - CD_EVENTS=test-events
+    depends_on:
+      - test-users
+      - test-dojos
+      - test-events
+  test-events:
+    image: coderdojo/events:latest
+    command: yarn testdata
+    env_file: ./workspace-zen/cp-events-service/config/development.env
+    expose:
+      - "11306"
+    environment:
+      - POSTGRES_HOST=db
+      - CD_EVENTS=events
       - CD_USERS=users
       - CD_DOJOS=dojos
+    depends_on:
+      - events
+  test-users:
+    image: coderdojo/users:latest
+    command: npm run testdata
+    env_file: ./workspace-zen/cp-users-service/config/development.env
+    expose:
+      - "11303"
+    environment:
+      - POSTGRES_HOST=db
+      - CD_USERS=users
       - CD_EVENTS=events
+      - CD_DOJOS=dojos
     depends_on:
       - users
+  test-dojos:
+    image: coderdojo/dojos:latest
+    command: npm run testdata
+    env_file: ./workspace-zen/cp-dojos-service/config/development.env
+    expose:
+      - "11301"
+    environment:
+      - POSTGRES_HOST=db
+      - CD_DOJOS=dojos
+      - CD_USERS=users
+      - CD_EVENTS=events
+    depends_on:
       - dojos
-      - events
 
 volumes:
   pg-data:

@@ -6,7 +6,7 @@ RUN apk add --update build-base python postgresql-client &&\
 WORKDIR /usr/src/app
 ADD . /usr/src/app/
 RUN yarn && \
-    node localdev.js init zen && \
     apk del build-base python && \
     rm -rf /tmp/* /root/.npm /root/.node-gyp
+EXPOSE 11404 11500
 CMD node localdev.js testdata zen
