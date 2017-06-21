@@ -3,8 +3,18 @@
     'es6'    : true,
     'node'   : true,
   },
-  'extends': ['eslint:recommended'],
+  "plugins": ['lodash'],
+  "extends": [
+    'plugin:lodash/recommended',
+    'eslint:recommended'
+  ],
   'rules'  : {
+    'lodash/prefer-lodash-method': [
+      2,
+      {
+        'ignoreMethods': ['map']
+      }
+    ],
     'strict': [
       2,
      'global'

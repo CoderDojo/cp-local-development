@@ -8,5 +8,5 @@ ADD . /usr/src/app/
 RUN yarn && \
     apk del build-base python && \
     rm -rf /tmp/* /root/.npm /root/.node-gyp
-EXPOSE 11404 11500
+EXPOSE 11500
 CMD node localdev.js testdata zen

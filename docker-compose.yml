@@ -81,6 +81,9 @@ services:
       - CD_USERS=test-users
       - CD_DOJOS=test-dojos
       - CD_EVENTS=test-events
+      - POSTGRES_PASSWORD=QdYx3D5y
+      - POSTGRES_HOST=db
+      - POSTGRES_USERNAME
     depends_on:
       - test-users
       - test-dojos

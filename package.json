@@ -5,8 +5,7 @@
   "main": "localdev.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "./localdev.js run zen",
-    "gulp": "gulp",
+    "start": "node localdev.js",
     "lint:fix": "eslint . --fix",
     "lint": "eslint .",
     "lint:local": "eslint *.js --fix"
@@ -25,22 +24,19 @@
   "license": "MIT",
   "dependencies": {
     "async": "^2.4.1",
-    "chokidar": "1.0.3",
     "debug": "2.2.0",
-    "lodash": "3.10.0",
-    "minimist": "1.1.1",
-    "mkdirp": "0.5.1",
+    "es6-promise": "3.0.2",
+    "lodash": "^4.17.4",
     "pg": "^6.3.0",
     "seneca": "^3.3.0"
   },
   "devDependencies": {
-    "es6-promise": "3.0.2",
     "eslint": "3.19.0",
     "eslint-config-standard": "10.2.1",
     "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-lodash": "^2.4.3",
     "eslint-plugin-node": "^4.2.2",
     "eslint-plugin-promise": "3.5.0",
-    "eslint-plugin-react": "6.10.3",
     "eslint-plugin-standard": "3.0.1",
     "pre-commit": "^1.2.2"
   }
