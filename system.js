@@ -1,18 +1,11 @@
 'use strict';
 
-const baseRepo = 'https://github.com/CoderDojo/';
 const map = require('lodash/map');
-const forEach = require('lodash/forEach');
 const toPlainObject = require('lodash/toPlainObject');
-
-const defaultBranch = 'master';
-
-// set any variables common to all systems here..
 
 module.exports = {
   zen: {
     get services() {
-      const self = this;
       const services = [
         {
           base: 'cp-dojos',
@@ -58,7 +51,6 @@ module.exports = {
         },
       ];
       // add default getter props to all services if not already overridden
-      addGetters(services, self);
       return services;
     },
     // for easy debugging (the getters defined above to no console.log well!)
@@ -75,25 +67,8 @@ const database = prefix => {
   return prefix + db;
 };
 
-const stringify = ({ systemBranch, services }) => {
+const stringify = ({ services }) => {
   return {
-    systemBranch: systemBranch,
-    services    : map(services, toPlainObject),
+    services: map(services, toPlainObject),
   };
-};
-
-const addGetters = (services, self) => {
-  forEach(services, service => {
-    if (service.repo === undefined) {
-      service.__defineGetter__('repo', () => {
-        return baseRepo + service.name;
-      });
-    }
-    const serviceBranch = service.branch;
-    if (service.branch === undefined) {
-      service.__defineGetter__('branch', () => {
-        return serviceBranch || self.systemBranch || defaultBranch;
-      });
-    }
-  });
 };
