@@ -42,12 +42,12 @@ $ git clone https://github.com/CoderDojo/cp-e2e-tests workspace-zen/cp-e2e-tests
 
 To first set up the local development environment run
 ```
-$ docker-compose run --rm testdata
+$ docker-compose up testdata
 ```
 This will build the containers and add the test data. To start zen from then on
 you just have to run
 ```
-docker-compose up -d zen
+docker-compose up zen
 ```
 To restart a container run
 ```
