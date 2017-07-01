@@ -12,8 +12,9 @@ services:
 
   #  Development serivces
   zen:
-    build: ./workspace-zen/cp-zen-platform
-    image: coderdojo/zen:latest
+    build:
+      context: .
+      dockerfile: zen.Dockerfile
     ports:
       - "8000:8000"
     restart: always
@@ -27,8 +28,13 @@ services:
       - CD_DOJOS=dojos
       - CD_EVENTS=events
       - CD_BADGES=badges
+    volumes:
+      - ./workspace-zen/cp-translations:/usr/src/cp-translations
+      - ./workspace-zen/cp-zen-platform:/usr/src/app
   dojos:
-    build: ./workspace-zen/cp-dojos-service
+    build:
+      context: .
+      dockerfile: dojos.Dockerfile
     image: coderdojo/dojos:latest
     env_file: ./workspace-zen/cp-dojos-service/config/development.env
     environment:
@@ -39,9 +45,13 @@ services:
     restart: always
     depends_on:
       - db
+    volumes:
+      - ./workspace-zen/cp-translations:/usr/src/cp-translations
+      - ./workspace-zen/cp-dojos-service:/usr/src/app
   users:
-    build: ./workspace-zen/cp-users-service
-    image: coderdojo/users:latest
+    build:
+      context: .
+      dockerfile: users.Dockerfile
     env_file: ./workspace-zen/cp-users-service/config/development.env
     environment:
       - CD_DOJOS=dojos
@@ -51,9 +61,13 @@ services:
     restart: always
     depends_on:
       - db
+    volumes:
+      - ./workspace-zen/cp-translations:/usr/src/cp-translations
+      - ./workspace-zen/cp-users-service:/usr/src/app
   events:
-    build: ./workspace-zen/cp-events-service
-    image: coderdojo/events:latest
+    build:
+      context: .
+      dockerfile: events.Dockerfile
     env_file: ./workspace-zen/cp-events-service/config/development.env
     environment:
       - CD_USERS=users
@@ -63,8 +77,10 @@ services:
     restart: always
     depends_on:
       - db
+    volumes:
+      - ./workspace-zen/cp-translations:/usr/src/cp-translations
+      - ./workspace-zen/cp-events-service:/usr/src/app
   badges:
-    build: ./workspace-zen/cp-badges-service
     image: coderdojo/badges:latests
     restart: always
     environment:
@@ -89,7 +105,7 @@ services:
       - test-dojos
       - test-events
   test-events:
-    image: coderdojo/events:latest
+    image: coderdojo/cp-events-service:latest
     command: npm run testdata
     env_file: ./workspace-zen/cp-events-service/config/development.env
     expose:
@@ -102,7 +118,7 @@ services:
     depends_on:
       - events
   test-users:
-    image: coderdojo/users:latest
+    image: coderdojo/cp-users-service:latest
     command: npm run testdata
     env_file: ./workspace-zen/cp-users-service/config/development.env
     expose:
@@ -115,7 +131,7 @@ services:
     depends_on:
       - users
   test-dojos:
-    image: coderdojo/dojos:latest
+    image: coderdojo/cp-dojos-service:latest
     command: npm run testdata
     env_file: ./workspace-zen/cp-dojos-service/config/development.env
     expose:
