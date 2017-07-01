@@ -23,7 +23,6 @@
   },
   "license": "MIT",
   "dependencies": {
-    "async": "^2.4.1",
     "debug": "2.2.0",
     "es6-promise": "3.0.2",
     "lodash": "^4.17.4",

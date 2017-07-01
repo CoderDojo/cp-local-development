@@ -1,7 +1,6 @@
 'use strict';
 
 const debug = require('debug')('localdev:testdata');
-const series = require('async/series');
 const util = require('util');
 const filter = require('lodash/filter');
 const includes = require('lodash/includes');
@@ -122,61 +121,100 @@ function runSeneca(services) {
 
 function loadAllTestData(services) {
   return new Promise ((resolve, reject) => {
-    series([
-      createUsers,
-      createAgreements,
-      createDojoLeads,
-      createDojos,
-      createPolls,
-      createEvents,
-      linkDojoUsers,
-      linkEventsUsers,
-    ], (err) => {
-      if (err) reject(err);
+    createUsers()
+    .then(createAgreements)
+    .then(createDojoLeads)
+    .then(createDojos)
+    .then(createPolls)
+    .then(createEvents)
+    .then(linkDojoUsers)
+    .then(linkEventsUsers)
+    .then(() => {
       console.log('Test Data Loaded');
       resolve(services);
+    })
+    .catch(reject);
+  });
+}
+
+function createUsers() {
+  return new Promise ((resolve, reject) => {
+    seneca.act({ role: 'test-user-data', cmd: 'insert', entity: 'user' }, err => {
+      if (err) reject(err);
+      console.log('Created Users');
+      resolve();
     });
   });
 }
 
-function createUsers(wfCb) {
-  console.log('Creating Users');
-  seneca.act({ role: 'test-user-data', cmd: 'insert', entity: 'user' }, wfCb);
+function createAgreements() {
+  return new Promise ((resolve, reject) => {
+    seneca.act({ role: 'test-user-data', cmd: 'insert', entity: 'agreement' }, err => {
+      if (err) reject(err);
+      console.log('Created Agreements');
+      resolve();
+    });
+  });
 }
 
-function createAgreements(wfCb) {
-  console.log('Creating Agreements');
-  seneca.act({ role: 'test-user-data', cmd: 'insert', entity: 'agreement' }, wfCb);
+function createDojos() {
+  return new Promise ((resolve, reject) => {
+    seneca.act({ role: 'test-dojo-data', cmd: 'insert', entity: 'dojo' }, err => {
+      if (err) reject(err);
+      console.log('Created Dojos');
+      resolve();
+    });
+  });
 }
 
-function createDojos(wfCb) {
-  console.log('Creating Dojos');
-  seneca.act({ role: 'test-dojo-data', cmd: 'insert', entity: 'dojo' }, wfCb);
+function createDojoLeads() {
+  return new Promise ((resolve, reject) => {
+    seneca.act({ role: 'test-dojo-data', cmd: 'insert', entity: 'dojo_lead' }, err => {
+      if (err) reject(err);
+      console.log('Created Dojo Leads');
+      resolve();
+    });
+  });
 }
 
-function createDojoLeads(wfCb) {
-  console.log('Creating Dojo Leads');
-  seneca.act({ role: 'test-dojo-data', cmd: 'insert', entity: 'dojo_lead' }, wfCb);
+function createPolls() {
+  return new Promise ((resolve, reject) => {
+    seneca.act({ role: 'test-dojo-data', cmd: 'insert', entity: 'poll' }, err => {
+      if (err) reject(err);
+      console.log('Created Polls');
+      resolve();
+    });
+  });
 }
 
-function createPolls(wfCb) {
-  console.log('Creating Polls');
-  seneca.act({ role: 'test-dojo-data', cmd: 'insert', entity: 'poll' }, wfCb);
+function createEvents() {
+  return new Promise ((resolve, reject) => {
+    seneca.act({ role: 'test-event-data', cmd: 'insert', entity: 'event' }, err => {
+      if (err) reject(err);
+      console.log('Created Events');
+      resolve();
+    });
+  });
 }
 
-function createEvents(wfCb) {
-  console.log('Creating Events');
-  seneca.act({ role: 'test-event-data', cmd: 'insert', entity: 'event' }, wfCb);
+function linkDojoUsers() {
+  return new Promise ((resolve, reject) => {
+    seneca.act({ role: 'test-dojo-data', cmd: 'insert', entity: 'user_dojo' }, err => {
+      if (err) reject(err);
+      console.log('Linked Dojo and Users');
+      resolve();
+    });
+  });
 }
 
-function linkDojoUsers(wfCb) {
-  console.log('Linking Dojo and Users');
-  seneca.act({ role: 'test-dojo-data', cmd: 'insert', entity: 'user_dojo' }, wfCb);
-}
-
-function linkEventsUsers(wfCb) {
-  console.log('Linkng Events and Users');
-  seneca.act({ role: 'test-event-data', cmd: 'insert', entity: 'application' }, wfCb);
+function linkEventsUsers() {
+  return new Promise ((resolve, reject) => {
+    seneca.act({ role: 'test-event-data', cmd: 'insert', entity: 'application' }, err => {
+      if (err) reject(err);
+      console.log('Linked Events and Users');
+      resolve();
+    });
+  });
 }
 
 function killServices(services) {
