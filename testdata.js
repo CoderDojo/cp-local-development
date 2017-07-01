@@ -95,9 +95,24 @@ function runSeneca(services) {
       ({ test, base }) => {
         if (test) {
           // main test service of the µs
-          seneca.client({ type: 'web', host: test.host, port: test.port, pin: { role: `${base}-test`, cmd: '*' } });
+          seneca.client({ type: 'web',
+            host: test.host,
+            port: test.port,
+            pin : {
+              role: `${base}-test`,
+              cmd : '*',
+            },
+          });
           // data loader specific to the µs
-          seneca.client({ type: 'web', host: test.host, port: test.port, pin: { role: test.name, cmd: '*' } });
+          seneca.client({
+            type: 'web',
+            host: test.host,
+            port: test.port,
+            pin : {
+              role: test.name,
+              cmd : '*',
+            },
+          });
         }
       }
     )).then(() => resolve(services))
@@ -176,7 +191,12 @@ function killServices(services) {
   });
 }
 
-function killService({ base }, cb) {
+function killService({ base }) {
   console.log(`suicide ${base}`);
-  seneca.act({ role: `${base}-test`, cmd: 'suicide' }, cb);
+  return new Promise ((resolve, reject) => {
+    seneca.act({ role: `${base}-test`, cmd: 'suicide' }, err => {
+      if (err) reject(err);
+      resolve();
+    });
+  });
 }

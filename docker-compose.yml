@@ -90,7 +90,7 @@ services:
       - test-events
   test-events:
     image: coderdojo/events:latest
-    command: yarn testdata
+    command: npm run testdata
     env_file: ./workspace-zen/cp-events-service/config/development.env
     expose:
       - "11306"

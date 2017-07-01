@@ -161,6 +161,11 @@ See [system.js](system.js) for global, system and service environment variables.
 
 To set local environment variables, set them in the `docker-compose.yml`:
 
+### Testing
+
+To create a clean test database add the env variable `ZENTEST=true` to the testdata container before
+running `docker-compose up testdata`
+
 ### Debug
 
 `localdev` uses the [Debug](http://npm.im/debug) module, to get extra debug information, run commands prefixed with 'DEBUG=localdev:* ..', e.g.
@@ -168,7 +173,6 @@ To set local environment variables, set them in the `docker-compose.yml`:
 ```
 DEBUG=localdev:* ./localdev.js run zen
 ```
-
 
 # Troubleshooting
 
