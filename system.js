@@ -1,7 +1,16 @@
-'use strict';
-
 const map = require('lodash/map');
 const toPlainObject = require('lodash/toPlainObject');
+
+const serviceName = prefix => `${prefix}-service`;
+
+const serviceDB = prefix => {
+  const db = process.env.ZENTEST === 'true' ? '-test' : '-development';
+  return prefix + db;
+};
+
+const stringify = ({ services }) => ({
+  services: map(services, toPlainObject),
+});
 
 module.exports = {
   zen: {
@@ -10,10 +19,10 @@ module.exports = {
         {
           base: 'cp-dojos',
           get name() {
-            return name(this.base);
+            return serviceName(this.base);
           },
           get database() {
-            return database(this.base);
+            return serviceDB(this.base);
           },
           test: {
             name: 'test-dojo-data',
@@ -24,10 +33,10 @@ module.exports = {
         {
           base: 'cp-users',
           get name() {
-            return name(this.base);
+            return serviceName(this.base);
           },
           get database() {
-            return database(this.base);
+            return serviceDB(this.base);
           },
           test: {
             name: 'test-user-data',
@@ -38,10 +47,10 @@ module.exports = {
         {
           base: 'cp-events',
           get name() {
-            return name(this.base);
+            return serviceName(this.base);
           },
           get database() {
-            return database(this.base);
+            return serviceDB(this.base);
           },
           test: {
             name: 'test-event-data',
@@ -58,17 +67,4 @@ module.exports = {
       return stringify(this);
     },
   },
-};
-
-const name = prefix => `${prefix}-service`;
-
-const database = prefix => {
-  const db = process.env.ZENTEST === 'true' ? '-test' : '-development';
-  return prefix + db;
-};
-
-const stringify = ({ services }) => {
-  return {
-    services: map(services, toPlainObject),
-  };
 };

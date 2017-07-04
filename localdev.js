@@ -1,5 +1,3 @@
-'use strict';
-
 require('./testdata.js')(require('./system.js'))
   .then(() => process.exit(0))
   .catch(err => {

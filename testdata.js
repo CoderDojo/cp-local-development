@@ -1,9 +1,8 @@
-'use strict';
-
 const debug = require('debug')('localdev:testdata');
 const util = require('util');
 const filter = require('lodash/filter');
 const includes = require('lodash/includes');
+const pg = require('pg');
 const seneca = require('seneca')({
   timeout  : 200000,
   transport: {
@@ -16,31 +15,29 @@ const seneca = require('seneca')({
   },
   strict: { add: false, result: false },
 });
-const pg = require('pg');
+
 const postgresUrl = `postgres://${process.env.POSTGRES_USERNAME ||
   'platform'}:${process.env.POSTGRES_PASSWORD || 'QdYx3D5y'}@${process.env
   .POSTGRES_HOST || 'localhost'}/postgres`;
 const client = new pg.Client(postgresUrl);
 
-module.exports = systems => {
-  return new Promise((resolve, reject) => {
-    const sysName = 'zen';
-    const system = systems[sysName];
-    debug(system);
-    if (!system) reject(`System not found: ${sysName}`);
-    console.log(
+module.exports = systems => new Promise((resolve, reject) => {
+  const sysName = 'zen';
+  const system = systems[sysName];
+  debug(system);
+  if (!system) reject(`System not found: ${sysName}`);
+  console.log(
       'System:',
       sysName,
-      util.inspect(system.stringify(), true, null)
+      util.inspect(system.stringify(), true, null),
     );
-    setupDatabases(system.services)
+  setupDatabases(system.services)
       .then(runSeneca)
       .then(loadAllTestData)
       .then(killServices)
       .then(resolve)
       .catch(reject);
-  });
-};
+});
 
 function setupDatabases(services) {
   return new Promise((resolve, reject) => {
@@ -98,8 +95,8 @@ function createDatabase(database) {
 function runSeneca(services) {
   return new Promise((resolve, reject) => {
     seneca.listen({ timeout: 10000 });
-    Promise.all(
-      services.map(({ test, base }) => {
+    Promise.all(services.map(({ test, base }) => (
+      new Promise(resolve => {
         if (test) {
           // main test service of the µs
           seneca.client({
@@ -122,9 +119,9 @@ function runSeneca(services) {
             },
           });
         }
+        resolve();
       })
-    )
-      .then(() => resolve(services))
+    ))).then(() => resolve(services))
       .catch(reject);
   });
 }
@@ -149,27 +146,29 @@ function loadAllTestData(services) {
 
 function createUsers() {
   return new Promise((resolve, reject) => {
-    seneca.act(
-      { role: 'test-user-data', cmd: 'insert', entity: 'user' },
-      err => {
-        if (err) reject(err);
-        console.log('Created Users');
-        resolve();
-      }
-    );
+    seneca.act({
+      role  : 'test-user-data',
+      cmd   : 'insert',
+      entity: 'user',
+    }, err => {
+      if (err) reject(err);
+      console.log('Created Users');
+      resolve();
+    });
   });
 }
 
 function createAgreements() {
   return new Promise((resolve, reject) => {
-    seneca.act(
-      { role: 'test-user-data', cmd: 'insert', entity: 'agreement' },
-      err => {
-        if (err) reject(err);
-        console.log('Created Agreements');
-        resolve();
-      }
-    );
+    seneca.act({
+      role  : 'test-user-data',
+      cmd   : 'insert',
+      entity: 'agreement',
+    }, err => {
+      if (err) reject(err);
+      console.log('Created Agreements');
+      resolve();
+    });
   });
 }
 
@@ -181,73 +180,78 @@ function createDojos() {
         if (err) reject(err);
         console.log('Created Dojos');
         resolve();
-      }
+      },
     );
   });
 }
 
 function createDojoLeads() {
   return new Promise((resolve, reject) => {
-    seneca.act(
-      { role: 'test-dojo-data', cmd: 'insert', entity: 'dojo_lead' },
-      err => {
-        if (err) reject(err);
-        console.log('Created Dojo Leads');
-        resolve();
-      }
-    );
+    seneca.act({
+      role  : 'test-dojo-data',
+      cmd   : 'insert',
+      entity: 'dojo_lead',
+    }, err => {
+      if (err) reject(err);
+      console.log('Created Dojo Leads');
+      resolve();
+    });
   });
 }
 
 function createPolls() {
   return new Promise((resolve, reject) => {
-    seneca.act(
-      { role: 'test-dojo-data', cmd: 'insert', entity: 'poll' },
-      err => {
-        if (err) reject(err);
-        console.log('Created Polls');
-        resolve();
-      }
-    );
+    seneca.act({
+      role  : 'test-dojo-data',
+      cmd   : 'insert',
+      entity: 'poll',
+    }, err => {
+      if (err) reject(err);
+      console.log('Created Polls');
+      resolve();
+    });
   });
 }
 
 function createEvents() {
   return new Promise((resolve, reject) => {
-    seneca.act(
-      { role: 'test-event-data', cmd: 'insert', entity: 'event' },
-      err => {
-        if (err) reject(err);
-        console.log('Created Events');
-        resolve();
-      }
-    );
+    seneca.act({
+      role  : 'test-event-data',
+      cmd   : 'insert',
+      entity: 'event',
+    }, err => {
+      if (err) reject(err);
+      console.log('Created Events');
+      resolve();
+    });
   });
 }
 
 function linkDojoUsers() {
   return new Promise((resolve, reject) => {
-    seneca.act(
-      { role: 'test-dojo-data', cmd: 'insert', entity: 'user_dojo' },
-      err => {
-        if (err) reject(err);
-        console.log('Linked Dojo and Users');
-        resolve();
-      }
-    );
+    seneca.act({
+      role  : 'test-dojo-data',
+      cmd   : 'insert',
+      entity: 'user_dojo',
+    }, err => {
+      if (err) reject(err);
+      console.log('Linked Dojo and Users');
+      resolve();
+    });
   });
 }
 
 function linkEventsUsers() {
   return new Promise((resolve, reject) => {
-    seneca.act(
-      { role: 'test-event-data', cmd: 'insert', entity: 'application' },
-      err => {
-        if (err) reject(err);
-        console.log('Linked Events and Users');
-        resolve();
-      }
-    );
+    seneca.act({
+      role  : 'test-event-data',
+      cmd   : 'insert',
+      entity: 'application',
+    }, err => {
+      if (err) reject(err);
+      console.log('Linked Events and Users');
+      resolve();
+    });
   });
 }
 
