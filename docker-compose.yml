@@ -43,6 +43,7 @@ services:
       - CD_EVENTS=events
       - CD_BADGES=badges
       - POSTGRES_HOST=db
+      - ZENTEST=false
     restart: always
     depends_on:
       - db
@@ -59,6 +60,7 @@ services:
       - CD_EVENTS=events
       - CD_BADGES=badges
       - POSTGRES_HOST=db
+      - ZENTEST=false
     restart: always
     depends_on:
       - db
@@ -75,6 +77,7 @@ services:
       - CD_DOJOS=dojos
       - CD_BADGES=badges
       - POSTGRES_HOST=db
+      - ZENTEST=false
     restart: always
     depends_on:
       - db
@@ -99,6 +102,7 @@ services:
       - CD_USERS=test-users
       - CD_DOJOS=test-dojos
       - CD_EVENTS=test-events
+      - ZENTEST=false
       - POSTGRES_PASSWORD=QdYx3D5y
       - POSTGRES_HOST=db
       - POSTGRES_USERNAME
@@ -117,6 +121,7 @@ services:
       - CD_EVENTS=events
       - CD_USERS=users
       - CD_DOJOS=dojos
+      - ZENTEST=false
     depends_on:
       - events
   test-users:
@@ -130,6 +135,7 @@ services:
       - CD_USERS=users
       - CD_EVENTS=events
       - CD_DOJOS=dojos
+      - ZENTEST=false
     depends_on:
       - users
   test-dojos:
@@ -143,6 +149,7 @@ services:
       - CD_DOJOS=dojos
       - CD_USERS=users
       - CD_EVENTS=events
+      - ZENTEST=false
     depends_on:
       - dojos
 

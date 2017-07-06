@@ -67,7 +67,7 @@ Note that the Forums and [Badges](installing-badgekit.md) will not be operable i
 
 ## Test Data
 
-To reload the test data just run `docker-compose run --rm testdata`. This will delete the current
+To reload the test data just run `docker-compose down -v && docker-compose up testdata`. This will delete the current
 database and reload all testdata.
 When all the test data is loaded, you should see Dojos appearing when you refresh your home page.
 The different users you can login with are listed in [this file](https://github.com/CoderDojo/cp-users-service/blob/master/test/fixtures/e2e/README.md)
