@@ -29,18 +29,18 @@ Next step is to get the Community Platform code cloned and up and running. To do
 repo and each micro service:
 
 ```
-$ git clone https://github.com/CoderDojo/cp-local-development.git && cd cp-local-development
-$ git clone https://github.com/CoderDojo/cp-zen-platform.git workspace-zen/cp-zen-platform
-$ git clone https://github.com/CoderDojo/cp-events-service.git workspace-zen/cp-events-service
-$ git clone https://github.com/CoderDojo/cp-dojos-service.git workspace-zen/cp-dojos-service
-$ git clone https://github.com/CoderDojo/cp-users-service.git workspace-zen/cp-users-service
-$ git clone https://github.com/CoderDojo/cp-badges-service.git workspace-zen/cp-badges-service
-$ git clone https://github.com/CoderDojo/cp-translations-tests workspace-zen/cp-translations
+$ git clone https://github.com/CoderDojo/cp-local-development.git && cd cp-local-development/workspace-zen
+$ git clone https://github.com/CoderDojo/cp-zen-platform.git
+$ git clone https://github.com/CoderDojo/cp-events-service.git
+$ git clone https://github.com/CoderDojo/cp-dojos-service.git
+$ git clone https://github.com/CoderDojo/cp-users-service.git
+$ git clone https://github.com/CoderDojo/cp-badges-service.git
+$ git clone https://github.com/CoderDojo/cp-translations
 ```
 
 #### Docker-compose
 
-To first set up the local development environment run
+To first set up the local development environment run from the cp-local-development folder:
 ```
 $ docker-compose up testdata
 ```
