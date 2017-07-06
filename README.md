@@ -35,7 +35,7 @@ $ git clone https://github.com/CoderDojo/cp-events-service.git workspace-zen/cp-
 $ git clone https://github.com/CoderDojo/cp-dojos-service.git workspace-zen/cp-dojos-service
 $ git clone https://github.com/CoderDojo/cp-users-service.git workspace-zen/cp-users-service
 $ git clone https://github.com/CoderDojo/cp-badges-service.git workspace-zen/cp-badges-service
-$ git clone https://github.com/CoderDojo/cp-e2e-tests workspace-zen/cp-e2e-tests
+$ git clone https://github.com/CoderDojo/cp-translations-tests workspace-zen/cp-translations
 ```
 
 #### Docker-compose
