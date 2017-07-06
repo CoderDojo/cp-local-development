@@ -31,6 +31,7 @@ services:
       - CD_BADGES=badges
     volumes:
       - ./workspace-zen/cp-translations:/usr/src/cp-translations
+      - ./workspace-zen/cp-zen-frontend:/usr/src/cp-zen-frontend
       - ./workspace-zen/cp-zen-platform:/usr/src/app
   dojos:
     build:

@@ -35,6 +35,7 @@ $ git clone https://github.com/CoderDojo/cp-events-service.git
 $ git clone https://github.com/CoderDojo/cp-dojos-service.git
 $ git clone https://github.com/CoderDojo/cp-users-service.git
 $ git clone https://github.com/CoderDojo/cp-badges-service.git
+$ git clone https://github.com/CoderDojo/cp-zen-frontend.git
 $ git clone https://github.com/CoderDojo/cp-translations
 ```
 
