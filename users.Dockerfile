@@ -1,8 +1,6 @@
 FROM coderdojo/cp-users-service:latest
-ADD ./workspace-zen/cp-translations /usr/src
-WORKDIR /usr/src/cp-translations
-RUN npm link
-WORKDIR  /usr/src/app
-RUN npm link cp-translations && npm install -g nodemon
+RUN apk add --update git python build-base && \
+    npm install -g nodemon
+ADD docker-entrypoint.sh /usr/src
 VOLUME /usr/src/app /usr/src/cp-translations
-CMD ["npm", "install" "&&" "nodemon", "service.js"]
+CMD ["/usr/src/docker-entrypoint.sh"]

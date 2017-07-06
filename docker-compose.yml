@@ -35,7 +35,6 @@ services:
     build:
       context: .
       dockerfile: dojos.Dockerfile
-    image: coderdojo/dojos:latest
     env_file: ./workspace-zen/cp-dojos-service/config/development.env
     environment:
       - CD_USERS=users
