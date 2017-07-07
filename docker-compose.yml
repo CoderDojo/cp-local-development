@@ -14,8 +14,9 @@ services:
   #  Development serivces
   zen:
     build:
-      context: .
-      dockerfile: zen.Dockerfile
+      context: workspace-zen/cp-zen-platform
+      dockerfile: dev.Dockerfile
+    image: coderdojo/cp-zen-platform:dev
     ports:
       - "8000:8000"
     restart: always
@@ -25,6 +26,7 @@ services:
       - dojos
       - events
       - badges
+      - frontend
     environment:
       - CD_USERS=users
       - CD_DOJOS=dojos
@@ -34,10 +36,20 @@ services:
       - ./workspace-zen/cp-translations:/usr/src/cp-translations
       - ./workspace-zen/cp-zen-frontend:/usr/src/cp-zen-frontend
       - ./workspace-zen/cp-zen-platform:/usr/src/app
+  frontend:
+    build:
+      context: workspace-zen/cp-zen-frontend
+      dockerfile: Dockerfile
+    image: coderdojo/cp-zen-frontend
+    restart: always
+    volumes:
+      - ./workspace-zen/cp-translations:/usr/src/cp-translations
+      - ./workspace-zen/cp-zen-frontend:/usr/src/app
   dojos:
     build:
-      context: .
-      dockerfile: dojos.Dockerfile
+      context: workspace-zen/cp-dojos-service
+      dockerfile: dev.Dockerfile
+    image: coderdojo/cp-dojos-service:dev
     env_file: ./workspace-zen/cp-dojos-service/config/development.env
     environment:
       - CD_USERS=users
@@ -53,8 +65,9 @@ services:
       - ./workspace-zen/cp-dojos-service:/usr/src/app
   users:
     build:
-      context: .
-      dockerfile: users.Dockerfile
+      context: workspace-zen/cp-users-service
+      dockerfile: dev.Dockerfile
+    image: coderdojo/cp-users-service:dev
     env_file: ./workspace-zen/cp-users-service/config/development.env
     environment:
       - CD_DOJOS=dojos
@@ -70,8 +83,9 @@ services:
       - ./workspace-zen/cp-users-service:/usr/src/app
   events:
     build:
-      context: .
-      dockerfile: events.Dockerfile
+      context: workspace-zen/cp-events-service
+      dockerfile: dev.Dockerfile
+    image: coderdojo/cp-events-service:dev
     env_file: ./workspace-zen/cp-events-service/config/development.env
     environment:
       - CD_USERS=users
