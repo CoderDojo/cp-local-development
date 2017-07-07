@@ -28,16 +28,21 @@ code from [GitHub](https://github.com/coderdojo).
 Next step is to get the Community Platform code cloned and up and running. To do that you clone this
 repo and each micro service:
 
+On Linux or mac run:
+
 ```
-$ git clone https://github.com/CoderDojo/cp-local-development.git && cd cp-local-development/workspace-zen
-$ git clone https://github.com/CoderDojo/cp-zen-platform.git
-$ git clone https://github.com/CoderDojo/cp-events-service.git
-$ git clone https://github.com/CoderDojo/cp-dojos-service.git
-$ git clone https://github.com/CoderDojo/cp-users-service.git
-$ git clone https://github.com/CoderDojo/cp-badges-service.git
-$ git clone https://github.com/CoderDojo/cp-zen-frontend.git
-$ git clone https://github.com/CoderDojo/cp-translations
+$ git clone https://github.com/CoderDojo/cp-local-development.git && cd cp-local-development
+$ docker-compose run --rm -e UID=$(id -u) testdata /bin/sh init
 ```
+
+On Windows run:
+
+```
+$ git clone https://github.com/CoderDojo/cp-local-development.git && cd cp-local-development
+$ docker-compose run --rm testdata /bin/sh init
+```
+
+You may have permission errors on Windows in which case you need to change owner ship to yourself.
 
 #### Docker-compose
 
@@ -59,9 +64,8 @@ To Stop the containers just run.
 docker-compose stop
 ```
 
-Note that you can also run services individually if you wish, e.g. `./localdev.js run zen cp-zen-platform`.
-
-Once `run` looks to be running all the services ok (you'll see a lot of stack traces in the output if they are not running ok!) you should be able to hit [`localhost:8000`](http://localhost:8000) in your browser. If this is your first time running, you should see the world map but with no dojo markers, these will appear when we install some test data.
+Note that you can also run services individually if you wish, e.g. `docker-compose up dojos`
+Once docker looks to be running all the services ok (you'll see a lot of stack traces in the output if they are not running ok!) you should be able to hit [`localhost:8000`](http://localhost:8000) in your browser. If this is your first time running, you should see the world map but with no dojo markers, these will appear when we install some test data.
 
 Note that the Forums and [Badges](installing-badgekit.md) will not be operable in local development mode, to run these, you need to install both [NodeBB](https://nodebb.org) and [BadgeKit](installing-badgekit.md) locally.
 

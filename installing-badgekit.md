@@ -34,4 +34,3 @@ There are two ways to get a badge on your profile:
 ### Further debugging
 
 * If you need to further debug your own setup we suggest adding `export DEBUG=*` to the end of your environment file. This displays errors on the webpage itself.
-

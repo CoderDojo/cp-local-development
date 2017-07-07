@@ -1,10 +1,10 @@
 FROM node:boron-alpine
 MAINTAINER butlerx <butlerx@notthe.cloud>
 
-RUN apk add --update build-base python postgresql-client &&\
+RUN apk add --update git build-base python postgresql-client &&\
     mkdir -p /usr/src/app
 WORKDIR /usr/src/app
-ADD *.js package.json /usr/src/app/
+ADD testdata.js system.js package.json init /usr/src/app/
 RUN yarn && \
     apk del build-base python && \
     rm -rf /tmp/* /root/.npm /root/.node-gyp
