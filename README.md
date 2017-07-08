@@ -32,14 +32,14 @@ On Linux or mac run:
 
 ```
 $ git clone https://github.com/CoderDojo/cp-local-development.git && cd cp-local-development
-$ docker-compose run --rm -e UID=$(id -u) testdata /bin/sh init
+$ docker-compose run --rm -e PUID=$(id -u) localdev init
 ```
 
 On Windows run:
 
 ```
 $ git clone https://github.com/CoderDojo/cp-local-development.git && cd cp-local-development
-$ docker-compose run --rm testdata /bin/sh init
+$ docker-compose run --rm localdev init
 ```
 
 You may have permission errors on Windows in which case you need to change owner ship to yourself.
@@ -48,7 +48,7 @@ You may have permission errors on Windows in which case you need to change owner
 
 To first set up the local development environment run from the cp-local-development folder:
 ```
-$ docker-compose up testdata
+$ docker-compose up localdev
 ```
 This will build the containers and add the test data. To start zen from then on
 you just have to run
@@ -71,7 +71,7 @@ Note that the Forums and [Badges](installing-badgekit.md) will not be operable i
 
 ## Test Data
 
-To reload the test data just run `docker-compose down -v && docker-compose up testdata`. This will delete the current
+To reload the test data just run `docker-compose down -v && docker-compose up localdev`. This will delete the current
 database and reload all testdata.
 When all the test data is loaded, you should see Dojos appearing when you refresh your home page.
 The different users you can login with are listed in [this file](https://github.com/CoderDojo/cp-users-service/blob/master/test/fixtures/e2e/README.md)

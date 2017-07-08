@@ -100,7 +100,8 @@ services:
       - ./workspace-zen/cp-translations:/usr/src/cp-translations
       - ./workspace-zen/cp-events-service:/usr/src/app
   badges:
-    image: coderdojo/badges:latests
+    build: ./workspace-zen/cp-badges-service
+    image: coderdojo/cp-badges-service:latests
     restart: always
     env_file: ./workspace-zen/cp-badges-service/config/development.env
     environment:
@@ -111,7 +112,7 @@ services:
       - db
 
   #  Test Data services for setup
-  testdata:
+  localdev:
     build: .
     image: coderdojo/cp-local-development:latest
     environment:

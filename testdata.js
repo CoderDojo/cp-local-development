@@ -1,6 +1,7 @@
 const debug = require('debug')('localdev:testdata');
 const util = require('util');
 const filter = require('lodash/filter');
+const isUndefined = require('lodash/isUndefined');
 const includes = require('lodash/includes');
 const pg = require('pg');
 const seneca = require('seneca')({
@@ -16,21 +17,21 @@ const seneca = require('seneca')({
   strict: { add: false, result: false },
 });
 
-const postgresUrl = `postgres://${process.env.POSTGRES_USERNAME ||
-  'platform'}:${process.env.POSTGRES_PASSWORD || 'QdYx3D5y'}@${process.env
-  .POSTGRES_HOST || 'localhost'}/postgres`;
-const client = new pg.Client(postgresUrl);
+const postgres = {
+  host    : process.env.POSTGRES_HOST || 'localhost',
+  port    : 5432,
+  database: 'postgres',
+  user    : process.env.POSTGRES_USERNAME || 'platform',
+  password: process.env.POSTGRES_PASSWORD || 'QdYx3D5y',
+};
+const client = new pg.Client(postgres);
 
 module.exports = systems => new Promise((resolve, reject) => {
   const sysName = 'zen';
   const system = systems[sysName];
   debug(system);
   if (!system) reject(`System not found: ${sysName}`);
-  console.log(
-      'System:',
-      sysName,
-      util.inspect(system.stringify(), true, null),
-    );
+  console.log('System:', sysName, util.inspect(system.stringify(), true, null));
   setupDatabases(system.services)
       .then(runSeneca)
       .then(loadAllTestData)
@@ -55,7 +56,7 @@ function setupDatabases(services) {
 
 function resetDatabase(service) {
   return new Promise((resolve, reject) => {
-    if (process.env.ZENTEST) {
+    if (process.env.ZENTEST === 'true' && !isUndefined(service.database)) {
       dropDatabase(service.database)
         .then(createDatabase)
         .then(resolve)
@@ -176,12 +177,11 @@ function createDojos() {
   return new Promise((resolve, reject) => {
     seneca.act(
       { role: 'test-dojo-data', cmd: 'insert', entity: 'dojo' },
-      err => {
-        if (err) reject(err);
-        console.log('Created Dojos');
-        resolve();
-      },
-    );
+    err => {
+      if (err) reject(err);
+      console.log('Created Dojos');
+      resolve();
+    });
   });
 }
 
