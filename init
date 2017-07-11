@@ -6,4 +6,3 @@ for repo in "cp-badges-service" "cp-dojos-service" "cp-events-service" "cp-trans
 do
   git clone "$github""$repo".git
 done
-chown -R $user:995 .
