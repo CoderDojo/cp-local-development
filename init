@@ -1,7 +1,7 @@
 #! /usr/bin/env sh
 github="https://github.com/CoderDojo/"
 user=${UID:-1000}
-cd /usr/src/app/workspace-zen || exit
+cd ./workspace-zen || exit
 for repo in "cp-badges-service" "cp-dojos-service" "cp-events-service" "cp-translations" "cp-users-service" "cp-zen-frontend" "cp-zen-platform"
 do
   git clone "$github""$repo".git
