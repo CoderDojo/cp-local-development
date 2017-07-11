@@ -32,14 +32,20 @@ On Linux or mac run:
 
 ```
 $ git clone https://github.com/CoderDojo/cp-local-development.git && cd cp-local-development
-$ docker-compose run --rm -e PUID=$(id -u) localdev init
+$ ./init
 ```
 
 On Windows run:
 
 ```
 $ git clone https://github.com/CoderDojo/cp-local-development.git && cd cp-local-development
-$ docker-compose run --rm localdev init
+$ git clone https://github.com/CoderDojo/cp-zen-platform.git workspace-zen/cp-zen-platform
+$ git clone https://github.com/CoderDojo/cp-zen-frontend.git workspace-zen/cp-zen-frontend
+$ git clone https://github.com/CoderDojo/cp-events-service.git workspace-zen/cp-events-service
+$ git clone https://github.com/CoderDojo/cp-dojos-service.git workspace-zen/cp-dojos-service
+$ git clone https://github.com/CoderDojo/cp-users-service.git workspace-zen/cp-users-service
+$ git clone https://github.com/CoderDojo/cp-badges-service.git workspace-zen/cp-badges-service
+$ git clone https://github.com/CoderDojo/cp-translations-tests workspace-zen/cp-translations
 ```
 
 You may have permission errors on Windows in which case you need to change owner ship to yourself.
