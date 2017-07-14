@@ -63,14 +63,6 @@ module.exports = {
           port: 11306,
           host: process.env.CD_EVENTS || 'localhost',
         },
-      }, {
-        name: 'cp-badges-service',
-      }, {
-        name: 'cp-zen-platform',
-      }, {
-        name: 'cp-zen-frontend',
-      }, {
-        name: 'cp-translations',
       }];
       addGetters(services);
       return services;

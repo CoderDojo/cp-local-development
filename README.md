@@ -32,7 +32,7 @@ On Linux or mac run:
 
 ```
 $ git clone https://github.com/CoderDojo/cp-local-development.git && cd cp-local-development
-$ ./init
+$ ./setup_repo
 ```
 
 On Windows run:
