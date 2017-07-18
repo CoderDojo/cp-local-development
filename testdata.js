@@ -54,10 +54,10 @@ function setupDatabases(services) {
   });
 }
 
-function resetDatabase(service) {
+function resetDatabase({ database }) {
   return new Promise((resolve, reject) => {
-    if (process.env.ZENTEST === 'true' && !isUndefined(service.database)) {
-      dropDatabase(service.database)
+    if (process.env.ZENTEST === 'true' && !isUndefined(database)) {
+      dropDatabase(database)
         .then(createDatabase)
         .then(resolve)
         .catch(reject);

@@ -3,7 +3,6 @@ version: '3'
 services:
   #  Development Database
   db:
-    build: ./cd-db
     image: coderdojo/cp-local-development:database
     restart: always
     volumes:
@@ -13,9 +12,6 @@ services:
 
   #  Development serivces
   zen:
-    build:
-      context: workspace-zen/cp-zen-platform
-      dockerfile: dev.Dockerfile
     image: coderdojo/cp-zen-platform:dev
     ports:
       - "8000:8000"
@@ -33,22 +29,16 @@ services:
       - CD_EVENTS=events
       - CD_BADGES=badges
     volumes:
-      - ./workspace-zen/cp-translations:/usr/src/cp-translations
-      - ./workspace-zen/cp-zen-frontend:/usr/src/cp-zen-frontend
-      - ./workspace-zen/cp-zen-platform:/usr/src/app
+      - ./workspace-zen/cp-translations:/usr/src/cp-translations:Z
+      - ./workspace-zen/cp-zen-frontend:/usr/src/cp-zen-frontend:Z
+      - ./workspace-zen/cp-zen-platform:/usr/src/app:Z
   frontend:
-    build:
-      context: workspace-zen/cp-zen-frontend
-      dockerfile: Dockerfile
     image: coderdojo/cp-zen-frontend
     restart: always
     volumes:
-      - ./workspace-zen/cp-translations:/usr/src/cp-translations
-      - ./workspace-zen/cp-zen-frontend:/usr/src/app
+      - ./workspace-zen/cp-translations:/usr/src/cp-translations:Z
+      - ./workspace-zen/cp-zen-frontend:/usr/src/app:Z
   dojos:
-    build:
-      context: workspace-zen/cp-dojos-service
-      dockerfile: dev.Dockerfile
     image: coderdojo/cp-dojos-service:dev
     env_file: ./workspace-zen/cp-dojos-service/config/development.env
     environment:
@@ -61,12 +51,9 @@ services:
     depends_on:
       - db
     volumes:
-      - ./workspace-zen/cp-translations:/usr/src/cp-translations
-      - ./workspace-zen/cp-dojos-service:/usr/src/app
+      - ./workspace-zen/cp-translations:/usr/src/cp-translations:Z
+      - ./workspace-zen/cp-dojos-service:/usr/src/app:Z
   users:
-    build:
-      context: workspace-zen/cp-users-service
-      dockerfile: dev.Dockerfile
     image: coderdojo/cp-users-service:dev
     env_file: ./workspace-zen/cp-users-service/config/development.env
     environment:
@@ -79,12 +66,9 @@ services:
     depends_on:
       - db
     volumes:
-      - ./workspace-zen/cp-translations:/usr/src/cp-translations
-      - ./workspace-zen/cp-users-service:/usr/src/app
+      - ./workspace-zen/cp-translations:/usr/src/cp-translations:Z
+      - ./workspace-zen/cp-users-service:/usr/src/app:Z
   events:
-    build:
-      context: workspace-zen/cp-events-service
-      dockerfile: dev.Dockerfile
     image: coderdojo/cp-events-service:dev
     env_file: ./workspace-zen/cp-events-service/config/development.env
     environment:
@@ -97,10 +81,9 @@ services:
     depends_on:
       - db
     volumes:
-      - ./workspace-zen/cp-translations:/usr/src/cp-translations
-      - ./workspace-zen/cp-events-service:/usr/src/app
+      - ./workspace-zen/cp-translations:/usr/src/cp-translations:Z
+      - ./workspace-zen/cp-events-service:/usr/src/app:Z
   badges:
-    build: ./workspace-zen/cp-badges-service
     image: coderdojo/cp-badges-service:latests
     restart: always
     env_file: ./workspace-zen/cp-badges-service/config/development.env
@@ -113,7 +96,6 @@ services:
 
   #  Test Data services for setup
   localdev:
-    build: .
     image: coderdojo/cp-local-development:latest
     environment:
       - CD_USERS=test-users
