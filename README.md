@@ -48,7 +48,7 @@ $ git clone https://github.com/CoderDojo/cp-badges-service.git workspace-zen/cp-
 $ git clone https://github.com/CoderDojo/cp-translations-tests workspace-zen/cp-translations
 ```
 
-You may have permission errors on Windows in which case you need to change owner ship to yourself.
+You may have permission errors on Windows in which case you need to change ownership to yourself.
 
 #### Docker-compose
 
