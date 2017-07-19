@@ -1,0 +1,158 @@
+---
+version: '3'
+services:
+  #  Development Database
+  db:
+    image: coderdojo/cp-local-development:database
+    restart: always
+    volumes:
+      - pg-data:/data/postgres
+    environment:
+      - POSTGRES_PASSWORD=QdYx3D5y
+
+  #  Development serivces
+  zen:
+    image: coderdojo/cp-zen-platform:dev
+    ports:
+      - "8000:8000"
+    restart: always
+    env_file: ./workspace-zen/cp-zen-platform/web/config/development.env
+    depends_on:
+      - users
+      - dojos
+      - events
+      - badges
+      - frontend
+    environment:
+      - CD_USERS=users
+      - CD_DOJOS=dojos
+      - CD_EVENTS=events
+      - CD_BADGES=badges
+    volumes:
+      - ./workspace-zen/cp-translations:/usr/src/cp-translations:Z
+      - ./workspace-zen/cp-zen-frontend:/usr/src/cp-zen-frontend:Z
+      - ./workspace-zen/cp-zen-platform:/usr/src/app:Z
+  frontend:
+    image: coderdojo/cp-zen-frontend
+    restart: always
+    volumes:
+      - ./workspace-zen/cp-translations:/usr/src/cp-translations:Z
+      - ./workspace-zen/cp-zen-frontend:/usr/src/app:Z
+  dojos:
+    image: coderdojo/cp-dojos-service:dev
+    env_file: ./workspace-zen/cp-dojos-service/config/development.env
+    environment:
+      - CD_USERS=users
+      - CD_EVENTS=events
+      - CD_BADGES=badges
+      - POSTGRES_HOST=db
+      - ZENTEST=false
+    restart: always
+    depends_on:
+      - db
+    volumes:
+      - ./workspace-zen/cp-translations:/usr/src/cp-translations:Z
+      - ./workspace-zen/cp-dojos-service:/usr/src/app:Z
+  users:
+    image: coderdojo/cp-users-service:dev
+    env_file: ./workspace-zen/cp-users-service/config/development.env
+    environment:
+      - CD_DOJOS=dojos
+      - CD_EVENTS=events
+      - CD_BADGES=badges
+      - POSTGRES_HOST=db
+      - ZENTEST=false
+    restart: always
+    depends_on:
+      - db
+    volumes:
+      - ./workspace-zen/cp-translations:/usr/src/cp-translations:Z
+      - ./workspace-zen/cp-users-service:/usr/src/app:Z
+  events:
+    image: coderdojo/cp-events-service:dev
+    env_file: ./workspace-zen/cp-events-service/config/development.env
+    environment:
+      - CD_USERS=users
+      - CD_DOJOS=dojos
+      - CD_BADGES=badges
+      - POSTGRES_HOST=db
+      - ZENTEST=false
+    restart: always
+    depends_on:
+      - db
+    volumes:
+      - ./workspace-zen/cp-translations:/usr/src/cp-translations:Z
+      - ./workspace-zen/cp-events-service:/usr/src/app:Z
+  badges:
+    image: coderdojo/cp-badges-service:latests
+    restart: always
+    env_file: ./workspace-zen/cp-badges-service/config/development.env
+    environment:
+      - CD_USERS=users
+      - CD_DOJOS=dojos
+      - CD_EVENTS=events
+    depends_on:
+      - db
+
+  #  Test Data services for setup
+  localdev:
+    image: coderdojo/cp-local-development:latest
+    environment:
+      - CD_USERS=test-users
+      - CD_DOJOS=test-dojos
+      - CD_EVENTS=test-events
+      - ZENTEST=false
+      - POSTGRES_PASSWORD=QdYx3D5y
+      - POSTGRES_HOST=db
+      - POSTGRES_USERNAME
+    volumes:
+      - ./workspace-zen:/usr/src/app/workspace-zen
+    depends_on:
+      - test-users
+      - test-dojos
+      - test-events
+  test-events:
+    image: coderdojo/cp-events-service:latest
+    command: npm run testdata
+    env_file: ./workspace-zen/cp-events-service/config/development.env
+    expose:
+      - "11306"
+    environment:
+      - POSTGRES_HOST=db
+      - CD_EVENTS=events
+      - CD_USERS=users
+      - CD_DOJOS=dojos
+      - ZENTEST=false
+    depends_on:
+      - events
+  test-users:
+    image: coderdojo/cp-users-service:latest
+    command: npm run testdata
+    env_file: ./workspace-zen/cp-users-service/config/development.env
+    expose:
+      - "11303"
+    environment:
+      - POSTGRES_HOST=db
+      - CD_USERS=users
+      - CD_EVENTS=events
+      - CD_DOJOS=dojos
+      - ZENTEST=false
+    depends_on:
+      - users
+  test-dojos:
+    image: coderdojo/cp-dojos-service:latest
+    command: npm run testdata
+    env_file: ./workspace-zen/cp-dojos-service/config/development.env
+    expose:
+      - "11301"
+    environment:
+      - POSTGRES_HOST=db
+      - CD_DOJOS=dojos
+      - CD_USERS=users
+      - CD_EVENTS=events
+      - ZENTEST=false
+    depends_on:
+      - dojos
+
+volumes:
+  pg-data:

@@ -5,13 +5,17 @@
   "main": "localdev.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "./node_modules/.bin/semistandard *.js",
-    "start": "./localdev.js run zen",
-    "gulp": "gulp"
+    "start": "node localdev.js",
+    "lint": "eslint *.js",
+    "format": "eslint *.js --fix",
+    "precommit": "lint-staged"
   },
-  "precommit": [
-    "npm run lint"
-  ],
+  "lint-staged": {
+    "*.js": [
+      "eslint --fix",
+      "git add"
+    ]
+  },
   "author": "CoderDojo Foundation",
   "repository": {
     "type": "git",
@@ -22,19 +26,23 @@
   },
   "license": "MIT",
   "dependencies": {
-    "async": "1.3.0",
-    "chokidar": "1.0.3",
-    "debug": "2.2.0",
-    "lodash": "3.10.0",
-    "minimist": "1.1.1",
-    "mkdirp": "0.5.1",
-    "pg": "4.4.0",
-    "precommit": "1.1.5",
-    "seneca": "^1.4.0"
+    "debug": "^2.6.8",
+    "lodash": "^4.17.4",
+    "pg": "^6.4.0",
+    "seneca": "^3.3.0"
   },
   "devDependencies": {
-    "es6-promise": "3.0.2",
-    "semistandard": "7.0.2",
-    "gulp": "3.9.1"
+    "eslint": "^3.19.0",
+    "eslint-config-airbnb": "^15.0.1",
+    "eslint-config-standard": "10.2.1",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^5.0.1",
+    "eslint-plugin-lodash": "^2.4.3",
+    "eslint-plugin-node": "^4.2.2",
+    "eslint-plugin-promise": "3.5.0",
+    "eslint-plugin-react": "^7.0.1",
+    "eslint-plugin-standard": "3.0.1",
+    "husky": "^0.14.2",
+    "lint-staged": "^4.0.0"
   }
 }

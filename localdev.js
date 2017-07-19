@@ -1,47 +1,9 @@
-#!/usr/bin/env node
-var system = require('./system.js');
-var _ = require('lodash');
+const system = require('./system.js');
+const testdata = require('./testdata.js');
 
-function usage () {
-  console.log('Usage "./localdev.js <command>" where command is one of: ');
-  console.log('  "init <system>": does a fresh setup of your local dev environment');
-  console.log('  "run <system>": runs all the services in your system');
-  console.log('  "testdata <system>": loads test data for each service');
-  console.log('  "test <system>": reset test data and run test');
-  process.exit;
-}
-
-function main (cb) {
-  var argv = require('minimist')(process.argv.slice(2));
-  process.env.ZENTEST = argv.zentest || 'false'; // added as env var for use in services
-  var command = argv._[0];
-  if (!command) return usage();
-
-  switch (command) {
-    case 'init':
-      require('./init.js')(argv, system, cb);
-      break;
-    case 'run':
-      require('./run.js')(argv, system, cb);
-      break;
-    case 'testdata':
-      require('./testdata.js')(argv, system, cb);
-      break;
-    case 'test':
-      // Assume zentest true by default
-      process.env.ZENTEST = argv.zentest || 'true'; // added as env var for use in services
-      require('./test.js')(argv, system, cb);
-      break;
-    default:
-      return cb('unknown command: ' + command);
-  }
-}
-
-main(function (err, output) {
-  if (err) return console.error(err);
-  if (output && typeof output === 'string') return console.log(output);
-  var out = _.filter(_.flatten(output), function (o) {
-    if (o) return o;
+testdata(system)
+  .then(() => process.exit(0))
+  .catch(err => {
+    console.error(err);
+    process.exit(1);
   });
-  console.log(out.join('\n'));
-});

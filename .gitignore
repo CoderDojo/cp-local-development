@@ -1,6 +1,7 @@
 .DS_Store
 *~
 node_modules
-workspace*
-local-env.js
+workspace-zen/*
+!workspace-zen/.gitkeep
 npm-debug.log
+*.log*
