@@ -148,7 +148,7 @@ The [system.js](system.js) file is a mixture of code and data, and it's where th
 ```
 zen: {
   services: [{
-    name: 'cp-salesforce-service',
+    name: 'cp-dojos-service',
     test: {
       name: 'test-dojo-data',
       port: 11301,
