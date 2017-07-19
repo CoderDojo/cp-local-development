@@ -175,7 +175,7 @@ To set local environment variables, set them in the `docker-compose.yml`:
 ### Testing
 
 To create a clean test database add the env variable `ZENTEST=true` to the testdata container before
-running `docker-compose up testdata`
+running `docker-compose up localdev`. This 
 
 ### Debug
 
