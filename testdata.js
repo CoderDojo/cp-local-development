@@ -26,18 +26,21 @@ const postgres = {
 };
 const client = new pg.Client(postgres);
 
-module.exports = systems => new Promise((resolve, reject) => {
+module.exports = systems => new Promise(async (resolve, reject) => {
   const sysName = 'zen';
   const system = systems[sysName];
   debug(system);
   if (!system) reject(`System not found: ${sysName}`);
   console.log('System:', sysName, util.inspect(system.stringify(), true, null));
-  setupDatabases(system.services)
-      .then(runSeneca)
-      .then(loadAllTestData)
-      .then(killServices)
-      .then(resolve)
-      .catch(reject);
+  try {
+    await setupDatabases(system.services);
+    await runSeneca(system.services);
+    await loadAllTestData();
+    await killServices(system.services);
+    resolve();
+  } catch (err) {
+    reject(err);
+  }
 });
 
 function setupDatabases(services) {
@@ -47,22 +50,21 @@ function setupDatabases(services) {
       Promise.all(services.map(resetDatabase))
         .then(() => {
           client.end();
-          resolve(services);
-        })
-        .catch(reject);
+          resolve();
+        }).catch(reject);
     });
   });
 }
 
 function resetDatabase({ database }) {
-  return new Promise((resolve, reject) => {
-    if (process.env.ZENTEST === 'true' && !isUndefined(database)) {
-      dropDatabase(database)
-        .then(createDatabase)
-        .then(resolve)
-        .catch(reject);
-    } else {
+  return new Promise(async (resolve, reject) => {
+    if (isUndefined(database)) resolve();
+    try {
+      if (process.env.ZENTEST === 'true') await dropDatabase(database);
+      await createDatabase(database);
       resolve();
+    } catch (err) {
+      reject(err);
     }
   });
 }
@@ -74,7 +76,7 @@ function dropDatabase(database) {
     client.query(query, err => {
       if (err) reject(new Error(`Error dropping database: ${err}`));
       console.log(`${database} dropped`);
-      resolve(database);
+      resolve();
     });
   });
 }
@@ -122,26 +124,27 @@ function runSeneca(services) {
         }
         resolve();
       })
-    ))).then(() => resolve(services))
+    ))).then(resolve)
       .catch(reject);
   });
 }
 
-function loadAllTestData(services) {
-  return new Promise((resolve, reject) => {
-    createUsers()
-      .then(createAgreements)
-      .then(createDojoLeads)
-      .then(createDojos)
-      .then(createPolls)
-      .then(createEvents)
-      .then(linkDojoUsers)
-      .then(linkEventsUsers)
-      .then(() => {
-        console.log('Test Data Loaded');
-        resolve(services);
-      })
-      .catch(reject);
+function loadAllTestData() {
+  return new Promise(async (resolve, reject) => {
+    try {
+      await createUsers();
+      await createAgreements();
+      await createDojoLeads();
+      await createDojos();
+      await createPolls();
+      await createEvents();
+      await linkDojoUsers();
+      await linkEventsUsers();
+      console.log('Test Data Loaded');
+      resolve();
+    } catch (err) {
+      reject(err);
+    }
   });
 }
 
@@ -175,9 +178,11 @@ function createAgreements() {
 
 function createDojos() {
   return new Promise((resolve, reject) => {
-    seneca.act(
-      { role: 'test-dojo-data', cmd: 'insert', entity: 'dojo' },
-    err => {
+    seneca.act({
+      role  : 'test-dojo-data',
+      cmd   : 'insert',
+      entity: 'dojo',
+    }, err => {
       if (err) reject(err);
       console.log('Created Dojos');
       resolve();
