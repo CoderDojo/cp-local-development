@@ -14,8 +14,7 @@ services:
   zen:
     image: coderdojo/cp-zen-platform:dev
     ports:
-      - "8000:8000"
-    restart: always
+      - '8000:8000'
     env_file: ./workspace-zen/cp-zen-platform/web/config/development.env
     depends_on:
       - users
@@ -23,15 +22,19 @@ services:
       - events
       - badges
       - frontend
+      - eventbrite
+      - organisations
     environment:
       - CD_USERS=users
       - CD_DOJOS=dojos
       - CD_EVENTS=events
       - CD_BADGES=badges
+      - CD_EVENTBRITE=eventbrite
+      - CD_ORGANISATIONS=organisations
     volumes:
       - ./workspace-zen/cp-translations:/usr/src/cp-translations:Z
-      - ./workspace-zen/cp-zen-frontend:/usr/src/cp-zen-frontend:Z
       - ./workspace-zen/cp-zen-platform:/usr/src/app:Z
+      - ./workspace-zen/cp-zen-frontend:/usr/src/cp-zen-frontend:Z
   frontend:
     image: coderdojo/cp-zen-frontend
     restart: always
@@ -47,7 +50,6 @@ services:
       - CD_BADGES=badges
       - POSTGRES_HOST=db
       - ZENTEST=false
-    restart: always
     depends_on:
       - db
     volumes:
@@ -62,7 +64,6 @@ services:
       - CD_BADGES=badges
       - POSTGRES_HOST=db
       - ZENTEST=false
-    restart: always
     depends_on:
       - db
     volumes:
@@ -77,26 +78,42 @@ services:
       - CD_BADGES=badges
       - POSTGRES_HOST=db
       - ZENTEST=false
-    restart: always
     depends_on:
       - db
     volumes:
       - ./workspace-zen/cp-translations:/usr/src/cp-translations:Z
       - ./workspace-zen/cp-events-service:/usr/src/app:Z
   badges:
-    image: coderdojo/cp-badges-service:latests
-    restart: always
+    image: coderdojo/cp-badges-service:dev
     env_file: ./workspace-zen/cp-badges-service/config/development.env
     environment:
       - CD_USERS=users
       - CD_DOJOS=dojos
       - CD_EVENTS=events
-    depends_on:
-      - db
+    volumes:
+      - ./workspace-zen/cp-translations:/usr/src/cp-translations:Z
+      - ./workspace-zen/cp-badges-service:/usr/src/app:Z
+  eventbrite:
+    image: coderdojo/cp-eventbrite-service:dev
+    env_file: ./workspace-zen/cp-eventbrite-service/config/development.env
+    environment:
+      - CD_DOJOS=dojos
+      - CD_EVENTS=events
+    volumes:
+      - ./workspace-zen/cp-translations:/usr/src/cp-translations:Z
+      - ./workspace-zen/cp-eventbrite-service:/usr/src/app:Z
+  organisations:
+    image: coderDojo/cp-organisations-service:dev
+    env_file: ./workspace-zen/cp-eventbrite-service/config/development.env
+    environment:
+      - CD_USERS=users
+    volumes:
+      - ./workspace-zen/cp-translations:/usr/src/cp-translations:Z
+      - ./workspace-zen/cp-eventbrite-service:/usr/src/app:Z
 
   #  Test Data services for setup
   localdev:
-    image: coderdojo/cp-local-development:latest
+    image: coderdojo/cp-local-development
     environment:
       - CD_USERS=test-users
       - CD_DOJOS=test-dojos
@@ -153,6 +170,5 @@ services:
       - ZENTEST=false
     depends_on:
       - dojos
-
 volumes:
   pg-data:
