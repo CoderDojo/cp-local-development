@@ -1,74 +1,54 @@
 const map = require('lodash/map');
 const toPlainObject = require('lodash/toPlainObject');
-const each = require('lodash/forEach');
 const isUndefined = require('lodash/isUndefined');
 
-const serviceName = prefix => `${prefix}-service`;
+class Service {
 
-const baseRepo = 'https://github.com/CoderDojo';
-const addGetters = services => {
-  each(services, service => {
-    if (isUndefined(service.repo)) service.repo = `${baseRepo}/${service.name}`;
-  });
-};
+  constructor(name, port, host) {
+    this.base = `cp-${name}`;
+    this.name = name;
+    this.testPort = port;
+    this.testHost = host;
+  }
 
-const serviceDB = prefix => {
-  const db = process.env.ZENTEST === 'true' ? '-test' : '-development';
-  return prefix + db;
-};
+  get name() {
+    const serviceName = `${this.base}-service`;
+    return serviceName;
+  }
 
-const stringify = ({ services }) => ({
-  services: map(services, toPlainObject),
-});
+  get database() {
+    const serviceDB = `${this.base}${process.env.ZENTEST === 'true' ? '-test' : '-development'}`;
+    return serviceDB;
+  }
+
+  get base() {
+    return this.base;
+  }
+
+  get test() {
+    if (isUndefined(this.testPort) || isUndefined(this.testHost)) return undefined;
+    return {
+      name: `test-${this.name}-data`,
+      port: this.testPort,
+      host: this.testHost,
+    };
+  }
+}
 
 module.exports = {
   zen: {
     get services() {
-      const services = [{
-        base: 'cp-dojos',
-        get name() {
-          return serviceName(this.base);
-        },
-        get database() {
-          return serviceDB(this.base);
-        },
-        test: {
-          name: 'test-dojo-data',
-          port: 11301,
-          host: process.env.CD_DOJOS || 'localhost',
-        },
-      }, {
-        base: 'cp-users',
-        get name() {
-          return serviceName(this.base);
-        },
-        get database() {
-          return serviceDB(this.base);
-        },
-        test: {
-          name: 'test-user-data',
-          port: 11303,
-          host: process.env.CD_USERS || 'localhost',
-        },
-      }, {
-        base: 'cp-events',
-        get name() {
-          return serviceName(this.base);
-        },
-        get database() {
-          return serviceDB(this.base);
-        },
-        test: {
-          name: 'test-event-data',
-          port: 11306,
-          host: process.env.CD_EVENTS || 'localhost',
-        },
-      }];
-      addGetters(services);
-      return services;
+      return [
+        new Service('dojos', 11301, process.env.CD_DOJOS || 'localhost'),
+        new Service('users', 11303, process.env.CD_USERS || 'localhost'),
+        new Service('events', 11306, process.env.CD_EVENTS || 'localhost'),
+        new Service('oganisations'),
+      ];
     },
     stringify() {
-      return stringify(this);
+      return {
+        services: map(this.services, toPlainObject),
+      };
     },
   },
 };
