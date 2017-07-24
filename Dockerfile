@@ -1,4 +1,4 @@
-FROM node:boron-alpine
+FROM node:alpine
 MAINTAINER butlerx <butlerx@notthe.cloud>
 
 RUN apk add --update git build-base python postgresql-client &&\
