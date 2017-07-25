@@ -26,22 +26,21 @@ const postgres = {
 };
 const client = new pg.Client(postgres);
 
-module.exports = systems => new Promise(async (resolve, reject) => {
+module.exports = async systems => {
   const sysName = 'zen';
   const system = systems[sysName];
   debug(system);
-  if (!system) reject(`System not found: ${sysName}`);
+  if (!system) throw new Error(`System not found: ${sysName}`);
   console.log('System:', sysName, util.inspect(system.stringify(), true, null));
   try {
     await setupDatabases(system.services);
     await runSeneca(system.services);
     await loadAllTestData();
     await killServices(system.services);
-    resolve();
   } catch (err) {
-    reject(err);
+    throw err;
   }
-});
+};
 
 function setupDatabases(services) {
   return new Promise((resolve, reject) => {
@@ -56,17 +55,15 @@ function setupDatabases(services) {
   });
 }
 
-function resetDatabase({ database }) {
-  return new Promise(async (resolve, reject) => {
-    if (isUndefined(database)) resolve();
-    try {
-      if (process.env.ZENTEST === 'true') await dropDatabase(database);
-      await createDatabase(database);
-      resolve();
-    } catch (err) {
-      reject(err);
-    }
-  });
+async function resetDatabase({ database }) {
+  if (isUndefined(database)) return;
+  try {
+    if (process.env.ZENTEST === 'true') await dropDatabase(database);
+    await createDatabase(database);
+    return;
+  } catch (err) {
+    throw err;
+  }
 }
 
 function dropDatabase(database) {
@@ -129,23 +126,20 @@ function runSeneca(services) {
   });
 }
 
-function loadAllTestData() {
-  return new Promise(async (resolve, reject) => {
-    try {
-      await createUsers();
-      await createAgreements();
-      await createDojoLeads();
-      await createDojos();
-      await createPolls();
-      await createEvents();
-      await linkDojoUsers();
-      await linkEventsUsers();
-      console.log('Test Data Loaded');
-      resolve();
-    } catch (err) {
-      reject(err);
-    }
-  });
+async function loadAllTestData() {
+  try {
+    await createUsers();
+    await createAgreements();
+    await createDojoLeads();
+    await createDojos();
+    await createPolls();
+    await createEvents();
+    await linkDojoUsers();
+    await linkEventsUsers();
+    console.log('Test Data Loaded');
+  } catch (err) {
+    throw err;
+  }
 }
 
 function createUsers() {
