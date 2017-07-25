@@ -43,15 +43,15 @@ module.exports = async systems => {
 };
 
 function setupDatabases(services) {
-  return new Promise((resolve, reject) => {
-    client.connect(err => {
-      if (err) reject(new Error(`Postgres connection error: ${err}`));
-      Promise.all(services.map(resetDatabase))
-        .then(() => {
-          client.end();
-          resolve();
-        }).catch(reject);
-    });
+  client.connect(async err => {
+    if (err) throw new Error(`Postgres connection error: ${err}`);
+    try {
+      await Promise.all(services.map(resetDatabase));
+      client.end();
+    } catch (reject) {
+      client.end();
+      throw reject;
+    }
   });
 }
 
@@ -60,7 +60,6 @@ async function resetDatabase({ database }) {
   try {
     if (process.env.ZENTEST === 'true') await dropDatabase(database);
     await createDatabase(database);
-    return;
   } catch (err) {
     throw err;
   }
@@ -83,46 +82,50 @@ function createDatabase(database) {
     if (!database) resolve();
     const query = `CREATE DATABASE "${database}"`;
     client.query(query, err => {
-      if (err && includes(err.toString(), 'already exists')) {
+      if (err && !includes(err.toString(), 'already exists')) {
         reject(new Error(`Error creating database: ${err}`));
       }
       console.log(`${database} created`);
-      resolve(database);
+      resolve();
     });
   });
 }
 
-function runSeneca(services) {
-  return new Promise((resolve, reject) => {
+async function runSeneca(services) {
+  try {
     seneca.listen({ timeout: 10000 });
-    Promise.all(services.map(({ test, base }) => (
-      new Promise(resolve => {
-        if (test) {
-          // main test service of the µs
-          seneca.client({
-            type: 'web',
-            host: test.host,
-            port: test.port,
-            pin : {
-              role: `${base}-test`,
-              cmd : '*',
-            },
-          });
-          // data loader specific to the µs
-          seneca.client({
-            type: 'web',
-            host: test.host,
-            port: test.port,
-            pin : {
-              role: test.name,
-              cmd : '*',
-            },
-          });
-        }
-        resolve();
-      })
-    ))).then(resolve)
-      .catch(reject);
+    await Promise.all(services.map(addClient));
+  } catch (err) {
+    throw err;
+  }
+}
+
+function addClient({ test, base }) {
+  return new Promise((resolve, reject) => {
+    if (!isUndefined(test.name) && !isUndefined(test.host) && !isUndefined(test.port)) {
+      // main test service of the µs
+      seneca.client({
+        type: 'web',
+        host: test.host,
+        port: test.port,
+        pin : {
+          role: `${base}-test`,
+          cmd : '*',
+        },
+      });
+      // data loader specific to the µs
+      seneca.client({
+        type: 'web',
+        host: test.host,
+        port: test.port,
+        pin : {
+          role: test.name,
+          cmd : '*',
+        },
+      });
+      resolve();
+    }
+    reject(new Error('No test services'));
   });
 }
 
@@ -254,18 +257,16 @@ function linkEventsUsers() {
   });
 }
 
-function killServices(services) {
-  return new Promise((resolve, reject) => {
-    const testServices = filter(services, 'test');
-    Promise.all(testServices.map(killService))
-      .then(() => {
-        seneca.close(err => {
-          if (err) reject(err);
-          resolve();
-        });
-      })
-      .catch(reject);
-  });
+async function killServices(services) {
+  const testServices = filter(services, 'test');
+  try {
+    await Promise.all(testServices.map(killService));
+    seneca.close(err => {
+      if (err) throw (err);
+    });
+  } catch (err) {
+    throw err;
+  }
 }
 
 function killService({ base }) {
