@@ -1,13 +1,17 @@
 const map = require('lodash/map');
 const toPlainObject = require('lodash/toPlainObject');
+const isUndefined = require('lodash/isUndefined');
 
 class Service {
   constructor(name, port, host) {
     this.base = `cp-${name}s`;
-    this.test = {};
-    this.test.port = port;
-    this.test.host = host;
-    this.test.name = `test-${name}-data`;
+    if (!isUndefined(port) && !isUndefined(host)) {
+      this.test = {
+        port,
+        host,
+        name: `test-${name}-data`,
+      };
+    }
     this.name = `${this.base}-service`;
     this.database = `${this.base}${process.env.ZENTEST === 'true' ? '-test' : '-development'}`;
   }

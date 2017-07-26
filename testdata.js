@@ -3,7 +3,7 @@ const util = require('util');
 const filter = require('lodash/filter');
 const isUndefined = require('lodash/isUndefined');
 const includes = require('lodash/includes');
-const pg = require('pg');
+const { Client } = require('pg');
 const seneca = require('seneca')({
   timeout  : 200000,
   transport: {
@@ -24,7 +24,7 @@ const postgres = {
   user    : process.env.POSTGRES_USERNAME || 'platform',
   password: process.env.POSTGRES_PASSWORD || 'QdYx3D5y',
 };
-const client = new pg.Client(postgres);
+const client = new Client(postgres);
 
 module.exports = async systems => {
   const sysName = 'zen';
@@ -37,22 +37,21 @@ module.exports = async systems => {
     await runSeneca(system.services);
     await loadAllTestData();
     await killServices(system.services);
+    process(0);
   } catch (err) {
-    throw err;
+    console.error(err);
+    process.exit(1);
   }
 };
 
-function setupDatabases(services) {
-  client.connect(async err => {
-    if (err) throw new Error(`Postgres connection error: ${err}`);
-    try {
-      await Promise.all(services.map(resetDatabase));
-      client.end();
-    } catch (reject) {
-      client.end();
-      throw reject;
-    }
-  });
+async function setupDatabases(services) {
+  try {
+    await client.connect();
+    await Promise.all(services.map(resetDatabase));
+    await client.end();
+  } catch (reject) {
+    throw reject;
+  }
 }
 
 async function resetDatabase({ database }) {
@@ -65,30 +64,30 @@ async function resetDatabase({ database }) {
   }
 }
 
-function dropDatabase(database) {
-  return new Promise((resolve, reject) => {
-    if (!database) resolve();
-    const query = `DROP DATABASE IF EXISTS "${database}"`;
-    client.query(query, err => {
-      if (err) reject(new Error(`Error dropping database: ${err}`));
-      console.log(`${database} dropped`);
-      resolve();
-    });
-  });
+async function dropDatabase(database) {
+  if (!database) return;
+  const query = `DROP DATABASE IF EXISTS "${database}"`;
+  try {
+    await client.query(query);
+  } catch (err) {
+    throw new Error(`Error dropping database: ${err}`);
+  }
+  console.log(`${database} dropped`);
 }
 
-function createDatabase(database) {
-  return new Promise((resolve, reject) => {
-    if (!database) resolve();
-    const query = `CREATE DATABASE "${database}"`;
-    client.query(query, err => {
-      if (err && !includes(err.toString(), 'already exists')) {
-        reject(new Error(`Error creating database: ${err}`));
-      }
-      console.log(`${database} created`);
-      resolve();
-    });
-  });
+async function createDatabase(database) {
+  if (!database) return;
+  const query = `CREATE DATABASE "${database}"`;
+  try {
+    await client.query(query);
+  } catch (err) {
+    if (includes(err.toString(), 'already exists')) {
+      console.log(`${database} already existed`);
+      return;
+    }
+    throw new Error(`Error creating database: ${err}`);
+  }
+  console.log(`${database} created`);
 }
 
 async function runSeneca(services) {
@@ -101,7 +100,7 @@ async function runSeneca(services) {
 }
 
 function addClient({ test, base }) {
-  if (!isUndefined(test.name) && !isUndefined(test.host) && !isUndefined(test.port)) {
+  if (!isUndefined(test)) {
     // main test service of the µs
     seneca.client({
       type: 'web',
@@ -144,122 +143,146 @@ async function loadAllTestData() {
 
 function createUsers() {
   return new Promise((resolve, reject) => {
-    seneca.act({
-      role  : 'test-user-data',
-      cmd   : 'insert',
-      entity: 'user',
-    }, err => {
-      if (err) reject(err);
-      console.log('Created Users');
-      resolve();
-    });
+    seneca.act(
+      {
+        role  : 'test-user-data',
+        cmd   : 'insert',
+        entity: 'user',
+      },
+      err => {
+        if (err) reject(err);
+        console.log('Created Users');
+        resolve();
+      },
+    );
   });
 }
 
 function createAgreements() {
   return new Promise((resolve, reject) => {
-    seneca.act({
-      role  : 'test-user-data',
-      cmd   : 'insert',
-      entity: 'agreement',
-    }, err => {
-      if (err) reject(err);
-      console.log('Created Agreements');
-      resolve();
-    });
+    seneca.act(
+      {
+        role  : 'test-user-data',
+        cmd   : 'insert',
+        entity: 'agreement',
+      },
+      err => {
+        if (err) reject(err);
+        console.log('Created Agreements');
+        resolve();
+      },
+    );
   });
 }
 
 function createDojos() {
   return new Promise((resolve, reject) => {
-    seneca.act({
-      role  : 'test-dojo-data',
-      cmd   : 'insert',
-      entity: 'dojo',
-    }, err => {
-      if (err) reject(err);
-      console.log('Created Dojos');
-      resolve();
-    });
+    seneca.act(
+      {
+        role  : 'test-dojo-data',
+        cmd   : 'insert',
+        entity: 'dojo',
+      },
+      err => {
+        if (err) reject(err);
+        console.log('Created Dojos');
+        resolve();
+      },
+    );
   });
 }
 
 function createDojoLeads() {
   return new Promise((resolve, reject) => {
-    seneca.act({
-      role  : 'test-dojo-data',
-      cmd   : 'insert',
-      entity: 'dojo_lead',
-    }, err => {
-      if (err) reject(err);
-      console.log('Created Dojo Leads');
-      resolve();
-    });
+    seneca.act(
+      {
+        role  : 'test-dojo-data',
+        cmd   : 'insert',
+        entity: 'dojo_lead',
+      },
+      err => {
+        if (err) reject(err);
+        console.log('Created Dojo Leads');
+        resolve();
+      },
+    );
   });
 }
 
 function createPolls() {
   return new Promise((resolve, reject) => {
-    seneca.act({
-      role  : 'test-dojo-data',
-      cmd   : 'insert',
-      entity: 'poll',
-    }, err => {
-      if (err) reject(err);
-      console.log('Created Polls');
-      resolve();
-    });
+    seneca.act(
+      {
+        role  : 'test-dojo-data',
+        cmd   : 'insert',
+        entity: 'poll',
+      },
+      err => {
+        if (err) reject(err);
+        console.log('Created Polls');
+        resolve();
+      },
+    );
   });
 }
 
 function createEvents() {
   return new Promise((resolve, reject) => {
-    seneca.act({
-      role  : 'test-event-data',
-      cmd   : 'insert',
-      entity: 'event',
-    }, err => {
-      if (err) reject(err);
-      console.log('Created Events');
-      resolve();
-    });
+    seneca.act(
+      {
+        role  : 'test-event-data',
+        cmd   : 'insert',
+        entity: 'event',
+      },
+      err => {
+        if (err) reject(err);
+        console.log('Created Events');
+        resolve();
+      },
+    );
   });
 }
 
 function linkDojoUsers() {
   return new Promise((resolve, reject) => {
-    seneca.act({
-      role  : 'test-dojo-data',
-      cmd   : 'insert',
-      entity: 'user_dojo',
-    }, err => {
-      if (err) reject(err);
-      console.log('Linked Dojo and Users');
-      resolve();
-    });
+    seneca.act(
+      {
+        role  : 'test-dojo-data',
+        cmd   : 'insert',
+        entity: 'user_dojo',
+      },
+      err => {
+        if (err) reject(err);
+        console.log('Linked Dojo and Users');
+        resolve();
+      },
+    );
   });
 }
 
 function linkEventsUsers() {
   return new Promise((resolve, reject) => {
-    seneca.act({
-      role  : 'test-event-data',
-      cmd   : 'insert',
-      entity: 'application',
-    }, err => {
-      if (err) reject(err);
-      console.log('Linked Events and Users');
-      resolve();
-    });
+    seneca.act(
+      {
+        role  : 'test-event-data',
+        cmd   : 'insert',
+        entity: 'application',
+      },
+      err => {
+        if (err) reject(err);
+        console.log('Linked Events and Users');
+        resolve();
+      },
+    );
   });
 }
 
 async function killServices(services) {
-  const testServices = filter(services, service => !isUndefined(service.test.host));
+  const testServices = filter(services, 'test');
   try {
     await Promise.all(testServices.map(killService));
     seneca.close(err => {
-      if (err) throw (err);
+      if (err) throw err;
     });
   } catch (err) {
     throw err;
