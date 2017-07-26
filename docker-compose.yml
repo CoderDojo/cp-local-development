@@ -103,7 +103,7 @@ services:
       - ./workspace-zen/cp-translations:/usr/src/cp-translations:Z
       - ./workspace-zen/cp-eventbrite-service:/usr/src/app:Z
   organisations:
-    image: coderDojo/cp-organisations-service:dev
+    image: coderdojo/cp-organisations-service:dev
     env_file: ./workspace-zen/cp-eventbrite-service/config/development.env
     environment:
       - CD_USERS=users
@@ -122,8 +122,6 @@ services:
       - POSTGRES_PASSWORD=QdYx3D5y
       - POSTGRES_HOST=db
       - POSTGRES_USERNAME
-    volumes:
-      - ./workspace-zen:/usr/src/app/workspace-zen
     depends_on:
       - test-users
       - test-dojos
@@ -133,7 +131,7 @@ services:
     command: npm run testdata
     env_file: ./workspace-zen/cp-events-service/config/development.env
     expose:
-      - "11306"
+      - '11306'
     environment:
       - POSTGRES_HOST=db
       - CD_EVENTS=events
@@ -147,7 +145,7 @@ services:
     command: npm run testdata
     env_file: ./workspace-zen/cp-users-service/config/development.env
     expose:
-      - "11303"
+      - '11303'
     environment:
       - POSTGRES_HOST=db
       - CD_USERS=users
@@ -161,7 +159,7 @@ services:
     command: npm run testdata
     env_file: ./workspace-zen/cp-dojos-service/config/development.env
     expose:
-      - "11301"
+      - '11301'
     environment:
       - POSTGRES_HOST=db
       - CD_DOJOS=dojos

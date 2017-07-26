@@ -101,32 +101,29 @@ async function runSeneca(services) {
 }
 
 function addClient({ test, base }) {
-  return new Promise((resolve, reject) => {
-    if (!isUndefined(test.name) && !isUndefined(test.host) && !isUndefined(test.port)) {
-      // main test service of the µs
-      seneca.client({
-        type: 'web',
-        host: test.host,
-        port: test.port,
-        pin : {
-          role: `${base}-test`,
-          cmd : '*',
-        },
-      });
-      // data loader specific to the µs
-      seneca.client({
-        type: 'web',
-        host: test.host,
-        port: test.port,
-        pin : {
-          role: test.name,
-          cmd : '*',
-        },
-      });
-      resolve();
-    }
-    reject(new Error('No test services'));
-  });
+  if (!isUndefined(test.name) && !isUndefined(test.host) && !isUndefined(test.port)) {
+    // main test service of the µs
+    seneca.client({
+      type: 'web',
+      host: test.host,
+      port: test.port,
+      pin : {
+        role: `${base}-test`,
+        cmd : '*',
+      },
+    });
+    // data loader specific to the µs
+    seneca.client({
+      type: 'web',
+      host: test.host,
+      port: test.port,
+      pin : {
+        role: test.name,
+        cmd : '*',
+      },
+    });
+  }
+  return Promise.resolve();
 }
 
 async function loadAllTestData() {
@@ -258,7 +255,7 @@ function linkEventsUsers() {
 }
 
 async function killServices(services) {
-  const testServices = filter(services, 'test');
+  const testServices = filter(services, service => !isUndefined(service.test.host));
   try {
     await Promise.all(testServices.map(killService));
     seneca.close(err => {
@@ -270,7 +267,7 @@ async function killServices(services) {
 }
 
 function killService({ base }) {
-  console.log(`suicide ${base}`);
+  console.log(`shutdown ${base}`);
   return new Promise((resolve, reject) => {
     seneca.act({ role: `${base}-test`, cmd: 'suicide' }, err => {
       if (err) reject(err);
