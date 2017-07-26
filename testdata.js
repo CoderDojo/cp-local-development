@@ -19,7 +19,7 @@ const seneca = require('seneca')({
 
 const postgres = {
   host    : process.env.POSTGRES_HOST || 'localhost',
-  port    : 5432,
+  port    : process.env.POSTGRES_PORT || 5432,
   database: 'postgres',
   user    : process.env.POSTGRES_USERNAME || 'platform',
   password: process.env.POSTGRES_PASSWORD || 'QdYx3D5y',
@@ -30,7 +30,10 @@ module.exports = async systems => {
   const sysName = 'zen';
   const system = systems[sysName];
   debug(system);
-  if (!system) throw new Error(`System not found: ${sysName}`);
+  if (isUndefined(system)) {
+    console.error(new Error(`System not found: ${sysName}`));
+    process.exit(1);
+  }
   console.log('System:', sysName, util.inspect(system.stringify(), true, null));
   try {
     await setupDatabases(system.services);
@@ -65,10 +68,9 @@ async function resetDatabase({ database }) {
 }
 
 async function dropDatabase(database) {
-  if (!database) return;
-  const query = `DROP DATABASE IF EXISTS "${database}"`;
+  if (isUndefined(database)) return;
   try {
-    await client.query(query);
+    await client.query(`DROP DATABASE IF EXISTS "${database}"`);
   } catch (err) {
     throw new Error(`Error dropping database: ${err}`);
   }
@@ -76,10 +78,9 @@ async function dropDatabase(database) {
 }
 
 async function createDatabase(database) {
-  if (!database) return;
-  const query = `CREATE DATABASE "${database}"`;
+  if (isUndefined(database)) return;
   try {
-    await client.query(query);
+    await client.query(`CREATE DATABASE "${database}"`);
   } catch (err) {
     if (includes(err.toString(), 'already exists')) {
       console.log(`${database} already existed`);
