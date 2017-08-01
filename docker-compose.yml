@@ -36,8 +36,7 @@ services:
       - ./workspace-zen/cp-zen-platform:/usr/src/app:Z
       - ./workspace-zen/cp-zen-frontend:/usr/src/cp-zen-frontend:Z
   frontend:
-    image: coderdojo/cp-zen-frontend
-    restart: always
+    image: coderdojo/cp-zen-frontend:dev
     volumes:
       - ./workspace-zen/cp-translations:/usr/src/cp-translations:Z
       - ./workspace-zen/cp-zen-frontend:/usr/src/app:Z
