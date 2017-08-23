@@ -14,8 +14,7 @@ services:
   zen:
     image: coderdojo/cp-zen-platform:dev
     ports:
-      - "8000:8000"
-    restart: always
+      - '8000:8000'
     env_file: ./workspace-zen/cp-zen-platform/web/config/development.env
     depends_on:
       - users
@@ -23,18 +22,21 @@ services:
       - events
       - badges
       - frontend
+      - eventbrite
+      - organisations
     environment:
       - CD_USERS=users
       - CD_DOJOS=dojos
       - CD_EVENTS=events
       - CD_BADGES=badges
+      - CD_EVENTBRITE=eventbrite
+      - CD_ORGANISATIONS=organisations
     volumes:
       - ./workspace-zen/cp-translations:/usr/src/cp-translations:Z
-      - ./workspace-zen/cp-zen-frontend:/usr/src/cp-zen-frontend:Z
       - ./workspace-zen/cp-zen-platform:/usr/src/app:Z
+      - ./workspace-zen/cp-zen-frontend:/usr/src/cp-zen-frontend:Z
   frontend:
-    image: coderdojo/cp-zen-frontend
-    restart: always
+    image: coderdojo/cp-zen-frontend:dev
     volumes:
       - ./workspace-zen/cp-translations:/usr/src/cp-translations:Z
       - ./workspace-zen/cp-zen-frontend:/usr/src/app:Z
@@ -47,7 +49,6 @@ services:
       - CD_BADGES=badges
       - POSTGRES_HOST=db
       - ZENTEST=false
-    restart: always
     depends_on:
       - db
     volumes:
@@ -62,7 +63,6 @@ services:
       - CD_BADGES=badges
       - POSTGRES_HOST=db
       - ZENTEST=false
-    restart: always
     depends_on:
       - db
     volumes:
@@ -77,26 +77,42 @@ services:
       - CD_BADGES=badges
       - POSTGRES_HOST=db
       - ZENTEST=false
-    restart: always
     depends_on:
       - db
     volumes:
       - ./workspace-zen/cp-translations:/usr/src/cp-translations:Z
       - ./workspace-zen/cp-events-service:/usr/src/app:Z
   badges:
-    image: coderdojo/cp-badges-service:latests
-    restart: always
+    image: coderdojo/cp-badges-service:dev
     env_file: ./workspace-zen/cp-badges-service/config/development.env
     environment:
       - CD_USERS=users
       - CD_DOJOS=dojos
       - CD_EVENTS=events
-    depends_on:
-      - db
+    volumes:
+      - ./workspace-zen/cp-translations:/usr/src/cp-translations:Z
+      - ./workspace-zen/cp-badges-service:/usr/src/app:Z
+  eventbrite:
+    image: coderdojo/cp-eventbrite-service:dev
+    env_file: ./workspace-zen/cp-eventbrite-service/config/development.env
+    environment:
+      - CD_DOJOS=dojos
+      - CD_EVENTS=events
+    volumes:
+      - ./workspace-zen/cp-translations:/usr/src/cp-translations:Z
+      - ./workspace-zen/cp-eventbrite-service:/usr/src/app:Z
+  organisations:
+    image: coderdojo/cp-organisations-service:dev
+    env_file: ./workspace-zen/cp-eventbrite-service/config/development.env
+    environment:
+      - CD_USERS=users
+    volumes:
+      - ./workspace-zen/cp-translations:/usr/src/cp-translations:Z
+      - ./workspace-zen/cp-eventbrite-service:/usr/src/app:Z
 
   #  Test Data services for setup
   localdev:
-    image: coderdojo/cp-local-development:latest
+    image: coderdojo/cp-local-development
     environment:
       - CD_USERS=test-users
       - CD_DOJOS=test-dojos
@@ -105,8 +121,6 @@ services:
       - POSTGRES_PASSWORD=QdYx3D5y
       - POSTGRES_HOST=db
       - POSTGRES_USERNAME
-    volumes:
-      - ./workspace-zen:/usr/src/app/workspace-zen
     depends_on:
       - test-users
       - test-dojos
@@ -116,7 +130,7 @@ services:
     command: npm run testdata
     env_file: ./workspace-zen/cp-events-service/config/development.env
     expose:
-      - "11306"
+      - '11306'
     environment:
       - POSTGRES_HOST=db
       - CD_EVENTS=events
@@ -130,7 +144,7 @@ services:
     command: npm run testdata
     env_file: ./workspace-zen/cp-users-service/config/development.env
     expose:
-      - "11303"
+      - '11303'
     environment:
       - POSTGRES_HOST=db
       - CD_USERS=users
@@ -144,7 +158,7 @@ services:
     command: npm run testdata
     env_file: ./workspace-zen/cp-dojos-service/config/development.env
     expose:
-      - "11301"
+      - '11301'
     environment:
       - POSTGRES_HOST=db
       - CD_DOJOS=dojos
@@ -153,6 +167,5 @@ services:
       - ZENTEST=false
     depends_on:
       - dojos
-
 volumes:
   pg-data:

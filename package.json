@@ -28,7 +28,7 @@
   "dependencies": {
     "debug": "^2.6.8",
     "lodash": "^4.17.4",
-    "pg": "^6.4.0",
+    "pg": "^7.0.2",
     "seneca": "^3.3.0"
   },
   "devDependencies": {

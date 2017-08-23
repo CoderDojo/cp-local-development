@@ -46,6 +46,8 @@ $ git clone https://github.com/CoderDojo/cp-dojos-service.git workspace-zen/cp-d
 $ git clone https://github.com/CoderDojo/cp-users-service.git workspace-zen/cp-users-service
 $ git clone https://github.com/CoderDojo/cp-badges-service.git workspace-zen/cp-badges-service
 $ git clone https://github.com/CoderDojo/cp-translations-tests workspace-zen/cp-translations
+$ git clone https://github.com/CoderDojo/cp-organisations-service.git workspace-zen/cp-organisations-service
+$ git clone https://github.com/CoderDojo/cp-eventbrite-service.git workspace-zen/cp-eventbrite-service
 ```
 
 You may have permission errors on Windows in which case you need to change ownership to yourself.
