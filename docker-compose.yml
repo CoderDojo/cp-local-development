@@ -36,7 +36,7 @@ services:
       - ./workspace-zen/cp-zen-platform:/usr/src/app:Z
       - ./workspace-zen/cp-zen-frontend:/usr/src/cp-zen-frontend:Z
   frontend:
-    image: coderdojo/cp-zen-frontend:dev
+    image: coderdojo/cp-zen-frontend
     volumes:
       - ./workspace-zen/cp-translations:/usr/src/cp-translations:Z
       - ./workspace-zen/cp-zen-frontend:/usr/src/app:Z
@@ -47,6 +47,7 @@ services:
       - CD_USERS=users
       - CD_EVENTS=events
       - CD_BADGES=badges
+      - CD_ORGANISATIONS=organisations
       - POSTGRES_HOST=db
       - ZENTEST=false
     depends_on:
@@ -103,12 +104,13 @@ services:
       - ./workspace-zen/cp-eventbrite-service:/usr/src/app:Z
   organisations:
     image: coderdojo/cp-organisations-service:dev
-    env_file: ./workspace-zen/cp-eventbrite-service/config/development.env
+    env_file: ./workspace-zen/cp-organisations-service/config/development.env
     environment:
       - CD_USERS=users
+      - POSTGRES_HOST=db
     volumes:
       - ./workspace-zen/cp-translations:/usr/src/cp-translations:Z
-      - ./workspace-zen/cp-eventbrite-service:/usr/src/app:Z
+      - ./workspace-zen/cp-organisations-service:/usr/src/app:Z
 
   #  Test Data services for setup
   localdev:
@@ -167,5 +169,8 @@ services:
       - ZENTEST=false
     depends_on:
       - dojos
+      - organisations
+    volumes:
+      - ./workspace-zen/cp-dojos-service/test/fixtures:/usr/src/app/test/fixtures
 volumes:
   pg-data:
