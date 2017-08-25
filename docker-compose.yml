@@ -113,7 +113,7 @@ services:
       - ./workspace-zen/cp-organisations-service:/usr/src/app:Z
 
   #  Test Data services for setup
-  localdev:
+  testdata:
     image: coderdojo/cp-local-development
     environment:
       - CD_USERS=test-users
@@ -141,6 +141,8 @@ services:
       - ZENTEST=false
     depends_on:
       - events
+    volumes:
+      - ./workspace-zen/cp-events-service/test/fixtures:/usr/src/app/test/fixtures:Z
   test-users:
     image: coderdojo/cp-users-service:latest
     command: npm run testdata
@@ -155,6 +157,8 @@ services:
       - ZENTEST=false
     depends_on:
       - users
+    volumes:
+      - ./workspace-zen/cp-users-service/test/fixtures:/usr/src/app/test/fixtures:Z
   test-dojos:
     image: coderdojo/cp-dojos-service:latest
     command: npm run testdata
@@ -171,6 +175,6 @@ services:
       - dojos
       - organisations
     volumes:
-      - ./workspace-zen/cp-dojos-service/test/fixtures:/usr/src/app/test/fixtures
+      - ./workspace-zen/cp-dojos-service/test/fixtures:/usr/src/app/test/fixtures:Z
 volumes:
   pg-data:
