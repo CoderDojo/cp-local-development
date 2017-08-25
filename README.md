@@ -35,7 +35,7 @@ Run:
 
 ```
 git clone https://github.com/CoderDojo/cp-local-development.git && cd cp-local-development
-./setup_repo
+./setup_repo.sh
 ```
 
 You may have permission errors on Windows in which case you need to change
@@ -69,8 +69,8 @@ Note that you can also run services individually if you wish,
 e.g. `docker-compose up dojos`. Once docker looks to be running all the
 services ok (you'll see a lot of stack traces in the output if they are not
 running ok!) you should be able to hit [`localhost:8000`](http://localhost:8000)
-in your browser. If this is your first time running, you should see the world
-map but with no dojo markers, these will appear when we install some test data.
+in your browser. If this is your first time running, you should see the "Find
+a Dojo to attend" Page this page wont return any dojos till you load testdata
 
 Note that the Forums and [Badges](installing-badgekit.md) will not be operable
 in local development mode, to run these, you need to install both
@@ -79,7 +79,7 @@ in local development mode, to run these, you need to install both
 ## Test Data
 
 To reload the test data just run
-`docker-compose down -v && docker-compose up localdev`. This will delete the current
+`docker-compose down -v && docker-compose up testdata`. This will delete the current
 database and reload all testdata. When all the test data is loaded, you should
 see Dojos appearing when you refresh your home page.
 The different users you can login with are listed in [this file](https://github.com/CoderDojo/cp-users-service/blob/master/test/fixtures/e2e/README.md)
@@ -109,13 +109,19 @@ care about what branch they're on, etc.
   pull request into the parent repository at CoderDojo/cp-zen-platform.
   [Read more about forks here](https://help.github.com/articles/fork-a-repo/).
 * You will need to fork:
-  * [cp-zen-platform](https://github.com/CoderDojo/cp-zen-platform) - frontend repo
-  * [cp-dojos-service](https://github.com/CoderDojo/cp-dojos-service) - backend repo,
+  * [cp-zen-platform](https://github.com/CoderDojo/cp-zen-platform) legacy
+    frontend and api repo
+  * [cp-zen-frontend](https://github.com/CoderDojo/cp-zen-frontend) frontend repo
+  * [cp-dojos-service](https://github.com/CoderDojo/cp-dojos-service) backend repo,
     service for Dojos
-  * [cp-events-service](https://github.com/CoderDojo/cp-events-service) - backend
+  * [cp-events-service](https://github.com/CoderDojo/cp-events-service) backend
     repo, service for events
-  * [cp-users-service](https://github.com/CoderDojo/cp-users-service) - backend repo,
+  * [cp-users-service](https://github.com/CoderDojo/cp-users-service) backend repo,
     service for users
+  * [cp-eventbrite-service](https://github.com/CoderDojo/cp-eventbrite-service)
+    backend service for eventbrite integration
+  * [cp-organisations-service](https://github.com/CoderDojo/cp-organisations-service)
+    backend service for user groups
 
 You can read more about the repositories and system architecture [in this document](https://github.com/CoderDojo/community-platform/blob/master/architecture.md).
 
@@ -196,12 +202,6 @@ you set in your local setup will override any previous setting.
 See [system.js](system.js) for global, system and service environment variables.
 
 To set local environment variables, set them in the `docker-compose.yml`:
-
-### Testing
-
-To create a clean test database add the env variable `ZENTEST=true` to the testdata
-container before running `docker-compose up localdev`. This will load a clean data
-for e2e tests
 
 ### Debug
 
