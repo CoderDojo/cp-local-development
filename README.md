@@ -216,9 +216,9 @@ DEBUG=localdev:* ./localdev.js run zen
 
 ### SELinux
 
-If you are using a distribution of the Linux kernel that implements SELinux you may have persion
-issues with volumes disappearing. This is due to Having not set SELinux Policies. A quick workaround
-to not setting all the required policies is to run. `su -c "setenforce 0"` before runiing any docker
+If you are using a distribution of the Linux kernel that implements SELinux you may have permissions
+issues with volumes disappearing. This is due to having not set SELinux Policies. A quick workaround
+to not setting all the required policies is to run. `su -c "setenforce 0"` before runing any docker
 command.
 
 ### Still having issues?
