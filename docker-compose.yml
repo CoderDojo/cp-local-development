@@ -108,6 +108,8 @@ services:
     environment:
       - CD_USERS=users
       - POSTGRES_HOST=db
+    depends_on:
+      - db
     volumes:
       - ./workspace-zen/cp-translations:/usr/src/cp-translations:Z
       - ./workspace-zen/cp-organisations-service:/usr/src/app:Z
