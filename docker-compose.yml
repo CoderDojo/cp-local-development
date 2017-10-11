@@ -79,7 +79,7 @@ services:
       - CD_BADGES=badges
       - POSTGRES_HOST=db
     depends_on:
-      - db
+      - dojos
     volumes:
       - ./workspace-zen/cp-translations:/usr/src/app/node_modules/cp-translations:Z
       - ./workspace-zen/cp-users-service:/usr/src/app:Z
