@@ -1,5 +1,6 @@
 #! /usr/bin/env bash
 folder="./workspace-zen"
+docker-compose pull
 declare -a repos=("cp-badges-service"
                   "cp-dojos-service"
                   "cp-eventbrite-service"
@@ -11,6 +12,9 @@ declare -a repos=("cp-badges-service"
                   "cp-zen-platform")
 for repo in "${repos[@]}"; do
   cd $folder/"$repo" || (echo "Couldn't access $folder/$repo" && exit)
-  git pull
+  git checkout staging
+  git fetch origin
+  git stash
+  git reset --hard origin/staging
   cd ../.. || exit
 done

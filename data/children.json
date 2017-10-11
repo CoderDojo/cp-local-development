@@ -1,0 +1,67 @@
+[
+  {
+    "parentEmail": "parent1@example.com",
+    "data": {
+      "firstName": "child1",
+      "lastName": "of parent1",
+      "alias": "nick1",
+      "dob": "2010-01-31T22:00:00.000Z",
+      "email": "",
+      "userTypes": ["attendee-u13"],
+      "requiredFieldsComplete": true,
+      "password": ""
+    }
+  },
+  {
+    "parentEmail": "parent1@example.com",
+    "data": {
+      "firstName": "child2",
+      "lastName": "of parent1",
+      "alias": "nick2",
+      "dob": "2002-01-31T22:00:00.000Z",
+      "email": "child2@example.com",
+      "userTypes": ["attendee-o13"],
+      "requiredFieldsComplete": true,
+      "password": "testchild2"
+    }
+  },
+  {
+    "parentEmail": "parent1@example.com",
+    "data": {
+      "firstName": "child2-1",
+      "lastName": "of parent1",
+      "alias": "nick2-1",
+      "dob": "2002-01-31T22:00:00.000Z",
+      "email": "child2-1@example.com",
+      "userTypes": ["attendee-o13"],
+      "requiredFieldsComplete": true,
+      "password": "testchild2-1"
+    }
+  },
+  {
+    "parentEmail": "parent2@example.com",
+    "data": {
+      "firstName": "child3",
+      "lastName": "of parent2",
+      "alias": "nick3",
+      "dob": "2010-01-31T22:00:00.000Z",
+      "email": "child3@example.com",
+      "userTypes": ["attendee-o13"],
+      "password": "child3test"
+    }
+  },
+  {
+    "parentEmail": "parent3@example.com",
+    "data": {
+      "firstName": "child3-1",
+      "lastName": "of parent3",
+      "alias": "nick3-1",
+      "dob": "2002-01-31T22:00:00.000Z",
+      "email": "child3-1@example.com",
+      "userTypes": ["attendee-o13"],
+      "requiredFieldsComplete": true,
+      "private": false,
+      "password": "testchild3-1"
+    }
+  }
+]

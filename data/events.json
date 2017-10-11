@@ -1,0 +1,246 @@
+[
+  {
+    "dojo": "dojo1@example.com",
+    "name": "test event 1",
+    "country": {
+      "countryName": "Italy",
+      "alpha2": "IT"
+    },
+    "city": {
+      "nameWithHierarchy": "Agordo"
+    },
+    "address": "some address in Italy",
+    "type": "one-off",
+    "description": "test event description",
+    "position": {
+      "lat": 45,
+      "lng": 12
+    },
+    "public": true,
+    "status": "published",
+    "recurringType": "weekly",
+    "dates": [
+      {
+        "startTime": null,
+        "endTime": null
+      }
+    ],
+    "sessions": [
+      {
+        "name": "session1-1",
+        "tickets": [
+          {
+            "name": "ticket1-1",
+            "type": "parent-guardian",
+            "quantity": 2
+          },
+          {
+            "name": "ticket1-2",
+            "type": "ninja",
+            "quantity": 6
+          }
+        ]
+      }
+    ],
+    "ticketApproval": false
+  },
+  {
+    "dojo": "dojo2@example.com",
+    "name": "test event 2",
+    "country": {
+      "countryName": "France",
+      "alpha2": "FR"
+    },
+    "city": {
+      "nameWithHierarchy": "Lyon"
+    },
+    "address": "Berthom",
+    "type": "one-off",
+    "description": "We need more beers",
+    "position": {
+      "lat": 45,
+      "lng": 12
+    },
+    "public": true,
+    "status": "published",
+    "recurringType": "weekly",
+    "dates": [
+      {
+        "startTime": null,
+        "endTime": null
+      }
+    ],
+    "sessions": [
+      {
+        "name": "session2-1",
+        "tickets": [
+          {
+            "name": "ticket2-1",
+            "type": "parent-guardian",
+            "quantity": 1
+          },
+          {
+            "name": "ticket2-2",
+            "type": "ninja",
+            "quantity": 2
+          },
+          {
+            "name": "ticket2-3",
+            "type": "mentor",
+            "quantity": 1
+          }
+        ]
+      }
+    ],
+    "ticketApproval": true
+  },
+  {
+    "dojo": "dojo2@example.com",
+    "name": "test event 3",
+    "country": {
+      "countryName": "France",
+      "alpha2": "FR"
+    },
+    "city": {
+      "nameWithHierarchy": "Lyon"
+    },
+    "address": "Berthom",
+    "type": "one-off",
+    "description": "Draft : We need more beers",
+    "position": {
+      "lat": 45,
+      "lng": 12
+    },
+    "public": true,
+    "status": "saved",
+    "recurringType": "weekly",
+    "dates": [
+      {
+        "startTime": null,
+        "endTime": null
+      }
+    ],
+    "sessions": [],
+    "ticketApproval": false
+  },
+  {
+    "dojo": "privateDojo1@example.com",
+    "name": "test private event private dojo 1",
+    "country": {
+      "countryName": "France",
+      "alpha2": "FR"
+    },
+    "city": {
+      "nameWithHierarchy": "Lyon"
+    },
+    "address": "Berthom",
+    "type": "one-off",
+    "description": "Draft : We need more beers",
+    "position": {
+      "lat": 45,
+      "lng": 12
+    },
+    "public": false,
+    "status": "published",
+    "recurringType": "weekly",
+    "dates": [
+      {
+        "startTime": null,
+        "endTime": null
+      }
+    ],
+    "sessions": [
+      {
+        "name": "private-session-1",
+        "tickets": [
+          {
+            "name": "private-ticket-1",
+            "type": "parent-guardian",
+            "quantity": 10
+          }
+        ]
+      }
+    ],
+    "ticketApproval": false
+  },
+  {
+    "dojo": "privateDojo1@example.com",
+    "name": "test public event private dojo 1",
+    "country": {
+      "countryName": "France",
+      "alpha2": "FR"
+    },
+    "city": {
+      "nameWithHierarchy": "Lyon"
+    },
+    "address": "Berthom",
+    "type": "one-off",
+    "description": "Draft : We need more beers",
+    "position": {
+      "lat": 45,
+      "lng": 12
+    },
+    "public": true,
+    "status": "published",
+    "recurringType": "weekly",
+    "dates": [
+      {
+        "startTime": null,
+        "endTime": null
+      }
+    ],
+    "sessions": [
+      {
+        "name": "private-session-2",
+        "tickets": [
+          {
+            "name": "private-ticket-2",
+            "type": "parent-guardian",
+            "quantity": 10
+          }
+        ]
+      }
+    ],
+    "ticketApproval": false
+  },
+  {
+    "dojo": "dojo1@example.com",
+    "name": "test private event 1",
+    "country": {
+      "countryName": "Italy",
+      "alpha2": "IT"
+    },
+    "city": {
+      "nameWithHierarchy": "Agordo"
+    },
+    "address": "some address in Italy",
+    "type": "one-off",
+    "description": "test event description",
+    "position": {
+      "lat": 45,
+      "lng": 12
+    },
+    "public": false,
+    "status": "published",
+    "recurringType": "weekly",
+    "dates": [
+      {
+        "startTime": null,
+        "endTime": null
+      }
+    ],
+    "sessions": [
+      {
+        "name": "private session1-1",
+        "tickets": [
+          {
+            "name": "private ticket1-1",
+            "type": "parent-guardian",
+            "quantity": 10
+          }
+        ]
+      }
+    ],
+    "ticketApproval": false
+  }
+]

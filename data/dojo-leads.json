@@ -1,0 +1,292 @@
+[
+  {
+    "email": "champion1@example.com",
+    "completed": false,
+    "application": {
+      "champion": {
+        "firstName": "champion",
+        "lastName": "4",
+        "email": "champion1@example.com",
+        "name": "Champion1",
+        "dob": "1957-11-13T23:00:00.000Z",
+        "phone": "393345678910",
+        "address1": "Address 1",
+        "confidentCoding": 2,
+        "confidentMentoring": 3,
+        "isValid": true,
+        "visited": true
+      },
+      "dojo": {
+        "name": "dojo1",
+        "firstSession": "2017-11-13T23:00:00.000Z",
+        "frequency": "1/w",
+        "startTime": "13:00:00.000",
+        "endTime": "15:00:00.000",
+        "day": 1,
+        "requestEmail": false,
+        "email": "dojo1@example.com",
+        "notes": "A laptop is needed",
+        "website": null,
+        "twitter": null,
+        "facebook": null,
+        "isValid": true,
+        "visited": true
+      },
+      "venue": {
+        "isFound": true,
+        "private": 0,
+        "country": {
+          "countryName": "Romania",
+          "countryNumber": 642,
+          "continent": "EU",
+          "alpha2": "RO",
+          "alpha3": "ROU"
+        },
+        "geoPoint": {
+          "lat": 47.15794324531161,
+          "lon": 27.589545249938965
+        },
+        "address1": "Palatul Culturii",
+        "place": {
+          "nameWithHierarchy": "Lasi"
+        },
+        "type": "public_space",
+        "capacity": 42,
+        "isValid": true,
+        "visited": true
+      },
+      "charter": {
+        "fullName": "champ1 One",
+        "isValid": true,
+        "visited": true
+      },
+      "team": {
+        "status": "exists",
+        "isValid": true,
+        "visited": true
+      }
+    }
+  },
+  {
+    "email": "champion2@example.com",
+    "completed": false,
+    "application": {
+      "champion": {
+        "email": "champion2@example.com",
+        "name": "Champion2",
+        "dateOfBirth": "1957-11-13T23:00:00.000Z",
+        "phone": "393345678910",
+        "dob": "1957-11-13T23:00:00.000Z",
+        "address1": "Address 1",
+        "confidentCoding": 2,
+        "confidentMentoring": 3,
+        "reference": "media",
+        "isValid": true,
+        "visited": true
+      },
+      "dojo": {
+        "notes": "Bring laptop.",
+        "name": "dojo2",
+        "startTime": "10:00:00.000",
+        "startTime": "12:00:00.000",
+        "day": 1,
+        "email": "dojo2@example.com",
+        "supporterImage": null,
+        "website": "https://www.google.com",
+        "twitter": "persontwitter",
+        "facebook": null
+      },
+      "venue": {
+        "isFound": true,
+        "private": 0,
+        "country": {
+          "countryName": "UnitedStates",
+          "countryNumber": 840,
+          "continent": "NA",
+          "alpha2": "US",
+          "alpha3": "USA"
+        },
+        "geoPoint": {
+          "lat": 40.7878788,
+          "lon": -74.0143064000001
+        },
+        "address1": "Central Park Zoo",
+        "place": {
+          "nameWithHierarchy": "West New York, NJ"
+        },
+        "type": "public_space",
+        "capacity": 42,
+        "isValid": true,
+        "visited": true
+      },
+      "charter": {
+        "id": 1,
+        "fullName": "champ1 One",
+        "isValid": true,
+        "visited": true
+      },
+      "team": {
+        "status": "exists",
+        "isValid": true,
+        "visited": true
+      }
+    }
+  },
+  {
+    "email": "champion3@example.com",
+    "completed": false,
+    "application": {
+      "champion": {
+        "email": "champion3@example.com",
+        "firstName": "Champion",
+        "lastName": "Three",
+        "dob": "1957-11-13T23:00:00.000Z",
+        "phone": "393345678910",
+        "address1": "Address 1",
+        "confidentCoding": 2,
+        "confidentMentoring": 3,
+        "reference": "media",
+        "isValid": true,
+        "visited": true
+      },
+      "dojo": {
+        "notes": "<p>Lorem Ipsum</p>\n",
+        "name": "Roma",
+        "startTime": "10:00:00.000",
+        "endTime": "12:00:00.000",
+        "day": 1,
+        "email": "dojo2@example.com",
+        "address1": "Roma, Italy",
+        "coordinates": "41.9028, 12.4964",
+        "website": null,
+        "twitter": null,
+        "facebook": null
+      },
+      "venue": {
+        "isFound": true,
+        "private": 0,
+        "country": {
+          "countryName": "Italy",
+          "countryNumber": 380,
+          "continent": "EU",
+          "alpha2": "IT",
+          "alpha3": "ITA"
+        },
+        "geoPoint": {
+          "lat": 41.9028,
+          "lon": 12.4964
+        },
+        "address1": "Roma, Italy",
+        "place": {
+          "nameWithHierarchy": "Roma"
+        },
+        "type": "public_space",
+        "capacity": 42,
+        "isValid": true,
+        "visited": true
+      },
+      "charter": {
+        "fullName": "champ3 Three",
+        "isValid": false,
+        "visited": false
+      },
+      "team": {
+        "status": "exists",
+        "isValid": false,
+        "visited": false
+      }
+    }
+  },
+  {
+    "email": "champion4@example.com",
+    "completed": false,
+    "application": {
+      "champion": {
+        "email": "champion4@example.com",
+        "firstName": "champion",
+        "lastName": "4",
+        "phone": "3538123456789",
+        "address1": "CHQ Building, Dublin 1",
+        "notes": "Lorem Ipsum.",
+        "linkedIn": "https://ie.linkedin.com/in/xxxxx",
+        "dob": "1972-12-25T00:00:00.000Z",
+        "confidentCoding": 2,
+        "confidentMentoring": 3,
+        "reference": "media",
+        "isValid": true,
+        "visited": true
+      },
+      "dojo": {
+        "notes": "<p>Suggested Notes:<br />\n<br />\nPlease bring:</p>\n\n<ul>\n\t<li>A pack lunch.</li>\n\t<li>A laptop. Borrow one from somebody if needs be.</li>\n\t<li><strong>A parent! (Very important). If you are 12 or under, your parent must stay with you during the session.</strong></li>\n</ul>\n\n<p>&nbsp;</p>\n",
+        "name": "Dojo Dublin",
+        "startTime": "6:30:00.000",
+        "endTime": "8:30:00.000",
+        "day": 1
+      },
+      "venue": {
+        "isFound": true,
+        "private": 0,
+        "country": {
+          "countryName": "Italy",
+          "countryNumber": 380,
+          "continent": "EU",
+          "alpha2": "IT",
+          "alpha3": "ITA"
+        },
+        "geoPoint": {
+          "lat": 41.9028,
+          "lon": 12.4964
+        },
+        "address1": "Roma, Italy",
+        "place": {
+          "nameWithHierarchy": "Roma"
+        },
+        "type": "public_space",
+        "capacity": 42,
+        "isValid": true,
+        "visited": true
+      },
+      "charter": {
+        "fullName": "champ1 One",
+        "isValid": false,
+        "visited": false
+      },
+      "team": {
+        "status": "exists",
+        "isValid": false,
+        "visited": false
+      }
+    }
+  },
+  {
+    "email": "champion5@example.com",
+    "completed": false,
+    "application": {
+      "champion": {
+        "email": "champion5@example.com",
+        "name": "Champion5",
+        "phone": "3530234567891",
+        "dob": "1981-05-31T23:00:00.000Z",
+        "twitter": "@Coderdojo",
+        "confidentCoding": 2,
+        "confidentMentoring": 3,
+        "reference": "media",
+        "isValid": true,
+        "visited": true
+      }
+    }
+  },
+  {
+    "email": "champion6@example.com",
+    "completed": false,
+    "application": {
+      "champion": {
+        "email": "champion6@example.com",
+        "name": "Champion6",
+        "phone": "50345678901",
+        "dob": "1997-05-05T06:00:00.000Z",
+        "address1": "lorem ipsum"
+      }
+    }
+  }
+]
