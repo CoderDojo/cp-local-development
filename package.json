@@ -5,16 +5,13 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node localdev.js",
+    "start": "node .",
     "lint": "eslint *.js lib",
     "fix": "eslint *.js lib --fix",
     "precommit": "lint-staged"
   },
   "lint-staged": {
-    "*.js": [
-      "eslint --fix",
-      "git add"
-    ]
+    "*.js": ["eslint --fix", "git add"]
   },
   "author": "CoderDojo Foundation",
   "repository": {
@@ -27,6 +24,7 @@
   "license": "MIT",
   "dependencies": {
     "bluebird": "^3.5.1",
+    "cp-test-data": "^1.0.0",
     "debug": "^2.6.8",
     "lodash": "^4.17.4",
     "pg": "^7.0.2",
