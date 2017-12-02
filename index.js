@@ -19,19 +19,14 @@ const { promisify, delay } = require('bluebird');
 
 seneca.actAsync = promisify(seneca.act, { context: seneca });
 const systems = require('./lib/system.js');
-const { createUsers, createAgreements } = require('./lib/insert-test-users.js')(
-  seneca.actAsync,
-);
+const { createUsers, createAgreements } = require('./lib/insert-test-users.js')(seneca);
 const {
   createDojos,
   createDojoLeads,
   createPolls,
   linkDojoUsers,
-} = require('./lib/insert-test-dojos.js')(seneca.actAsync);
-const {
-  createEvents,
-  linkEventsUsers,
-} = require('./lib/insert-test-events.js')(seneca.actAsync);
+} = require('./lib/insert-test-dojos.js')(seneca);
+const { createEvents, linkEventsUsers } = require('./lib/insert-test-events.js')(seneca);
 
 const client = new Pool({
   host: process.env.POSTGRES_HOST || 'localhost',
@@ -41,56 +36,52 @@ const client = new Pool({
   password: process.env.POSTGRES_PASSWORD || 'QdYx3D5y',
 });
 
-(async () => {
-  const sysName = 'zen';
-  const system = systems[sysName];
-  debug(system);
-  if (isUndefined(system)) {
-    console.error(new Error(`System not found: ${sysName}`));
-    process.exit(1);
-  }
-  console.log('System:', sysName, util.inspect(system.stringify(), true, null));
-  try {
-    await setupDatabases(system.services);
-    await runSeneca(system.services);
-    await delay(10000); // This to give the mircoservices enough time to start
-    await loadAllTestData();
-    process.exit(0);
-  } catch (err) {
+const sysName = 'zen';
+const system = systems[sysName];
+debug(system);
+if (isUndefined(system)) {
+  console.error(new Error(`System not found: ${sysName}`));
+  process.exit(1);
+}
+console.log('System:', sysName, util.inspect(system.stringify(), true, null));
+setupDatabases(system.services)
+  .then(runSeneca(system.services))
+  .then(
+    // This to give the mircoservices enough time to start
+    delay(10000)
+  )
+  .then(loadAllTestData)
+  .then(process.exit(0))
+  .catch(err => {
     console.error(err);
     process.exit(1);
-  }
-})();
+  });
 
-async function runSeneca(services) {
-  try {
-    seneca.listen({ timeout: 10000 }).use('entity');
-    await Promise.all(services.map(addClient));
-    seneca
-      .client({
-        type: 'web',
-        host: process.env.CD_USERS || 'localhost',
-        port: 10303,
-        pin: {
-          role: 'cd-agreements',
-          cmd: '*',
-        },
-      })
-      .client({
-        type: 'web',
-        host: process.env.CD_USERS || 'localhost',
-        port: 10303,
-        pin: {
-          role: 'cd-profiles',
-          cmd: '*',
-        },
-      });
-  } catch (err) {
-    throw err;
-  }
+function runSeneca(services) {
+  seneca.listen({ timeout: 10000 }).use('entity');
+  seneca
+    .client({
+      type: 'web',
+      host: process.env.CD_USERS || 'localhost',
+      port: 10303,
+      pin: {
+        role: 'cd-agreements',
+        cmd: '*',
+      },
+    })
+    .client({
+      type: 'web',
+      host: process.env.CD_USERS || 'localhost',
+      port: 10303,
+      pin: {
+        role: 'cd-profiles',
+        cmd: '*',
+      },
+    });
+  return Promise.all(services.map(addClient));
 }
 
-function addClient({ host, port, base }) {
+async function addClient({ host, port, base }) {
   if (!isUndefined(host) && !isUndefined(port)) {
     seneca.client({
       type: 'web',
@@ -102,80 +93,55 @@ function addClient({ host, port, base }) {
       },
     });
   }
-  return Promise.resolve();
 }
 
-async function setupDatabases(services) {
-  try {
-    await client.connect();
-    await Promise.all(services.map(resetDatabase));
-    client.end();
-  } catch (reject) {
-    throw reject;
-  }
+function setupDatabases(services) {
+  return client.connect().then(Promise.all(services.map(resetDatabase))).then(client.end());
 }
 
 async function resetDatabase({ database }) {
   if (isUndefined(database)) return;
-  try {
-    if (process.env.ZENTEST === 'true') await dropDatabase(database);
-    await createDatabase(database);
-  } catch (err) {
-    throw err;
-  }
+  return createDatabase(database);
 }
 
 async function dropDatabase(database) {
   if (isUndefined(database)) return;
-  try {
-    await client.query(`DROP DATABASE IF EXISTS "${database}"`);
-  } catch (err) {
-    throw new Error(`Error dropping database: ${err}`);
-  }
-  console.log(`${database} dropped`);
+  return client.query(`DROP DATABASE IF EXISTS "${database}"`);
 }
 
-function createDatabase(database) {
-  return new Promise((resolve, reject) => {
-    if (isUndefined(database)) resolve();
-    client
-      .query(`CREATE DATABASE "${database}"`)
-      .then(() => {
-        console.log(`${database} created`);
-        resolve();
-      })
-      .catch((err) => {
-        if (includes(err.toString(), 'already exists')) {
-          console.log(`${database} already existed`);
-          resolve();
-        } else {
-          reject(new Error(`Error creating database: ${err}`));
-        }
-      });
-  });
+async function createDatabase(database) {
+  if (isUndefined(database)) return;
+  try {
+    await client.query(`CREATE DATABASE "${database}"`);
+    console.log(`${database} created`);
+  } catch (err) {
+    if (includes(err.toString(), 'already exists')) {
+      console.log(`${database} already existed`);
+      return;
+    }
+    throw new Error(`Error creating database: ${err}`);
+  }
 }
 
-async function loadAllTestData() {
-  try {
-    console.log('Loading TestData');
-    await createUsers();
-    console.log('Created Users');
-    await createAgreements();
-    console.log('Created Agreements');
-    await createDojoLeads();
-    console.log('Created Dojo Leads');
-    await createDojos();
-    console.log('Created Dojos');
-    await createPolls();
-    console.log('Created Polls');
-    await createEvents();
-    console.log('Created Events');
-    await linkDojoUsers();
-    console.log('Linked Dojo and Users');
-    await linkEventsUsers();
-    console.log('Linked Events and Users');
-    console.log('Test Data Loaded');
-  } catch (err) {
-    throw err;
-  }
+function loadAllTestData() {
+  console.log('Loading TestData');
+  return createUsers()
+    .then(console.log('Created Users'))
+    .then(createAgreements)
+    .then(console.log('Created Agreements'))
+    .then(createDojoLeads)
+    .then(console.log('Created Dojo Leads'))
+    .then(createDojos)
+    .then(console.log('Created Dojos'))
+    .then(createPolls)
+    .then(console.log('Created Polls'))
+    .then(createEvents)
+    .then(console.log('Created Events'))
+    .then(linkDojoUsers)
+    .then(console.log('Linked Dojo and Users'))
+    .then(linkEventsUsers)
+    .then(() => {
+      console.log('Linked Events and Users');
+      console.log('Test Data Loaded');
+    });
 }
