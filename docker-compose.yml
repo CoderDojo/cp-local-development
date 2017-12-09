@@ -1,21 +1,26 @@
 ---
-version: '3'
+version: '3.3'
 services:
   #  Development Database
   db:
     image: coderdojo/cp-local-development:database
     restart: always
     volumes:
-      - pg-data:/data/postgres
+      - type: volume
+        source: pg-data
+        target: /data/postgres
+        volume:
+          nocopy: true
     environment:
       - POSTGRES_PASSWORD=QdYx3D5y
 
   #  Development serivces
   zen:
-    image: coderdojo/cp-zen-platform:dev
+    image: coderdojo/cp-local-development:dev-8
     ports:
       - '8000:8000'
     env_file: ./workspace-zen/cp-zen-platform/web/config/development.env
+    command: ["/usr/src/app/docker-entrypoint.sh"]
     depends_on:
       - users
       - dojos
@@ -32,17 +37,19 @@ services:
       - CD_EVENTBRITE=eventbrite
       - CD_ORGANISATIONS=organisations
     volumes:
-      - ./workspace-zen/cp-translations:/usr/src/cp-translations:Z
       - ./workspace-zen/cp-zen-platform:/usr/src/app:Z
       - ./workspace-zen/cp-zen-frontend:/usr/src/cp-zen-frontend:Z
+      - ./workspace-zen/cp-translations:/usr/src/cp-translations:Z
   frontend:
-    image: coderdojo/cp-zen-frontend
+    image: node:8
+    command: ["/usr/src/app/docker-entrypoint.sh"]
     volumes:
       - ./workspace-zen/cp-translations:/usr/src/cp-translations:Z
       - ./workspace-zen/cp-zen-frontend:/usr/src/app:Z
   dojos:
-    image: coderdojo/cp-dojos-service:dev
+    image: coderdojo/cp-local-development:dev
     env_file: ./workspace-zen/cp-dojos-service/config/development.env
+    command: ["/usr/src/app/docker-entrypoint.sh"]
     environment:
       - CD_USERS=users
       - CD_EVENTS=events
@@ -51,13 +58,14 @@ services:
       - POSTGRES_HOST=db
       - ZENTEST=false
     depends_on:
-      - db
+      - organisations
     volumes:
       - ./workspace-zen/cp-translations:/usr/src/cp-translations:Z
       - ./workspace-zen/cp-dojos-service:/usr/src/app:Z
   users:
-    image: coderdojo/cp-users-service:dev
+    image: coderdojo/cp-local-development:dev
     env_file: ./workspace-zen/cp-users-service/config/development.env
+    command: ["/usr/src/app/docker-entrypoint.sh"]
     environment:
       - CD_DOJOS=dojos
       - CD_EVENTS=events
@@ -65,13 +73,14 @@ services:
       - POSTGRES_HOST=db
       - ZENTEST=false
     depends_on:
-      - db
+      - dojos
     volumes:
       - ./workspace-zen/cp-translations:/usr/src/cp-translations:Z
       - ./workspace-zen/cp-users-service:/usr/src/app:Z
   events:
-    image: coderdojo/cp-events-service:dev
+    image: coderdojo/cp-local-development:dev
     env_file: ./workspace-zen/cp-events-service/config/development.env
+    command: ["/usr/src/app/docker-entrypoint.sh"]
     environment:
       - CD_USERS=users
       - CD_DOJOS=dojos
@@ -84,8 +93,9 @@ services:
       - ./workspace-zen/cp-translations:/usr/src/cp-translations:Z
       - ./workspace-zen/cp-events-service:/usr/src/app:Z
   badges:
-    image: coderdojo/cp-badges-service:dev
+    image: coderdojo/cp-local-development:dev
     env_file: ./workspace-zen/cp-badges-service/config/development.env
+    command: ["/usr/src/app/docker-entrypoint.sh"]
     environment:
       - CD_USERS=users
       - CD_DOJOS=dojos
@@ -94,7 +104,8 @@ services:
       - ./workspace-zen/cp-translations:/usr/src/cp-translations:Z
       - ./workspace-zen/cp-badges-service:/usr/src/app:Z
   eventbrite:
-    image: coderdojo/cp-eventbrite-service:dev
+    image: coderdojo/cp-local-development:dev-8
+    command: ["/usr/src/app/docker-entrypoint.sh"]
     env_file: ./workspace-zen/cp-eventbrite-service/config/development.env
     environment:
       - CD_DOJOS=dojos
@@ -103,8 +114,11 @@ services:
       - ./workspace-zen/cp-translations:/usr/src/cp-translations:Z
       - ./workspace-zen/cp-eventbrite-service:/usr/src/app:Z
   organisations:
-    image: coderdojo/cp-organisations-service:dev
+    image: coderdojo/cp-local-development:dev-8
+    command: ["/usr/src/app/docker-entrypoint.sh"]
     env_file: ./workspace-zen/cp-organisations-service/config/development.env
+    depends_on:
+      - db
     environment:
       - CD_USERS=users
       - POSTGRES_HOST=db
@@ -117,66 +131,20 @@ services:
   #  Test Data services for setup
   testdata:
     image: coderdojo/cp-local-development
+    build: .
+    volumes:
+      - .:/usr/src/app
     environment:
-      - CD_USERS=test-users
-      - CD_DOJOS=test-dojos
-      - CD_EVENTS=test-events
+      - CD_USERS=users
+      - CD_DOJOS=dojos
+      - CD_EVENTS=events
       - ZENTEST=false
       - POSTGRES_PASSWORD=QdYx3D5y
       - POSTGRES_HOST=db
-      - POSTGRES_USERNAME
-    depends_on:
-      - test-users
-      - test-dojos
-      - test-events
-  test-events:
-    image: coderdojo/cp-events-service:latest
-    command: npm run testdata
-    env_file: ./workspace-zen/cp-events-service/config/development.env
-    expose:
-      - '11306'
-    environment:
-      - POSTGRES_HOST=db
-      - CD_EVENTS=events
-      - CD_USERS=users
-      - CD_DOJOS=dojos
-      - ZENTEST=false
-    depends_on:
-      - events
-    volumes:
-      - ./workspace-zen/cp-events-service/test/fixtures:/usr/src/app/test/fixtures:Z
-  test-users:
-    image: coderdojo/cp-users-service:latest
-    command: npm run testdata
-    env_file: ./workspace-zen/cp-users-service/config/development.env
-    expose:
-      - '11303'
-    environment:
-      - POSTGRES_HOST=db
-      - CD_USERS=users
-      - CD_EVENTS=events
-      - CD_DOJOS=dojos
-      - ZENTEST=false
+      - POSTGRES_USERNAME=platform
     depends_on:
       - users
-    volumes:
-      - ./workspace-zen/cp-users-service/test/fixtures:/usr/src/app/test/fixtures:Z
-  test-dojos:
-    image: coderdojo/cp-dojos-service:latest
-    command: npm run testdata
-    env_file: ./workspace-zen/cp-dojos-service/config/development.env
-    expose:
-      - '11301'
-    environment:
-      - POSTGRES_HOST=db
-      - CD_DOJOS=dojos
-      - CD_USERS=users
-      - CD_EVENTS=events
-      - ZENTEST=false
-    depends_on:
       - dojos
-      - organisations
-    volumes:
-      - ./workspace-zen/cp-dojos-service/test/fixtures:/usr/src/app/test/fixtures:Z
+      - events
 volumes:
   pg-data:
