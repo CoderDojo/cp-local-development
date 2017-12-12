@@ -75,6 +75,7 @@ services:
     environment:
       - NODE_ENV=development
       - CD_DOJOS=dojos
+      - NODE_ENV=development
       - CD_EVENTS=events
       - CD_BADGES=badges
       - POSTGRES_HOST=db
@@ -110,6 +111,7 @@ services:
     environment:
       - CD_USERS=users
       - CD_DOJOS=dojos
+      - NODE_ENV=development
       - CD_EVENTS=events
       - NODE_ENV=development
     volumes:
@@ -122,6 +124,7 @@ services:
     working_dir: /usr/src/app
     environment:
       - CD_DOJOS=dojos
+      - NODE_ENV=development
       - CD_EVENTS=events
       - NODE_ENV=development
     volumes:
