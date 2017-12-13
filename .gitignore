@@ -5,3 +5,5 @@ workspace-zen/*
 !workspace-zen/.gitkeep
 npm-debug.log
 *.log*
+cd-db/dumps/*
+!cd-db/dumps/.gitkeep

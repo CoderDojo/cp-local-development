@@ -1,18 +1,15 @@
 version: '3.3'
 services:
   db:
-    image: coderdojo/cp-local-development:database
+    build: ./cd-db
     restart: always
     volumes:
-      - type: volume
-        source: pg-data
-        target: /data/postgres
-        volume:
-          nocopy: true
+      - pg-data:/data/postgres
     environment:
       - POSTGRES_PASSWORD=QdYx3D5y
   kue:
     image: redis:3-alpine
+    restart: always
   zen:
     image: node:carbon
     working_dir: /usr/src/app
