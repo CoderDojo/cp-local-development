@@ -11,6 +11,10 @@ services:
   kue:
     image: redis:3-alpine
     restart: always
+  transport:
+    image: rabbitmq:3-alpine
+    hostname: floppsy
+    restart: always
   zen:
     image: node:carbon
     working_dir: /usr/src/app
@@ -75,12 +79,11 @@ services:
     environment:
       - NODE_ENV=development
       - CD_DOJOS=dojos
-      - NODE_ENV=development
       - CD_EVENTS=events
       - CD_BADGES=badges
       - POSTGRES_HOST=db
     depends_on:
-      - dojos
+      - db
     volumes:
       - ./workspace-zen/cp-translations:/usr/src/app/node_modules/cp-translations:Z
       - ./workspace-zen/cp-users-service:/usr/src/app:Z
@@ -111,7 +114,6 @@ services:
     environment:
       - CD_USERS=users
       - CD_DOJOS=dojos
-      - NODE_ENV=development
       - CD_EVENTS=events
       - NODE_ENV=development
     volumes:
@@ -124,7 +126,6 @@ services:
     working_dir: /usr/src/app
     environment:
       - CD_DOJOS=dojos
-      - NODE_ENV=development
       - CD_EVENTS=events
       - NODE_ENV=development
     volumes:
@@ -141,6 +142,7 @@ services:
       - POSTGRES_HOST=db
     depends_on:
       - db
+      - transport
     volumes:
       - ./workspace-zen/cp-translations:/usr/src/app/node_modules/cp-translations:Z
       - ./workspace-zen/cp-organisations-service:/usr/src/app:Z

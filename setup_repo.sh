@@ -9,15 +9,15 @@ cd $folder || (echo "Couldn't access $folder" && exit)
 git clone "$github"cp-translations.git
 
 declare -a services=("badges"
-	"dojos"
-	"eventbrite"
-	"events"
-	"organisations"
-	"users")
+  "dojos"
+  "eventbrite"
+  "events"
+  "organisations"
+  "users")
 
 for repo in "${services[@]}"; do
-	git clone "$github"cp-"$repo"-service.git
-	docker-compose run --rm --no-deps "$repo" yarn
+  git clone "$github"cp-"$repo"-service.git
+  docker-compose run --rm --no-deps "$repo" yarn
 done
 
 git clone "$github"cp-zen-frontend.git
