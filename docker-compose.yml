@@ -11,6 +11,8 @@ services:
           nocopy: true
     environment:
       - POSTGRES_PASSWORD=QdYx3D5y
+  kue:
+    image: redis:3-alpine
   zen:
     image: node:carbon
     working_dir: /usr/src/app
@@ -59,8 +61,11 @@ services:
       - CD_BADGES=badges
       - CD_ORGANISATIONS=organisations
       - POSTGRES_HOST=db
+      - KUE_REQUIRED='true'
+      - KUE_HOST=kue
     depends_on:
-      - organisations
+      - db
+      - kue
     volumes:
       - ./workspace-zen/cp-translations:/usr/src/app/node_modules/cp-translations:Z
       - ./workspace-zen/cp-dojos-service:/usr/src/app:Z
@@ -70,13 +75,13 @@ services:
     working_dir: /usr/src/app
     command: npm run dev
     environment:
-      - CD_DOJOS=dojos
       - NODE_ENV=development
+      - CD_DOJOS=dojos
       - CD_EVENTS=events
       - CD_BADGES=badges
       - POSTGRES_HOST=db
     depends_on:
-      - dojos
+      - db
     volumes:
       - ./workspace-zen/cp-translations:/usr/src/app/node_modules/cp-translations:Z
       - ./workspace-zen/cp-users-service:/usr/src/app:Z
@@ -91,8 +96,11 @@ services:
       - CD_BADGES=badges
       - NODE_ENV=development
       - POSTGRES_HOST=db
+      - KUE_REQUIRED='true'
+      - KUE_HOST=kue
     depends_on:
       - db
+      - kue
     volumes:
       - ./workspace-zen/cp-translations:/usr/src/app/node_modules/cp-translations:Z
       - ./workspace-zen/cp-events-service:/usr/src/app:Z
@@ -104,8 +112,8 @@ services:
     environment:
       - CD_USERS=users
       - CD_DOJOS=dojos
-      - NODE_ENV=development
       - CD_EVENTS=events
+      - NODE_ENV=development
     volumes:
       - ./workspace-zen/cp-translations:/usr/src/app/node_modules/cp-translations:Z
       - ./workspace-zen/cp-badges-service:/usr/src/app:Z
@@ -116,8 +124,8 @@ services:
     working_dir: /usr/src/app
     environment:
       - CD_DOJOS=dojos
-      - NODE_ENV=development
       - CD_EVENTS=events
+      - NODE_ENV=development
     volumes:
       - ./workspace-zen/cp-translations:/usr/src/app/node_modules/cp-translations:Z
       - ./workspace-zen/cp-eventbrite-service:/usr/src/app:Z
