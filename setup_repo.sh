@@ -8,28 +8,19 @@ folder="./workspace-zen"
 cd $folder || (echo "Couldn't access $folder" && exit)
 git clone "$github"cp-translations.git
 
-declare -a node0=("badges"
+declare -a services=("badges"
   "dojos"
   "eventbrite"
   "events"
+  "organisations"
   "users")
-declare -a zen=("frontend"
-  "platform")
-declare -a node8=("organisations")
 
-for repo in "${node0[@]}"; do
-  git clone "$github"cp-"$repo"-service.git
-  docker-compose run --rm --no-deps "$repo" npm install
-done
-
-for repo in "${node8[@]}"; do
+for repo in "${services[@]}"; do
   git clone "$github"cp-"$repo"-service.git
   docker-compose run --rm --no-deps "$repo" yarn
 done
 
-for repo in "${zen[@]}"; do
-  git clone "$github"cp-zen"$repo".git
-done
-
+git clone "$github"cp-zen-frontend.git
 docker-compose run --rm --no-deps frontend yarn
+git clone "$github"cp-zen-platform.git
 docker-compose run --rm --no-deps zen yarn

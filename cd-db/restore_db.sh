@@ -2,6 +2,9 @@
 
 set -e
 
+# To restore the a database place the tar.gz in the dump folder
+# they should be called users.tar.gz, dojos.tar.gz and events.tar.gz
+
 restore() {
   repo=$1
   DUMP="/db/${repo}.tar.gz"

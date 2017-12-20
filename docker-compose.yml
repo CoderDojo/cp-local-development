@@ -5,6 +5,7 @@ services:
     restart: always
     volumes:
       - pg-data:/data/postgres
+      - ./cd-db/dumps:/db
     environment:
       - POSTGRES_PASSWORD=QdYx3D5y
   kue:
@@ -47,10 +48,10 @@ services:
       - ./workspace-zen/cp-translations:/usr/src/app/node_modules/cp-translations:Z
       - ./workspace-zen/cp-zen-frontend:/usr/src/app:Z
   dojos:
-    image: nodesource/node:0.10.45
+    image: node:carbon
     env_file: ./workspace-zen/cp-dojos-service/config/development.env
     working_dir: /usr/src/app
-    command: npm run dev
+    command: yarn dev
     environment:
       - NODE_ENV=development
       - CD_USERS=users
@@ -67,10 +68,10 @@ services:
       - ./workspace-zen/cp-translations:/usr/src/app/node_modules/cp-translations:Z
       - ./workspace-zen/cp-dojos-service:/usr/src/app:Z
   users:
-    image: nodesource/node:0.10.45
+    image: node:carbon
     env_file: ./workspace-zen/cp-users-service/config/development.env
     working_dir: /usr/src/app
-    command: npm run dev
+    command: yarn dev
     environment:
       - NODE_ENV=development
       - CD_DOJOS=dojos
@@ -83,10 +84,10 @@ services:
       - ./workspace-zen/cp-translations:/usr/src/app/node_modules/cp-translations:Z
       - ./workspace-zen/cp-users-service:/usr/src/app:Z
   events:
-    image: nodesource/node:0.10.45
+    image: node:carbon
     env_file: ./workspace-zen/cp-events-service/config/development.env
     working_dir: /usr/src/app
-    command: npm run dev
+    command: yarn dev
     environment:
       - CD_USERS=users
       - CD_DOJOS=dojos
@@ -102,10 +103,10 @@ services:
       - ./workspace-zen/cp-translations:/usr/src/app/node_modules/cp-translations:Z
       - ./workspace-zen/cp-events-service:/usr/src/app:Z
   badges:
-    image: nodesource/node:0.10.45
+    image: node:carbon
     working_dir: /usr/src/app
     env_file: ./workspace-zen/cp-badges-service/config/development.env
-    command: npm run dev
+    command: yarn dev
     environment:
       - CD_USERS=users
       - CD_DOJOS=dojos
@@ -115,8 +116,8 @@ services:
       - ./workspace-zen/cp-translations:/usr/src/app/node_modules/cp-translations:Z
       - ./workspace-zen/cp-badges-service:/usr/src/app:Z
   eventbrite:
-    image: nodesource/node:0.10.45
-    command: npm run dev
+    image: node:carbon
+    command: yarn dev
     env_file: ./workspace-zen/cp-eventbrite-service/config/development.env
     working_dir: /usr/src/app
     environment:
