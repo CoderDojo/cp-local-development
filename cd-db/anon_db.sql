@@ -24,16 +24,14 @@ UPDATE sys_reset SET nick = 'testmail+user' || sys_reset.user || '@example.com';
 UPDATE cd_agreements SET full_name='Namey McNameFace', ip_address='127.0.0.1';
 
 \c cp-dojos-development
-UPDATE cd_dojoleads SET application = jsonb_set(application::jsonb, '{championDetails, email}'::text[], ('"testmail+user' || user_id || '@example.com"')::jsonb);
-UPDATE cd_dojoleads SET application = jsonb_set(application::jsonb, '{championDetails, twitter}'::text[], '"@example"');
-UPDATE cd_dojoleads SET application = jsonb_set(application::jsonb, '{championDetails, name}'::text[], '"Namey McNameFace"');
-UPDATE cd_dojoleads SET application = jsonb_set(application::jsonb, '{championDetails, phone}'::text[], '"1234567890"');
-UPDATE cd_dojoleads SET application = jsonb_set(application::jsonb, '{championDetails, linkedIn}'::text[], '"linkedIn"');
-UPDATE cd_dojoleads SET application = jsonb_set(application::jsonb, '{championDetails, notes}'::text[], ('"Notes about Dojo champion"')::jsonb);
-UPDATE cd_dojoleads SET application = jsonb_set(application::jsonb, '{championDetails, address1}'::text[], ('"123 Fake St., Over There Ave., End of the Road"')::jsonb);
-UPDATE cd_dojoleads SET application = jsonb_set(application::jsonb, '{championDetails, projects}'::text[], ('"Champions Projects"')::jsonb);
-UPDATE cd_dojoleads SET application = jsonb_set(application::jsonb, '{championDetails, youthExperience}'::text[], ('"Champions youth experience"')::jsonb);
-UPDATE cd_dojoleads SET application = jsonb_set(application::jsonb, '{championDetails, coordinates}'::text[], ('"' || regexp_replace((application->>'championDetails')::jsonb->>'coordinates', '([0-9]+)\.[0-9]+', '\1.0', 'g') || '"')::jsonb);
+UPDATE cd_dojoleads SET application = jsonb_set(application::jsonb, '{champion, email}'::text[], ('"testmail+user' || user_id || '@example.com"')::jsonb);
+UPDATE cd_dojoleads SET application = jsonb_set(application::jsonb, '{champion, twitter}'::text[], '"example"');
+UPDATE cd_dojoleads SET application = jsonb_set(application::jsonb, '{champion, firstName}'::text[], '"Namey"');
+UPDATE cd_dojoleads SET application = jsonb_set(application::jsonb, '{champion, lastName}'::text[], '"McNameFace"');
+UPDATE cd_dojoleads SET application = jsonb_set(application::jsonb, '{champion, dob}'::text[], '"1980-01-01T00:00:00.000Z"');
+UPDATE cd_dojoleads SET application = jsonb_set(application::jsonb, '{champion, phone}'::text[], '"1234567890"');
+UPDATE cd_dojoleads SET application = jsonb_set(application::jsonb, '{champion, linkedIn}'::text[], '"linkedIn"');
+UPDATE cd_dojoleads SET application = jsonb_set(application::jsonb, '{charter, fullName}'::text[], '"Namey McNameFace"');
 UPDATE cd_dojoleads SET email = 'testmail+user' || user_id || '@example.com';
 UPDATE cd_dojos SET creator_email = 'testmail+user' || creator || '@example.com';
 UPDATE cd_dojos SET user_invites = NULL;
