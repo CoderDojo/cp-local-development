@@ -17,10 +17,7 @@ declare -a services=("badges"
 
 for repo in "${services[@]}"; do
   git clone "$github"cp-"$repo"-service.git
-  docker-compose run --rm --no-deps "$repo" yarn
 done
 
 git clone "$github"cp-zen-frontend.git
-docker-compose run --rm --no-deps frontend yarn
 git clone "$github"cp-zen-platform.git
-docker-compose run --rm --no-deps zen yarn

@@ -36,6 +36,7 @@ Run:
 ```
 git clone https://github.com/CoderDojo/cp-local-development.git && cd cp-local-development
 ./setup_repo.sh
+yarn
 ```
 
 You may have permission errors on Windows in which case you need to change
