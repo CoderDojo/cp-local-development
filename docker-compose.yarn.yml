@@ -1,0 +1,50 @@
+version: '3.3'
+services:
+  yarn_zen:
+    image: node:carbon
+    working_dir: /usr/src/app
+    command: yarn
+    volumes:
+      - ./workspace-zen/cp-zen-platform:/usr/src/app:Z
+  yarn_frontend:
+    image: node:carbon
+    working_dir: /usr/src/app
+    command: yarn
+    volumes:
+      - ./workspace-zen/cp-zen-frontend:/usr/src/app:Z
+  yarn_badges:
+    image: node:carbon
+    working_dir: /usr/src/app
+    command: yarn
+    volumes:
+      - ./workspace-zen/cp-badges-service:/usr/src/app:Z
+  yarn_dojos:
+    image: node:carbon
+    working_dir: /usr/src/app
+    command: yarn
+    volumes:
+      - ./workspace-zen/cp-dojos-service:/usr/src/app:Z
+  yarn_events:
+    image: node:carbon
+    working_dir: /usr/src/app
+    command: yarn
+    volumes:
+      - ./workspace-zen/cp-events-service:/usr/src/app:Z
+  yarn_eventbrite:
+    image: node:carbon
+    working_dir: /usr/src/app
+    command: yarn
+    volumes:
+      - ./workspace-zen/cp-eventbrite-service:/usr/src/app:Z
+  yarn_organisations:
+    image: node:carbon
+    working_dir: /usr/src/app
+    command: yarn
+    volumes:
+      - ./workspace-zen/cp-organisations-service:/usr/src/app:Z
+  yarn_users:
+    image: node:carbon
+    working_dir: /usr/src/app
+    command: yarn
+    volumes:
+      - ./workspace-zen/cp-users-service:/usr/src/app:Z
