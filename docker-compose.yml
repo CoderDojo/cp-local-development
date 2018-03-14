@@ -26,6 +26,7 @@ services:
       - frontend
       - eventbrite
       - organisations
+      - events-service
     environment:
       - CD_USERS=users
       - CD_DOJOS=dojos
@@ -142,7 +143,7 @@ services:
     volumes:
       - ./workspace-zen/cp-organisations-service:/usr/src/app:Z
       - ./workspace-zen/cp-translations:/usr/src/app/node_modules/cp-translations:ro
-  events2:
+  events-service:
     image: node:carbon
     command: yarn dev
     working_dir: /usr/src/app
