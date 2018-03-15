@@ -26,6 +26,7 @@ services:
       - frontend
       - eventbrite
       - organisations
+      - events-service
     environment:
       - CD_USERS=users
       - CD_DOJOS=dojos
@@ -36,8 +37,8 @@ services:
       - NODE_ENV=development
     volumes:
       - ./workspace-zen/cp-zen-platform:/usr/src/app:Z
-      - ./workspace-zen/cp-zen-frontend:/usr/src/app/node_modules/cp-zen-frontend:Z
-      - ./workspace-zen/cp-translations:/usr/src/app/node_modules/cp-translations:Z
+      - ./workspace-zen/cp-zen-frontend:/usr/src/app/node_modules/cp-zen-frontend:ro
+      - ./workspace-zen/cp-translations:/usr/src/app/node_modules/cp-translations:ro
   frontend:
     image: node:carbon
     command: yarn dev
@@ -45,8 +46,8 @@ services:
     environment:
       - NODE_ENV=development
     volumes:
-      - ./workspace-zen/cp-translations:/usr/src/app/node_modules/cp-translations:Z
       - ./workspace-zen/cp-zen-frontend:/usr/src/app:Z
+      - ./workspace-zen/cp-translations:/usr/src/app/node_modules/cp-translations:ro
   dojos:
     image: node:carbon
     env_file: ./workspace-zen/cp-dojos-service/config/development.env
@@ -65,8 +66,8 @@ services:
       - db
       - kue
     volumes:
-      - ./workspace-zen/cp-translations:/usr/src/app/node_modules/cp-translations:Z
       - ./workspace-zen/cp-dojos-service:/usr/src/app:Z
+      - ./workspace-zen/cp-translations:/usr/src/app/node_modules/cp-translations:ro
   users:
     image: node:carbon
     env_file: ./workspace-zen/cp-users-service/config/development.env
@@ -78,11 +79,12 @@ services:
       - CD_EVENTS=events
       - CD_BADGES=badges
       - POSTGRES_HOST=db
+      - CDF_ADMINS=admin@coderdojo.org,daniel@coderdojo.org
     depends_on:
       - db
     volumes:
-      - ./workspace-zen/cp-translations:/usr/src/app/node_modules/cp-translations:Z
       - ./workspace-zen/cp-users-service:/usr/src/app:Z
+      - ./workspace-zen/cp-translations:/usr/src/app/node_modules/cp-translations:ro
   events:
     image: node:carbon
     env_file: ./workspace-zen/cp-events-service/config/development.env
@@ -100,8 +102,8 @@ services:
       - db
       - kue
     volumes:
-      - ./workspace-zen/cp-translations:/usr/src/app/node_modules/cp-translations:Z
       - ./workspace-zen/cp-events-service:/usr/src/app:Z
+      - ./workspace-zen/cp-translations:/usr/src/app/node_modules/cp-translations:ro
   badges:
     image: node:carbon
     working_dir: /usr/src/app
@@ -113,8 +115,8 @@ services:
       - CD_EVENTS=events
       - NODE_ENV=development
     volumes:
-      - ./workspace-zen/cp-translations:/usr/src/app/node_modules/cp-translations:Z
       - ./workspace-zen/cp-badges-service:/usr/src/app:Z
+      - ./workspace-zen/cp-translations:/usr/src/app/node_modules/cp-translations:ro
   eventbrite:
     image: node:carbon
     command: yarn dev
@@ -125,8 +127,8 @@ services:
       - CD_EVENTS=events
       - NODE_ENV=development
     volumes:
-      - ./workspace-zen/cp-translations:/usr/src/app/node_modules/cp-translations:Z
       - ./workspace-zen/cp-eventbrite-service:/usr/src/app:Z
+      - ./workspace-zen/cp-translations:/usr/src/app/node_modules/cp-translations:ro
   organisations:
     image: node:carbon
     command: yarn dev
@@ -139,7 +141,15 @@ services:
     depends_on:
       - db
     volumes:
-      - ./workspace-zen/cp-translations:/usr/src/app/node_modules/cp-translations:Z
       - ./workspace-zen/cp-organisations-service:/usr/src/app:Z
+      - ./workspace-zen/cp-translations:/usr/src/app/node_modules/cp-translations:ro
+  events-service:
+    image: node:carbon
+    command: yarn dev
+    working_dir: /usr/src/app
+    depends_on:
+      - db
+    volumes:
+      - ./workspace-zen/services/events-service:/usr/src/app:Z
 volumes:
   pg-data:
