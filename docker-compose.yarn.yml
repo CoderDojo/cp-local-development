@@ -48,3 +48,9 @@ services:
     command: yarn
     volumes:
       - ./workspace-zen/cp-users-service:/usr/src/app:Z
+  yarn_events_service:
+    image: node:carbon
+    working_dir: /usr/src/app
+    command: yarn
+    volumes:
+      - ./workspace-zen/services/events-service:/usr/src/app:Z
