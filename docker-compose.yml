@@ -34,6 +34,7 @@ services:
       - CD_BADGES=badges
       - CD_EVENTBRITE=eventbrite
       - CD_ORGANISATIONS=organisations
+      - EVENTS_SERVICE=events-service
       - NODE_ENV=development
     volumes:
       - ./workspace-zen/cp-zen-platform:/usr/src/app:Z
