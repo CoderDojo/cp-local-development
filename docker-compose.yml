@@ -157,6 +157,5 @@ services:
     image: djfarrelly/maildev
     ports:
       - '1080:80'
-      - '1025:25'
 volumes:
   pg-data:
