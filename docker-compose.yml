@@ -63,6 +63,7 @@ services:
       - POSTGRES_HOST=db
       - KUE_REQUIRED='true'
       - KUE_HOST=kue
+      - GOOGLE_MAPS_KEY=AIzaSyBA4xICXGjxFVQRBTBM7Wo_6d0pfaG7-Us
     depends_on:
       - db
       - kue
