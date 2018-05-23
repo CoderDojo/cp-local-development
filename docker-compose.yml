@@ -27,6 +27,7 @@ services:
       - eventbrite
       - organisations
       - events-service
+      - maildev
     environment:
       - CD_USERS=users
       - CD_DOJOS=dojos
@@ -152,5 +153,10 @@ services:
       - db
     volumes:
       - ./workspace-zen/services/events-service:/usr/src/app:Z
+  maildev:
+    image: djfarrelly/maildev
+    ports:
+      - '1080:80'
+      - '1025:25'
 volumes:
   pg-data:
