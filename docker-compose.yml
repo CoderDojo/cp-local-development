@@ -27,6 +27,7 @@ services:
       - eventbrite
       - organisations
       - events-service
+      - maildev
     environment:
       - CD_USERS=users
       - CD_DOJOS=dojos
@@ -36,6 +37,7 @@ services:
       - CD_ORGANISATIONS=organisations
       - EVENTS_SERVICE=events-service
       - NODE_ENV=development
+      - MAILDEV_ENABLED=true
     volumes:
       - ./workspace-zen/cp-zen-platform:/usr/src/app:Z
       - ./workspace-zen/cp-zen-frontend:/usr/src/app/node_modules/cp-zen-frontend:ro
@@ -64,6 +66,7 @@ services:
       - KUE_REQUIRED='true'
       - KUE_HOST=kue
       - GOOGLE_MAPS_KEY=AIzaSyBA4xICXGjxFVQRBTBM7Wo_6d0pfaG7-Us
+      - MAILDEV_ENABLED=true
     depends_on:
       - db
       - kue
@@ -82,6 +85,7 @@ services:
       - CD_BADGES=badges
       - POSTGRES_HOST=db
       - CDF_ADMINS=admin@coderdojo.org,daniel@coderdojo.org
+      - MAILDEV_ENABLED=true
     depends_on:
       - db
     volumes:
@@ -153,5 +157,9 @@ services:
       - db
     volumes:
       - ./workspace-zen/services/events-service:/usr/src/app:Z
+  maildev:
+    image: djfarrelly/maildev
+    ports:
+      - '1080:80'
 volumes:
   pg-data:
