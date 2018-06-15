@@ -34,7 +34,8 @@ if [ ! -d "${base_dir}/${workspace}/cp-zen-platform" ]; then
   git clone "$github"cp-zen-platform.git
 fi
 
-declare -a services=("events")
+declare -a services=("events"
+  "cp-email")
 
 mkdir -p "$base_dir/${workspace}/services"
 cd "${base_dir}/${workspace}/services"

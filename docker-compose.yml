@@ -28,6 +28,7 @@ services:
       - organisations
       - events-service
       - maildev
+      - email
     environment:
       - CD_USERS=users
       - CD_DOJOS=dojos
@@ -36,6 +37,7 @@ services:
       - CD_EVENTBRITE=eventbrite
       - CD_ORGANISATIONS=organisations
       - EVENTS_SERVICE=events-service
+      - EMAIL_SERVICE=email
       - NODE_ENV=development
       - MAILDEV_ENABLED=true
     volumes:
@@ -109,7 +111,6 @@ services:
       - kue
     volumes:
       - ./workspace-zen/cp-events-service:/usr/src/app:Z
-      - ./workspace-zen/cp-translations:/usr/src/app/node_modules/cp-translations:ro
   badges:
     image: node:carbon
     working_dir: /usr/src/app
@@ -161,5 +162,21 @@ services:
     image: djfarrelly/maildev
     ports:
       - '1080:80'
+  email:
+    image: node:carbon
+    command: yarn dev
+    working_dir: /usr/src/app
+    environment:
+      - URL_BASE=http://localhost:8000
+      - EMAIL_DEFAULT_FROM='The CoderDojo Team <info@coderdojo.org>'
+      - MICROSERVICE_PORT=3000
+      - TRANSPORT=smtp
+      - SMTP_HOST=maildev
+      - TEMPLATES_DIR=/usr/src/app/node_modules/cp-translations/email-templates
+      - SMTP_SECURE=false
+      - SMTP_PORT=25
+    volumes:
+      - ./workspace-zen/services/cp-email-service:/usr/src/app:Z
+      - ./workspace-zen/cp-translations:/usr/src/app/node_modules/cp-translations:ro
 volumes:
   pg-data:
