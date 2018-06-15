@@ -111,7 +111,6 @@ services:
       - kue
     volumes:
       - ./workspace-zen/cp-events-service:/usr/src/app:Z
-      - ./workspace-zen/cp-translations:/usr/src/app/node_modules/cp-translations:ro
   badges:
     image: node:carbon
     working_dir: /usr/src/app
@@ -169,6 +168,7 @@ services:
     command: yarn dev
     working_dir: /usr/src/app
     environment:
+      - URL_BASE=http://localhost:8000
       - EMAIL_DEFAULT_FROM='The CoderDojo Team <info@coderdojo.org>'
       - MICROSERVICE_PORT=3000
       - TRANSPORT=smtp
@@ -177,7 +177,7 @@ services:
       - SMTP_SECURE=false
       - SMTP_PORT=25
     volumes:
-      - ./workspace-zen/services/email-service:/usr/src/app:Z
+      - ./workspace-zen/services/cp-email-service:/usr/src/app:Z
       - ./workspace-zen/cp-translations:/usr/src/app/node_modules/cp-translations:ro
 volumes:
   pg-data:
