@@ -29,6 +29,7 @@ services:
       - events-service
       - maildev
       - email
+      - qrcode
     environment:
       - CD_USERS=users
       - CD_DOJOS=dojos
@@ -38,6 +39,7 @@ services:
       - CD_ORGANISATIONS=organisations
       - EVENTS_SERVICE=events-service
       - EMAIL_SERVICE=email
+      - QRCODE_SERVICE=qrcode
       - NODE_ENV=development
       - MAILDEV_ENABLED=true
     volumes:
@@ -178,5 +180,21 @@ services:
     volumes:
       - ./workspace-zen/services/cp-email-service:/usr/src/app:Z
       - ./workspace-zen/cp-translations:/usr/src/app/node_modules/cp-translations:ro
+  qrcode:
+    image: node:carbon
+    command: yarn dev
+    working_dir: /usr/src/app
+    volumes:
+      - ./workspace-zen/services/qrcode:/usr/src/app:Z
+    environment:
+      - ZEN_HOSTNAME=http://localhost:8000
+    depends_on:
+      - s3
+  s3:
+    image: andrewgaul/s3proxy
+    environment:
+      - S3PROXY_AUTHORIZATION=none
+    ports:
+      - 8099:80
 volumes:
   pg-data:
