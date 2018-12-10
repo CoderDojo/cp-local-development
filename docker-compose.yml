@@ -192,6 +192,10 @@ services:
       - s3
   s3:
     image: andrewgaul/s3proxy
+    entrypoint: 
+      - sh
+      - -c
+      - "{ sleep 5 && echo -e \"PUT http://localhost:80/zenbookingqrcode HTTP/1.0\\n\\n\" | nc localhost 80; } & sh /opt/s3proxy/run-docker-container.sh"
     environment:
       - S3PROXY_AUTHORIZATION=none
     ports:
