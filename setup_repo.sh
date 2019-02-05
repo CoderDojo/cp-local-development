@@ -35,6 +35,8 @@ if [ ! -d "${base_dir}/${workspace}/cp-zen-platform" ]; then
 fi
 
 declare -a services=("events"
+  "clubs"
+  "users"
   "cp-email")
 
 mkdir -p "$base_dir/${workspace}/services"

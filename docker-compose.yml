@@ -27,6 +27,8 @@ services:
       - eventbrite
       - organisations
       - events-service
+      - users-service
+      - clubs-service
       - maildev
       - email
     environment:
@@ -178,5 +180,25 @@ services:
     volumes:
       - ./workspace-zen/services/cp-email-service:/usr/src/app:Z
       - ./workspace-zen/cp-translations:/usr/src/app/node_modules/cp-translations:ro
+  clubs-service:
+    image: node:carbon
+    command: yarn dev
+    working_dir: /usr/src/app
+    depends_on:
+      - db
+    volumes:
+      - ./workspace-zen/services/clubs-service:/usr/src/app:Z
+    ports:
+      - 9234:9229
+  users-service:
+    image: node:carbon
+    command: yarn dev
+    working_dir: /usr/src/app
+    depends_on:
+      - db
+    volumes:
+      - ./workspace-zen/services/users-service:/usr/src/app:Z
+    ports:
+      - 9233:9229
 volumes:
   pg-data:
