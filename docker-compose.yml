@@ -158,6 +158,9 @@ services:
     working_dir: /usr/src/app
     depends_on:
       - db
+    environment:
+      - ICS_EVENT_URL=http://localhost:8000/api/3.0/events/
+      - EVENT_URL=http://localhost:8000/events/
     volumes:
       - ./workspace-zen/services/events-service:/usr/src/app:Z
   maildev:
