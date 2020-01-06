@@ -1,4 +1,8 @@
 version: '3.3'
+networks:
+  default:
+    external:
+      name: profile_default
 services:
   db:
     build: ./cd-db
@@ -8,6 +12,8 @@ services:
       - ./cd-db/dumps:/db
     environment:
       - POSTGRES_PASSWORD=QdYx3D5y
+    ports:
+      - '5433:5432'
   kue:
     image: redis:3-alpine
     restart: always
