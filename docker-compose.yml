@@ -13,7 +13,7 @@ services:
     environment:
       - POSTGRES_PASSWORD=QdYx3D5y
     ports:
-      - '5433:5432'
+      - '5434:5432'
   kue:
     image: redis:3-alpine
     restart: always
