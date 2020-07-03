@@ -14,9 +14,6 @@ TRUNCATE cd_oauth2;
 UPDATE cd_profiles SET name = 'Namey McNameFace';
 UPDATE cd_profiles SET email = 'testmail+user' || user_id || '@example.com';
 UPDATE cd_profiles SET alias = 'NameyFace';
-UPDATE cd_profiles SET
-  address = '123 Fake St., Over There Ave., End of the Road',
-  phone = translate(phone, '0123456789','9999999999');
 UPDATE cd_profiles SET avatar = NULL, parent_invites = NULL, ninja_invites = NULL, twitter = NULL, linkedin = NULL;
 UPDATE sys_login SET email = 'testmail+user' || sys_login.user || '@example.com', token = NULL;
 UPDATE sys_login SET nick = email;
