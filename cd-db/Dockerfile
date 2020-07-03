@@ -1,4 +1,4 @@
-FROM postgres:9-alpine
+FROM postgres:11-alpine
 LABEL maintainer="butlerx <cian@coderdojo.org>"
 RUN mkdir -p /db && chown -R postgres:postgres /db
 VOLUME /db
