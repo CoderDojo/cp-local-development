@@ -18,20 +18,23 @@ restore() {
   fi
   DIR="/db/${repo}/backup_dump"
   if [ -d "$DIR" ]; then
-    echo restoring "$repo"
-    pg_restore -c --if-exists -w -d "cp-${repo}-development" -U platform /db/"$repo"/backup_dump
+    if [ "$repo" == dojos ]; then
+      # dojos may fail when creating the index for nearest_dojos on backups from Posgres 9.4
+      echo creating dojos restore list file
+      pg_restore --list /db/dojos/backup_dump -f /db/dojos.list
+
+      echo removing nearest_dojos index from dojos restore list
+      sed -i -e '/nearest_dojos/d' /db/dojos.list
+
+      echo restoring using list file
+      pg_restore -c --if-exists -w -d "cp-${repo}-development" -U platform -L /db/dojos.list /db/"$repo"/backup_dump
+    else
+      echo restoring "$repo" with pg_restore
+      pg_restore -c --if-exists -w -d "cp-${repo}-development" -U platform /db/"$repo"/backup_dump
+    fi
   fi
 }
 
 restore users
 restore events
-# dojos may fail when creating the index for nearest_dojos on backups from Posgres 9.4
-# Restart the container and you can run it manually if needed
-# `docker exec -it cp-local-development_db_1 bash`
-# Start a psql console
-# psql -U postgres
-# Change to dojos DB
-# \c cp-dojos-development
-# Execute the SQL
-# CREATE INDEX nearest_dojos ON public.cd_dojos USING gist (public.ll_to_earth((((geo_point -> 'lat'::text))::text)::double precision, (((geo_point -> 'lon'::text))::text)::double precision));
 restore dojos
