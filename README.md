@@ -41,6 +41,12 @@ git clone https://github.com/CoderDojo/cp-local-development.git && cd cp-local-d
 ./install_deps.sh
 ```
 
+The dependency script runs all of the installations in parallel which may have issues on some machines / networks.  For a slower, but steadier way, use the following:
+
+```
+./install_deps.sh --series
+```
+
 You may have permission errors on Windows in which case you need to change
 ownership to yourself.
 
