@@ -181,12 +181,11 @@ Check out our [troubleshooting](troubleshooting.md) doc.
 
 In order to get your changes deployed there might be several merges/upgrades to sort out.  For example, if you update a banner, requiring changes in `cp-translations`, `cp-zen-frontend`, and `cp-zen-platform`, you need to:
 
-1. Merge `cp-translations` changes.  Re-pull your master branch to get the auto-incremented version.
-2. Update the version of `cp-translations` in packages.json for `cp-zen-frontend`, and re-install yarn dependencies, and get them merged to master.  Re-pull your master branch to get the auto-incremented version number.
+1. Merge `cp-translations` changes, wait for the CI to rebuild and publish a new npm package. Re-pull your master branch to get the auto-incremented version.
+2. Update the version of `cp-translations` in packages.json for `cp-zen-frontend`, and re-install yarn dependencies, and get them merged to master. Wait for the CI to rebuild and publish a new npm package.   Re-pull your master branch to get the auto-incremented version number.
 3. Finally update the version of both `cp-zen-frontend` and `cp-translations` in `cp-zen-platform`, re-install yarn dependencies, and then get those changes merged to master.
 
 This is because both `cp-zen-frontent` and `cp-zen-platform` independently depend on `cp-translations`, and then `cp-zen-platform` also depends on `cp-zen-frontend`.
 
 You might find other dependency chains that are similar, so be aware that you might have to merge before updating dependent repos.
-
 
