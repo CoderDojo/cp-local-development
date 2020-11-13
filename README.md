@@ -77,7 +77,7 @@ e.g. `docker-compose up dojos`. Once docker looks to be running all the
 services ok (you'll see a lot of stack traces in the output if they are not
 running ok!) you should be able to hit [`localhost:8000`](http://localhost:8000)
 in your browser. If this is your first time running, you should see the "Find
-a Dojo to attend" Page this page wont return any dojos until you've created one 
+a Dojo to attend" Page this page wont return any dojos until you've created one
 
 Note that the Forums and [Badges](installing-badgekit.md) will not be operable
 in local development mode, to run these, you need to install both
@@ -109,11 +109,11 @@ in local development mode, to run these, you need to install both
   * [cp-email-service](https://github.com/CoderDojo/cp-email-service)
     backend service for mailing
   * [events-service](https://github.com/CoderDojo/events-service)
-    backend service for events 
+    backend service for events
   * [users-service](https://github.com/CoderDojo/users-service)
-    backend service for users 
+    backend service for users
   * [clubs-service](https://github.com/CoderDojo/clubs-service)
-    backend service for clubs 
+    backend service for clubs
 
 You can read more about the repositories and system architecture [in this document](https://github.com/CoderDojo/community-platform/blob/master/architecture.md).
 
@@ -176,3 +176,17 @@ command.
 ### Still having issues?
 
 Check out our [troubleshooting](troubleshooting.md) doc.
+
+## Deployment
+
+In order to get your changes deployed there might be several merges/upgrades to sort out.  For example, if you update a banner, requiring changes in `cp-translations`, `cp-zen-frontend`, and `cp-zen-platform`, you need to:
+
+1. Merge `cp-translations` changes
+2. Re-install yarn dependencies for `cp-zen-frontend`, and get them merged to master
+3. Finally re-install yarn dependencies for `cp-zen-platform` and get those changes merged to master.
+
+This is because both `cp-zen-frontent` and `cp-zen-platform` independently depend on `cp-translations`, and then `cp-zen-platform` also depends on `cp-zen-frontend`.
+
+You might find other dependency chains that are similar, so be aware that you might have to merge before updating dependent repos.
+
+
