@@ -83,12 +83,22 @@ Note that the Forums and [Badges](installing-badgekit.md) will not be operable
 in local development mode, to run these, you need to install both
 [NodeBB](https://nodebb.org) and [BadgeKit](installing-badgekit.md) locally, which are a different problem.
 
-
-## Evironent settings
+## Environment settings
 
 All these are in the `.env.example` file, which should be copied to `.env`.
 Once copied, you'll want to fill in some of the details.  Currently you'll need
-keys for Google Maps and Eventbrite.
+keys for 
+[Google Maps](https://console.cloud.google.com/google/maps-apis/credentials)
+and [Eventbrite](https://www.eventbrite.ie/myaccount/apps/).
+
+When making changes to your `.env` file, you'll want to run 
+`docker-compose up -d` to ensure environment changes are propagated to the
+appropriate containers.
+
+**NB** when configuring your Eventbrite API key, you'll need to set the 
+*OAuth Redirect URI* on the Key Info page to
+`http://localhost:8000/dashboard/edit-dojo-eventbrite` otherwise you'll get a
+message about no `redirect_uri` parameter being supplied when connecting.
 
 ## Making code changes and working locally
 
