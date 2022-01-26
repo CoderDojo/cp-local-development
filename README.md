@@ -83,6 +83,13 @@ Note that the Forums and [Badges](installing-badgekit.md) will not be operable
 in local development mode, to run these, you need to install both
 [NodeBB](https://nodebb.org) and [BadgeKit](installing-badgekit.md) locally, which are a different problem.
 
+
+## Evironent settings
+
+All these are in the `.env.example` file, which should be copied to `.env`.
+Once copied, you'll want to fill in some of the details.  Currently you'll need
+keys for Google Maps and Eventbrite.
+
 ## Making code changes and working locally
 
 ### Creating your own forks
@@ -188,4 +195,7 @@ In order to get your changes deployed there might be several merges/upgrades to 
 This is because both `cp-zen-frontent` and `cp-zen-platform` independently depend on `cp-translations`, and then `cp-zen-platform` also depends on `cp-zen-frontend`.
 
 You might find other dependency chains that are similar, so be aware that you might have to merge before updating dependent repos.
+
+
+
 
