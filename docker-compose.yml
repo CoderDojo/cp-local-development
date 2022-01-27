@@ -11,7 +11,7 @@ services:
       - pg-data:/data/postgres
       - ./cd-db/dumps:/db
     environment:
-      - POSTGRES_PASSWORD=QdYx3D5y
+      - POSTGRES_PASSWORD
     ports:
       - '5434:5432'
   kue:
@@ -22,7 +22,9 @@ services:
     working_dir: /usr/src/app
     ports:
       - '8000:8000'
-    env_file: ./workspace-zen/cp-zen-platform/web/config/development.env
+    env_file:
+      - ./workspace-zen/cp-zen-platform/web/config/development.env
+      - ./.env
     command: yarn dev
     depends_on:
       - users
@@ -38,16 +40,17 @@ services:
       - maildev
       - email
     environment:
-      - CD_USERS=users
-      - CD_DOJOS=dojos
-      - CD_EVENTS=events
-      - CD_BADGES=badges
-      - CD_EVENTBRITE=eventbrite
-      - CD_ORGANISATIONS=organisations
-      - EVENTS_SERVICE=events-service
-      - EMAIL_SERVICE=email
-      - NODE_ENV=development
-      - MAILDEV_ENABLED=true
+      - CD_USERS
+      - CD_DOJOS
+      - CD_EVENTS
+      - CD_BADGES
+      - CD_EVENTBRITE
+      - CD_ORGANISATIONS
+      - EVENTS_SERVICE
+      - EMAIL_SERVICE
+      - GOOGLE_MAPS_KEY
+      - NODE_ENV
+      - MAILDEV_ENABLED
     volumes:
       - ./workspace-zen/cp-zen-platform:/usr/src/app:Z
       - ./workspace-zen/cp-zen-frontend:/usr/src/app/node_modules/cp-zen-frontend:ro
@@ -57,26 +60,27 @@ services:
     command: yarn dev
     working_dir: /usr/src/app
     environment:
-      - NODE_ENV=development
+      - NODE_ENV
     volumes:
       - ./workspace-zen/cp-zen-frontend:/usr/src/app:Z
       - ./workspace-zen/cp-translations:/usr/src/app/node_modules/cp-translations:ro
   dojos:
     image: node:carbon
-    env_file: ./workspace-zen/cp-dojos-service/config/development.env
+    env_file:
+      - ./workspace-zen/cp-dojos-service/config/development.env
+      - ./.env
     working_dir: /usr/src/app
     command: yarn dev
     environment:
-      - NODE_ENV=development
-      - CD_USERS=users
-      - CD_EVENTS=events
-      - CD_BADGES=badges
-      - CD_ORGANISATIONS=organisations
-      - POSTGRES_HOST=db
-      - KUE_REQUIRED='true'
-      - KUE_HOST=kue
-      - GOOGLE_MAPS_KEY=AIzaSyAWA2gcHWQsS7Snr_p86QUxGwM0hBn95pQ
-      - MAILDEV_ENABLED=true
+      - NODE_ENV
+      - CD_USERS
+      - CD_EVENTS
+      - CD_BADGES
+      - CD_ORGANISATIONS
+      - POSTGRES_HOST
+      - KUE_REQUIRED
+      - KUE_HOST
+      - MAILDEV_ENABLED
     depends_on:
       - db
       - kue
@@ -85,17 +89,19 @@ services:
       - ./workspace-zen/cp-translations:/usr/src/app/node_modules/cp-translations:ro
   users:
     image: node:carbon
-    env_file: ./workspace-zen/cp-users-service/config/development.env
+    env_file:
+      - ./workspace-zen/cp-users-service/config/development.env
+      - ./.env
     working_dir: /usr/src/app
     command: yarn dev
     environment:
-      - NODE_ENV=development
-      - CD_DOJOS=dojos
-      - CD_EVENTS=events
-      - CD_BADGES=badges
-      - POSTGRES_HOST=db
-      - CDF_ADMINS=admin@coderdojo.org,daniel@coderdojo.org
-      - MAILDEV_ENABLED=true
+      - NODE_ENV
+      - CD_DOJOS
+      - CD_EVENTS
+      - CD_BADGES
+      - POSTGRES_HOST
+      - CDF_ADMINS
+      - MAILDEV_ENABLED
     depends_on:
       - db
     volumes:
@@ -103,17 +109,19 @@ services:
       - ./workspace-zen/cp-translations:/usr/src/app/node_modules/cp-translations:ro
   events:
     image: node:carbon
-    env_file: ./workspace-zen/cp-events-service/config/development.env
+    env_file:
+      - ./workspace-zen/cp-events-service/config/development.env
+      - ./.env
     working_dir: /usr/src/app
     command: yarn dev
     environment:
-      - CD_USERS=users
-      - CD_DOJOS=dojos
-      - CD_BADGES=badges
-      - NODE_ENV=development
-      - POSTGRES_HOST=db
-      - KUE_REQUIRED='true'
-      - KUE_HOST=kue
+      - CD_USERS
+      - CD_DOJOS
+      - CD_BADGES
+      - NODE_ENV
+      - POSTGRES_HOST
+      - KUE_REQUIRED
+      - KUE_HOST
     depends_on:
       - db
       - kue
@@ -122,25 +130,29 @@ services:
   badges:
     image: node:carbon
     working_dir: /usr/src/app
-    env_file: ./workspace-zen/cp-badges-service/config/development.env
+    env_file:
+      - ./workspace-zen/cp-badges-service/config/development.env
+      - ./.env
     command: yarn dev
     environment:
-      - CD_USERS=users
-      - CD_DOJOS=dojos
-      - CD_EVENTS=events
-      - NODE_ENV=development
+      - CD_USERS
+      - CD_DOJOS
+      - CD_EVENTS
+      - NODE_ENV
     volumes:
       - ./workspace-zen/cp-badges-service:/usr/src/app:Z
       - ./workspace-zen/cp-translations:/usr/src/app/node_modules/cp-translations:ro
   eventbrite:
     image: node:carbon
     command: yarn dev
-    env_file: ./workspace-zen/cp-eventbrite-service/config/development.env
+    env_file:
+      - ./workspace-zen/cp-eventbrite-service/config/development.env
+      - ./.env
     working_dir: /usr/src/app
     environment:
-      - CD_DOJOS=dojos
-      - CD_EVENTS=events
-      - NODE_ENV=development
+      - CD_DOJOS
+      - CD_EVENTS
+      - NODE_ENV
     volumes:
       - ./workspace-zen/cp-eventbrite-service:/usr/src/app:Z
       - ./workspace-zen/cp-translations:/usr/src/app/node_modules/cp-translations:ro
@@ -148,11 +160,13 @@ services:
     image: node:carbon
     command: yarn dev
     working_dir: /usr/src/app
-    env_file: ./workspace-zen/cp-organisations-service/config/development.env
+    env_file:
+      - ./workspace-zen/cp-organisations-service/config/development.env
+      - ./.env
     environment:
-      - CD_USERS=users
-      - NODE_ENV=development
-      - POSTGRES_HOST=db
+      - CD_USERS
+      - NODE_ENV
+      - POSTGRES_HOST
     depends_on:
       - db
     volumes:
@@ -165,8 +179,8 @@ services:
     depends_on:
       - db
     environment:
-      - ICS_EVENT_URL=http://localhost:8000/api/3.0/events/
-      - EVENT_URL=http://localhost:8000/events/
+      - ICS_EVENT_URL
+      - EVENT_URL
     volumes:
       - ./workspace-zen/services/events-service:/usr/src/app:Z
   maildev:
@@ -178,14 +192,14 @@ services:
     command: yarn dev
     working_dir: /usr/src/app
     environment:
-      - URL_BASE=http://localhost:8000
-      - EMAIL_DEFAULT_FROM='The CoderDojo Team <info@coderdojo.org>'
-      - MICROSERVICE_PORT=3000
-      - TRANSPORT=smtp
-      - SMTP_HOST=maildev
-      - TEMPLATES_DIR=/usr/src/app/node_modules/cp-translations/email-templates
-      - SMTP_SECURE=false
-      - SMTP_PORT=25
+      - URL_BASE
+      - EMAIL_DEFAULT_FROM
+      - MICROSERVICE_PORT
+      - TRANSPORT
+      - SMTP_HOST
+      - TEMPLATES_DIR
+      - SMTP_SECURE
+      - SMTP_PORT
     volumes:
       - ./workspace-zen/services/cp-email-service:/usr/src/app:Z
       - ./workspace-zen/cp-translations:/usr/src/app/node_modules/cp-translations:ro
