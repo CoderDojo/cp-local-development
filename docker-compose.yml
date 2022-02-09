@@ -77,6 +77,7 @@ services:
       - CD_EVENTS
       - CD_BADGES
       - CD_ORGANISATIONS
+      - GOOGLE_MAPS_KEY
       - POSTGRES_HOST
       - KUE_REQUIRED
       - KUE_HOST
