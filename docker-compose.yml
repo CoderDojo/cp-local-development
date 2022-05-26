@@ -46,11 +46,13 @@ services:
       - CD_BADGES
       - CD_EVENTBRITE
       - CD_ORGANISATIONS
+      - CLUBS_SERVICE
       - EVENTS_SERVICE
       - EMAIL_SERVICE
       - GOOGLE_MAPS_KEY
       - NODE_ENV
       - MAILDEV_ENABLED
+      - USERS_SERVICE
     volumes:
       - ./workspace-zen/cp-zen-platform:/usr/src/app:Z
       - ./workspace-zen/cp-zen-frontend:/usr/src/app/node_modules/cp-zen-frontend:ro
