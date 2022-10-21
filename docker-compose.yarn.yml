@@ -3,7 +3,7 @@ services:
   yarn_zen:
     image: node:carbon
     working_dir: /usr/src/app
-    command: yarn
+    command: sh -c "git config --global url.\"https://github.com/\".insteadOf git://github.com/ && yarn"
     volumes:
       - ./workspace-zen/cp-zen-platform:/usr/src/app:Z
   yarn_frontend:
