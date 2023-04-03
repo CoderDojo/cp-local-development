@@ -1,16 +1,13 @@
 version: '3.3'
-networks:
-  default:
-    external:
-      name: profile_default
 services:
-  db:
+  zendb:
     build: ./cd-db
     restart: always
     volumes:
       - pg-data:/data/postgres
       - ./cd-db/dumps:/db
     environment:
+      - POSTGRES_USER
       - POSTGRES_PASSWORD
     ports:
       - '5434:5432'
@@ -53,6 +50,7 @@ services:
       - NODE_ENV
       - MAILDEV_ENABLED
       - USERS_SERVICE
+      - POSTGRES_HOST
     volumes:
       - ./workspace-zen/cp-zen-platform:/usr/src/app:Z
       - ./workspace-zen/cp-zen-frontend:/usr/src/app/node_modules/cp-zen-frontend:ro
@@ -85,7 +83,7 @@ services:
       - KUE_HOST
       - MAILDEV_ENABLED
     depends_on:
-      - db
+      - zendb
       - kue
     volumes:
       - ./workspace-zen/cp-dojos-service:/usr/src/app:Z
@@ -106,7 +104,7 @@ services:
       - CDF_ADMINS
       - MAILDEV_ENABLED
     depends_on:
-      - db
+      - zendb
     volumes:
       - ./workspace-zen/cp-users-service:/usr/src/app:Z
       - ./workspace-zen/cp-translations:/usr/src/app/node_modules/cp-translations:ro
@@ -126,7 +124,7 @@ services:
       - KUE_REQUIRED
       - KUE_HOST
     depends_on:
-      - db
+      - zendb
       - kue
     volumes:
       - ./workspace-zen/cp-events-service:/usr/src/app:Z
@@ -141,6 +139,7 @@ services:
       - CD_USERS
       - CD_DOJOS
       - CD_EVENTS
+      - POSTGRES_HOST
       - NODE_ENV
     volumes:
       - ./workspace-zen/cp-badges-service:/usr/src/app:Z
@@ -156,6 +155,7 @@ services:
       - CD_DOJOS
       - CD_EVENTS
       - NODE_ENV
+      - POSTGRES_HOST
     volumes:
       - ./workspace-zen/cp-eventbrite-service:/usr/src/app:Z
       - ./workspace-zen/cp-translations:/usr/src/app/node_modules/cp-translations:ro
@@ -171,7 +171,7 @@ services:
       - NODE_ENV
       - POSTGRES_HOST
     depends_on:
-      - db
+      - zendb
     volumes:
       - ./workspace-zen/cp-organisations-service:/usr/src/app:Z
       - ./workspace-zen/cp-translations:/usr/src/app/node_modules/cp-translations:ro
@@ -180,9 +180,10 @@ services:
     command: yarn dev
     working_dir: /usr/src/app
     depends_on:
-      - db
+      - zendb
     environment:
       - ICS_EVENT_URL
+      - POSTGRES_HOST
       - EVENT_URL
     volumes:
       - ./workspace-zen/services/events-service:/usr/src/app:Z
@@ -200,6 +201,7 @@ services:
       - MICROSERVICE_PORT
       - TRANSPORT
       - SMTP_HOST
+      - POSTGRES_HOST
       - TEMPLATES_DIR
       - SMTP_SECURE
       - SMTP_PORT
@@ -211,7 +213,9 @@ services:
     command: yarn dev
     working_dir: /usr/src/app
     depends_on:
-      - db
+      - zendb
+    environment:
+      - POSTGRES_HOST
     volumes:
       - ./workspace-zen/services/clubs-service:/usr/src/app:Z
     ports:
@@ -220,8 +224,10 @@ services:
     image: node:carbon
     command: yarn dev
     working_dir: /usr/src/app
+    environment:
+      - POSTGRES_HOST
     depends_on:
-      - db
+      - zendb
     volumes:
       - ./workspace-zen/services/users-service:/usr/src/app:Z
     ports:
