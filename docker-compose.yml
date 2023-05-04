@@ -1,6 +1,6 @@
 version: '3.3'
 services:
-  zendb:
+  db:
     build: ./cd-db
     restart: always
     volumes:
@@ -83,7 +83,7 @@ services:
       - KUE_HOST
       - MAILDEV_ENABLED
     depends_on:
-      - zendb
+      - db
       - kue
     volumes:
       - ./workspace-zen/cp-dojos-service:/usr/src/app:Z
@@ -104,7 +104,7 @@ services:
       - CDF_ADMINS
       - MAILDEV_ENABLED
     depends_on:
-      - zendb
+      - db
     volumes:
       - ./workspace-zen/cp-users-service:/usr/src/app:Z
       - ./workspace-zen/cp-translations:/usr/src/app/node_modules/cp-translations:ro
@@ -124,7 +124,7 @@ services:
       - KUE_REQUIRED
       - KUE_HOST
     depends_on:
-      - zendb
+      - db
       - kue
     volumes:
       - ./workspace-zen/cp-events-service:/usr/src/app:Z
@@ -171,7 +171,7 @@ services:
       - NODE_ENV
       - POSTGRES_HOST
     depends_on:
-      - zendb
+      - db
     volumes:
       - ./workspace-zen/cp-organisations-service:/usr/src/app:Z
       - ./workspace-zen/cp-translations:/usr/src/app/node_modules/cp-translations:ro
@@ -180,7 +180,7 @@ services:
     command: yarn dev
     working_dir: /usr/src/app
     depends_on:
-      - zendb
+      - db
     environment:
       - ICS_EVENT_URL
       - POSTGRES_HOST
@@ -213,7 +213,7 @@ services:
     command: yarn dev
     working_dir: /usr/src/app
     depends_on:
-      - zendb
+      - db
     environment:
       - POSTGRES_HOST
     volumes:
@@ -227,7 +227,7 @@ services:
     environment:
       - POSTGRES_HOST
     depends_on:
-      - zendb
+      - db
     volumes:
       - ./workspace-zen/services/users-service:/usr/src/app:Z
     ports:
